@@ -1,19 +1,35 @@
-# <Module Name>
+# //Module Name
 
-//Insert one or several screenshots of your module
+// Insert one or several screenshots of your module
 
 ```
-!(screenshot.png)
+![alt text](screenshot.png) ![alt text 2](screenrecording.gif)
 ```
 
 ## Module Description
 
+// Explain which use case you would like to answer to.
+
 ## Usage
+
+// Detail how to use your module for a end-user
+
+## Configuration
+
+// If relevant, explain how to adapt your module to answers closed needs.
 
 ## Installation
 
 ### Studio Modeler
 
+// Gather your Studio contributions by category. Give the name of the contribution, and all the configuration which is needed (including advanced setting if needed).
+
 ### Studio Designer
 
-## Configuration
+// Same here. You can upload to the repository the `UI` folder to ease copy-pasting.
+
+## Known issues
+
+Issue | Description | Walkaround
+--- | --- | ---
+XXX | XXX  | XXX
