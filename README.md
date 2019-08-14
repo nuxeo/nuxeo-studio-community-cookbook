@@ -9,12 +9,12 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 ## Module listing
 
-For reasons of clarity, all the contributions are referenced in a separate page. Each module is categorized by:
+For reasons of clarity, all the **contributions are referenced** in a [dedicated page](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/MODULE-LISTING.md). Each module is categorized by:
 
 - Contributor
 - Supported Version
 - Feature category
-- Requiered addons
+- Required addons
 
 ## Getting Started
 
@@ -40,9 +40,9 @@ A **Nuxeo Studio Account** as well as an **active Nuxeo Studio Project** is need
 
 Each new module should are created in a specific folder:
 
-- `/contributions/nuxeo`: Contributions from the Nuxeo Team, for demos, PoC or tests.
-- `/contributions/partners`: Contributions from the Nuxeo Partner Ecosystem.
-- `/contributions/community`: Contributions from the Nuxeo Community.
+- `/modules/nuxeo`: Contributions from the Nuxeo Team, for demos, PoC or tests.
+- `/modules/partners`: Contributions from the Nuxeo Partner Ecosystem.
+- `/modules/community`: Contributions from the Nuxeo Community.
 
 ## Contributing
 
