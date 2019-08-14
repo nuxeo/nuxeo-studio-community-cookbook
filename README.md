@@ -1,4 +1,4 @@
-<img src="nuxeo-logo.png" style="width:7%" align="right" />
+<img src="smaller_NUXEO-LOGO-1.png" align="right" />
 
 # Nuxeo Studio Custom Elements
 
