@@ -1,11 +1,20 @@
-<img src="nuxeo-logo.png" align="right" />
+<img src="nuxeo-logo.png" style="width:7%" align="right" />
 
 # Nuxeo Studio Custom Elements
 
-This repository aims at helping the Nuxeo community to enrich Nuxeo Studio projects. It provides a list of features and visual elements ready to be copy-pasted. The modules are for LTS 2019:
+This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio projects. It provides a list of features and visual elements ready to be copy-pasted. The modules are for **LTS 2019**:
 
-- They can be unrelated to the UI (to provide new backend features, such as new conversions).
-- They can be related to provide elements for Nuxeo Web UI, or any frontend applications
+- They can be unrelated to the UI (to provide new backend features, such as utilities to handle multimedia files, specific conversions, email templates etc.).
+- They can be related to provide elements for Nuxeo Web UI, or any frontend applications.
+
+## Module listing
+
+For reasons of clarity, all the contributions are referenced in a separate page. Each module will be categorized by:
+
+- Contributor
+- Supported Version
+- Feature category
+- Requiered addons
 
 ## Getting Started
 
@@ -27,13 +36,26 @@ A **Nuxeo Studio Account** as well as an **active Nuxeo Studio Project** is need
 - Nuxeo Studio, the web-based configuration and customization environment
 - Nuxeo Marketplace, the application store with ready-to-install plugins and packages
 
+## Repository Structuration
+
+Each new module should are created in a specific folder:
+
+- `/contributions/nuxeo`: Contributions from the Nuxeo Team, for demos, PoC or tests.
+- `/contributions/partners`: Contributions from the Nuxeo Partner Ecosystem.
+- `/contributions/community`: Contributions from the Nuxeo Community.
+
 ## Contributing
 
-Each new module should be created in a new folder. You should include a readme with your module to explain how it works. You should update this file with a one sentence explanation of the module.
+You should follow the repository contribution [guidelines](toolkit-and-guidelines) when submitting a new addon
+
+- If you're a partner, create your partner folder under `/contributions/partners/` if it doesn't exist already. Then, create the readme file to present your company and the contributions. We provide a [README-PARTNER.MD template](toolkit-and-guidelines/README-PARTNER.md).
+- Create a README file to present your contribution, using the [README-MODULE.MD template](toolkit-and-guidelines/README-MODULE.md)
+- Upload your ressources
+- Your contribution will be then checked by the Nuxeo Team before being published.
 
 ## Support
 
-These features are not part of the Nuxeo Production platform.
+:warning: **These features are not part of the Nuxeo Production platform.**
 
 These solutions are provided for inspiration and we encourage customers to use them as code samples and learning resources.
 
