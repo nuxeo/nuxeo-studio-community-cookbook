@@ -9,7 +9,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 ## Module listing
 
-For reasons of clarity, all the **contributions are referenced** in a [dedicated page](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/MODULE-LISTING.md). Each module is categorized by:
+For reasons of clarity, all the **contributions are referenced** in a [dedicated page](https://github.com/nuxeo/nuxeo-studio-custom-elements/tree/master/modules). Each module is categorized by:
 
 - Contributor
 - Nuxeo Server version
