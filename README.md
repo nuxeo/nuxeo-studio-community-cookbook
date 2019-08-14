@@ -5,11 +5,11 @@
 This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio projects. It provides a list of features and visual elements ready to be copy-pasted. The modules are for **LTS 2019**:
 
 - They can be unrelated to the UI (to provide new backend features, such as utilities to handle multimedia files, specific conversions, email templates etc.).
-- They can be related to provide elements for Nuxeo Web UI, or any frontend applications.
+- They can provide UI elements for Nuxeo Web UI, or any frontend application.
 
 ## Module listing
 
-For reasons of clarity, all the contributions are referenced in a separate page. Each module will be categorized by:
+For reasons of clarity, all the contributions are referenced in a separate page. Each module is categorized by:
 
 - Contributor
 - Supported Version
@@ -20,10 +20,10 @@ For reasons of clarity, all the contributions are referenced in a separate page.
 
 There is nothing to build. Each module generally contains:
 
-- XML extension, Page providers, Automation chain or automation scripting into Nuxeo Studio Modeler
-- Layouts, contributions within the Nuxeo Bundle file,  HTML resources, medias that should be created in Nuxeo Studio Designer.
+- XML extension, page providers, automation chain or automation scripting into Nuxeo Studio Modeler.
+- Layouts, contributions within the Nuxeo bundle file,  HTML resources, medias that should be created in Nuxeo Studio Designer.
 
-You can clone the repository:
+You can clone the repository locally:
 
 ```
 git clone https://github.com/nuxeo/nuxeo-studio-custom-elements.git
@@ -46,12 +46,13 @@ Each new module should are created in a specific folder:
 
 ## Contributing
 
-You should follow the repository contribution [guidelines](toolkit-and-guidelines) when submitting a new addon
+You have to follow the repository contribution [guidelines](toolkit-and-guidelines) when submitting a new addon:
 
-- If you're a partner, create your partner folder under `/contributions/partners/` if it doesn't exist already. Then, create the readme file to present your company and the contributions. We provide a [README-PARTNER.MD template](toolkit-and-guidelines/README-PARTNER.md).
-- Create a README file to present your contribution, using the [README-MODULE.MD template](toolkit-and-guidelines/README-MODULE.md)
-- Upload your ressources
-- Your contribution will be then checked by the Nuxeo Team before being published.
+- If you're a partner, create your partner folder under `/contributions/partners/` if it doesn't exist already. Then, create the readme file to present your company and your contributions. We provide a [README-PARTNER.MD template](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/toolkit-and-guidelines/README-TEMPLATE.md).
+- Create a README file to present your module, using the [README-MODULE.MD template](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/toolkit-and-guidelines/README-MODULE.md)
+- Upload your resources.
+  - Your contribution will be then checked by the Nuxeo Team before being published.
+- Et voilà! :wink:
 
 ## Support
 
@@ -69,7 +70,6 @@ This is a moving project (no API maintenance, no deprecation process, etc.) If a
 ## Licensing
 
 [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
-
 
 ## About Nuxeo
 
