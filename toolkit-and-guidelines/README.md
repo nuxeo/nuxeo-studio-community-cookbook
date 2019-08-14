@@ -5,4 +5,4 @@ In this section, you'll find all the templates you have to reuse when creating a
 File | Description
 --- | ---
 `README-MODULE.md` | README template for every new module
-`README-TEMPLATE.md` | README template for partners
+`README-PARTNER.md` | README template for partners
