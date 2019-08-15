@@ -49,7 +49,8 @@ Each new module should are created in a specific folder:
 You have to follow the repository contribution [guidelines](toolkit-and-guidelines) when submitting a new addon:
 
 - If you're a partner, create your partner folder under `/modules/partners/` if it doesn't exist already. Then, create the readme file to present your company and your contributions. We provide a [README-PARTNER.MD template](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/toolkit-and-guidelines/README-PARTNER.md).
-- Create a README file to present your module, using the [README-MODULE.MD template](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/toolkit-and-guidelines/README-MODULE.md)
+- Create a README file to present your module, using the [README-MODULE.MD template](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/toolkit-and-guidelines/README-MODULE.md).
+- Create a `/modeler` and `/designer` folders to upload respectively resources from Nuxeo Studio Modeler and Nuxeo Studio Designer.
 - Upload your resources.
   - Your contribution will be then checked by the Nuxeo Team before being published.
 - Et voilà! :wink:
