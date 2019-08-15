@@ -1,0 +1,87 @@
+<dom-module id="workflow-status-bar">
+  <template>
+    <style include="iron-flex iron-flex-alignment">
+      :host {
+        display: block;
+      }
+
+      .status-bar-container {
+        padding: 5px;
+      }
+
+      .status-bar-title {
+        font-weight: bold;
+        font-size: large;
+        margin-bottom: 5px;
+      }
+
+      .status-bar {
+        display: flex;
+        width: 100%;
+      }
+
+      .status-bar-red {
+        background-color: #FF2400;
+      }
+
+      .status-bar-orange {
+        background-color: #F9A602;
+      }
+
+      .status-bar-green {
+        background-color: #0B6623;
+      }
+
+      .status-bar-on-schedule {
+        flex-grow: var(--on-schedule-flex-grow);
+      }
+
+      .status-bar-due-today {
+        flex-grow: var(--due-flex-grow);
+      }
+
+      .status-bar-past-due {
+        flex-grow: var(--past-due-flex-grow);
+      }
+
+      .status-bar-segment {
+        height: 10px;
+      }
+    </style>
+
+    <nuxeo-operation auto="true" op="javascript.workflow_status_getStatusBarMetrics" response="{{_statusBarMetrics}}"></nuxeo-operation>
+
+    <div class="status-bar-container">
+      <div class="status-bar">
+        <div class="status-bar-on-schedule status-bar-green status-bar-segment"></div>
+        <div class="status-bar-due-today status-bar-orange status-bar-segment"></div>
+        <div class="status-bar-past-due status-bar-red status-bar-segment"></div>
+      </div>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'workflow-status-bar',
+
+      behaviors: [Nuxeo.LayoutBehavior],
+
+      properties: {
+        _statusBarMetrics: {
+          type: Object,
+          observer: "_statusBarMetricsUpdated"
+        }
+      },
+
+      _statusBarMetricsUpdated: function () {
+        if (this._statusBarMetrics) {
+          var statusBarMetrics = JSON.parse(this._statusBarMetrics.value);
+          this.updateStyles({"--due-flex-grow": statusBarMetrics.tasksDue});
+          this.updateStyles({"--on-schedule-flex-grow": statusBarMetrics.tasksOnSchedule});
+          this.updateStyles({"--past-due-flex-grow": statusBarMetrics.tasksPastDue});
+        }
+      }
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,18 @@
+<extension target="org.nuxeo.ecm.platform.WebResources" point="resources">
+
+  <resource name="workflow-status-bundle.html" type="import">
+    <uri>/ui/workflow-status-bundle.html</uri>
+  </resource>
+
+</extension>
+
+<extension target="org.nuxeo.ecm.platform.WebResources" point="bundles">
+
+  <!-- main bundle with all import resources -->
+  <bundle name="web-ui">
+    <resources append="true">
+      <resource>workflow-status-bundle.html</resource>
+    </resources>
+  </bundle>
+
+</extension>

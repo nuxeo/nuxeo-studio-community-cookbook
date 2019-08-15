@@ -1,0 +1,130 @@
+<dom-module id="workflow-status-layout">
+  <template>
+    <style include="iron-flex iron-flex-alignment nuxeo-styles">
+      :host {
+        display: block;
+      }
+
+      paper-card {
+        padding: 0;
+        border-radius: 2px;
+      }
+
+      .status-list {
+        height: calc(100vh - 101px);
+      }
+
+      .status-bar {
+        height: 100px;
+      }
+
+      nuxeo-data-table {
+        height: calc(100vh - 130px);
+      }
+
+      nuxeo-document-suggestion {
+        width: 100%;
+      }
+    </style>
+
+    <nuxeo-page-provider id="tasksProvider" provider="workflow-status" page-size="20" enrichers="permissions" schemas="dublincore,common,uid,task" headers='{"X-NXfetch.document": "properties", "X-NXtranslate.directoryEntry": "label"}'></nuxeo-page-provider>
+
+    <paper-card class="layout flex status-list">
+      <div class="card-content">
+        <workflow-status-bar></workflow-status-bar>
+
+        <!-- Table view -->
+        <nuxeo-data-table id="tasksTable" nx-provider="tasksProvider" class="results" settings-enabled="false" empty-label="[[emptyLabel]]" empty-label-when-filtered="[[emptyLabelWhenFiltered]]">
+
+          <nuxeo-data-table-column name="Workflow" field="nt:processId" sort-by="nt:processId">
+            <template>
+              <nuxeo-document auto="true" response="{{workflow}}" doc-id="[[item.properties.nt:processId]]"></nuxeo-document>
+              [[i18n(workflow.title)]]
+            </template>
+          </nuxeo-data-table-column>
+
+          <nuxeo-data-table-column name="Task" field="nt:name" sort-by="nt:name">
+            <template>
+              [[i18n(item.properties.nt:name)]]
+            </template>
+          </nuxeo-data-table-column>
+
+          <nuxeo-data-table-column name="Target" field="nt:targetDocumentsIds" flex="100">
+            <template>
+              <nuxeo-document-suggestion value="{{_getTaskTarget(item)}}" readonly="readonly"></nuxeo-document-suggestion>
+            </template>
+          </nuxeo-data-table-column>
+
+          <nuxeo-data-table-column name="Assignee(s)">
+            <template>
+              <nuxeo-user-suggestion value="[[_getTaskAssignee(item)]]" readonly="readonly"></nuxeo-user-suggestion>
+            </template>
+          </nuxeo-data-table-column>
+
+          <nuxeo-data-table-column name="Due" field="nt:dueDate" sort-by="nt:dueDate" flex="8">
+            <template>
+              [[formatDate(item.properties.nt:dueDate)]]
+            </template>
+          </nuxeo-data-table-column>
+
+          <nuxeo-data-table-column name="Status">
+            <template>
+              <workflow-status-widget document="[[item]]"></workflow-status-widget>
+            </template>
+          </nuxeo-data-table-column>
+
+          <nuxeo-data-table-column name="[[i18n('label.dublincore.modified')]]" field="dc:modified" sort-by="dc:modified" flex="8" hidden="hidden">
+            <template>
+              [[formatDate(item.properties.dc:modified)]]
+            </template>
+          </nuxeo-data-table-column>
+
+        </nuxeo-data-table>
+
+      </div>
+    </paper-card>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'workflow-status-layout',
+
+      behaviors: [Nuxeo.LayoutBehavior],
+
+      properties: {
+        visible: {
+          type: Boolean,
+          observer: '_visibleChanged'
+        }
+      },
+
+      _visibleChanged: function (visible) {
+        if (visible) {
+          this._refresh();
+        }
+      },
+
+      ready: function () {
+        this._refresh();
+      },
+
+      _refresh: function () {
+        this.$.tasksTable.fetch();
+      },
+
+      _getTaskTarget: function (item) {
+        if (item && item.properties && item.properties["nt:targetDocumentsIds"] && item.properties["nt:targetDocumentsIds"].length > 0) {
+          return item.properties["nt:targetDocumentsIds"][0];
+        }
+      },
+
+      _getTaskAssignee: function (item) {
+        if (item && item.properties && item.properties["nt:actors"] && item.properties["nt:actors"].length > 0) {
+          return item.properties["nt:actors"][0];
+        }
+      }
+
+    });
+  </script>
+</dom-module>

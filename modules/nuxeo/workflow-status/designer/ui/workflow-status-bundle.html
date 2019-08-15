@@ -1,0 +1,17 @@
+<link rel="import" href="workflow-status/workflow-status-bar.html">
+<link rel="import" href="workflow-status/workflow-status-layout.html">
+<link rel="import" href="workflow-status/workflow-status-widget.html">
+
+<!-- Contribs for the analytics page -->
+<!-- Contribution of element 'workflow-status-layout' for slot 'ANALYTICS_PAGES' -->
+<nuxeo-slot-content name="workflowStatusPage" slot="ANALYTICS_PAGES" order="0">
+  <template>
+    <workflow-status-layout name="workflowStatus"></workflow-status-layout>
+  </template>
+</nuxeo-slot-content>
+<!-- Contribution of element 'nuxeo-page-item' for slot 'ANALYTICS_ITEMS' -->
+<nuxeo-slot-content name="workflowStatusItem" slot="ANALYTICS_ITEMS" order="-1">
+  <template>
+    <nuxeo-page-item name="workflowStatus" label="Workflow Status"></nuxeo-page-item>
+  </template>
+</nuxeo-slot-content>
