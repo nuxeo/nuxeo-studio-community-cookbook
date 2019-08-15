@@ -4,7 +4,7 @@
 
 ## Module Description
 
-Module for workflow status layout displayed in the "Analytics" area of Web UI.
+Module to monitor workflow instances status displayed in the "Analytics" area of Web UI.
 
 :information_source: There is currently no data generation so this will only display real, running workflow tasks.
 
