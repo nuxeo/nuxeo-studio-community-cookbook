@@ -6,6 +6,10 @@
 ![alt text](screenshot.png) ![alt text 2](screenrecording.gif)
 ```
 
+## Prerequisites
+
+// Detail all addons which should be installed
+
 ## Module Description
 
 // Explain which use case you would like to answer to.

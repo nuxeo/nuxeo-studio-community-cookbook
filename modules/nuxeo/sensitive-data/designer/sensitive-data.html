@@ -1,0 +1,93 @@
+<!--
+`sensitive-data`
+@group Nuxeo UI
+@element sensitive-data
+-->
+<dom-module id="sensitive-data">
+        <template>
+            <style include="iron-flex iron-flex-alignment">
+                *[role=widget] {
+                    padding: 5px;
+                }
+
+                paper-card {
+                    padding: 0;
+                    border-radius: 2px;
+                }
+
+                paper-card {
+                    --paper-card-content: {
+                        padding-top: 0;
+                    }
+
+                    --paper-card-header-text: {
+                        margin-bottom: 0;
+                    }
+                }
+
+                .chip {
+                    background-color: white;
+                    border-radius: 3px;
+                    border-color: black;
+                    padding: 0.06em 0.3em;
+                    text-transform: uppercase;
+                    vertical-align: baseline;
+                    white-space: nowrap;
+                    margin-left: 5px;
+                }
+
+                .score {
+                    background-color: black;
+                    border-radius: 3px;
+                    border-color: black;
+                    color: #fff;
+                    padding: 0.06em 0.3em;
+                    text-transform: uppercase;
+                    vertical-align: baseline;
+                    white-space: nowrap;
+                    margin-left: 5px;
+                }
+            </style>
+
+            <template is="dom-if" if="[[_isSensitive(document)]]">
+                <paper-card heading="WARNING: Sensitive Data Found">
+                    <div class="card-content layout horizontal">
+                        <ul>
+                            <dom-repeat items="[[document.properties.dlp:findings]]" as="finding">
+                                <template>
+                                    <li><span class="chip">[[finding.type]]</span> - <span class="score">[[finding.score]]</span></li>
+                                </template>
+                            </dom-repeat>
+                        </ul>
+                    </div>
+                </paper-card>
+            </template>
+
+        </template>
+
+        <script>
+            Polymer({
+                is: 'sensitive-data',
+                behaviors: [Nuxeo.LayoutBehavior],
+                properties: {
+
+                    /**
+                     * @schema datalossprevention
+                     */
+                    document: {
+                        type: Object
+                    }
+                },
+
+                _isSensitive: function (document) {
+                    return document.facets.indexOf("DataLossPrevention") > -1 && document.properties[
+                        'dlp:sensitiveData'] === true;
+                },
+
+                _idOf: function (type) {
+                  return { 'id': type };
+                }
+
+            });
+        </script>
+    </dom-module>
