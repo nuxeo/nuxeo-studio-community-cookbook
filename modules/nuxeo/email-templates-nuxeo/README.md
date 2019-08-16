@@ -1,4 +1,4 @@
-# Email templates
+# Nuxeo Email templates
 
 Preview | id | Theme | Comments
 --- | --- | --- | ---
