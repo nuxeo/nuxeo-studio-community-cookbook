@@ -2,8 +2,8 @@
 
 Preview | id | Theme | Comments
 --- | --- | --- | ---
-![Light](images/light.png) | workflowTaskAssigned | light | Logo image comes from github
-![Dark](images/dark.png) | workflowTaskAssigned | dark | Logo image comes from github
+![Light](light.png) | workflowTaskAssigned | light | Logo image comes from github
+![Dark](dark.png) | workflowTaskAssigned | dark | Logo image comes from github
 
 ## Description
 
