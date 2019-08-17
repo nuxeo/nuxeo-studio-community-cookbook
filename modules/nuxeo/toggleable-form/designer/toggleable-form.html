@@ -1,0 +1,97 @@
+<!--
+`toggleable-form`
+@group Nuxeo UI
+@element toggleable-form
+-->
+<dom-module id="toggleable-form">
+  <template>
+    <style include="iron-flex iron-flex-alignment nuxeo-styles">
+      :host {
+        display: flex;
+      }
+
+      paper-card {
+        padding: 0;
+        border-radius: 2px;
+        --paper-card-content: {
+          padding-top: 0;
+        }
+        ;
+        --paper-card-header-text: {
+          font-size: 20px;
+          font-weight: 400;
+        }
+        ;
+      }
+    </style>
+
+    <nuxeo-connection id="nxcon"></nuxeo-connection>
+
+    <paper-card class="layout flex"
+                heading="[[title]]">
+      <div class="card-content">
+        <nuxeo-document-metadata document="[[document]]"
+                                 hidden$="[[edit]]"></nuxeo-document-metadata>
+        <nuxeo-document-edit document="[[document]]"
+                             hidden$="[[!edit]]"></nuxeo-document-edit>
+      </div>
+      <div class="card-actions">
+        <paper-icon-button id="edit"
+                           icon="editor:mode-edit"
+                           on-tap="_editMode"
+                           hidden$="[[!_canEdit(document,edit)]]"></paper-icon-button>
+
+      </div>
+    </paper-card>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'toggleable-form',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+        //You can use either @schema or @doctype annotation in your model
+        /**
+         * @schema dublincore
+         */
+        document: {
+          type: Object,
+          observer: '_documentChanged'
+        },
+        edit: {
+          type: Boolean,
+          value: false
+        },
+        title: String
+      },
+
+      _documentChanged: function() {
+        if (this.document) {
+          this.edit = false;
+        }
+      },
+
+      _isMutable: function(doc) {
+        var mutable = !this.hasFacet(doc, 'Immutable') && doc.type !== 'Root' && doc.state !== 'deleted';
+        return mutable;
+      },
+
+      _canEdit: function(doc, edit) {
+        var canEdit = !edit && doc && doc.type !== 'Root' && this.hasPermission(doc, 'Write') && this._isMutable(doc);
+        return canEdit;
+      },
+
+      _editMode: function() {
+        this.edit = true;
+      },
+
+      _iconFor: function(doc) {
+        if (doc && doc.properties && doc.properties['common:icon']) {
+          return this.$.nxcon.client._baseURL + doc.properties['common:icon'];
+        }
+      }
+
+    });
+  </script>
+</dom-module>
