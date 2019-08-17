@@ -1,0 +1,359 @@
+<extension target="org.nuxeo.ecm.platform.video.service.VideoService" point="videoConversions">
+  <videoConversion name="MP4 480p" converter="convertToMP4" height="480" rendition="true"/>
+  <videoConversion name="WebM 480p" converter="convertToWebM" height="480" rendition="true"/>
+  <videoConversion name="Ogg 480p" converter="convertToOgg" height="480" rendition="true"/>
+
+  <videoConversion name="MP4 480p Cropped H.264 AAC" converter="to-mp4-480p-crop-h264-aac" rendition="true"/>
+  <videoConversion name="MP4 480p Letterbox H.264 AAC" converter="to-mp4-480p-letterbox-h264-aac" rendition="true"/>
+  <videoConversion name="MP4 Pass-Through H.264 AAC" converter="to-mp4-passthrough-h264-aac" rendition="true"/>
+  <videoConversion name="MP4 720p Letterbox H.264 AAC" converter="to-mp4-720p-letterbox-h264-aac" rendition="true"/>
+  <videoConversion name="MP4 1366x768 Letterbox H.264 AAC" converter="to-mp4-768-letterbox-h264-aac" rendition="true"/>
+  <videoConversion name="MP4 480p Cropped Xvid AAC" converter="to-mp4-480p-crop-xvid-aac" rendition="true"/>
+  <videoConversion name="MP4 480p Letterbox Xvid AAC" converter="to-mp4-480p-letterbox-xvid-aac" rendition="true"/>
+  <videoConversion name="AVI 480p Cropped Xvid MP3" converter="to-avi-480p-crop-xvid-mp3" rendition="true"/>
+  <videoConversion name="AVI 480p Letterbox Xvid MP3" converter="to-avi-480p-letterbox-xvid-mp3" rendition="true"/>
+  <videoConversion name="AVI 1008x576 Letterbox Xvid MP3" converter="to-avi-576-letterbox-xvid-mp3" rendition="true"/>
+  <videoConversion name="AVI 800X480 Letterbox Xvid MP3" converter="to-avi-800x400-letterbox-xvid-mp3" rendition="true"/>
+  <videoConversion name="AVI 800x480 Scale Xvid MP3" converter="to-avi-800x400-scale-xvid-mp3" rendition="true"/>
+</extension>
+
+<extension target="org.nuxeo.ecm.core.convert.service.ConversionServiceImpl" point="converter">
+
+  <converter name="to-mp4-480p-crop-h264-aac" class="org.nuxeo.ecm.platform.video.convert.VideoConversionConverter">
+    <sourceMimeType>video/mpeg</sourceMimeType>
+    <sourceMimeType>video/webm</sourceMimeType>
+    <sourceMimeType>video/quicktime</sourceMimeType>
+    <sourceMimeType>video/ogg</sourceMimeType>
+    <sourceMimeType>video/x-ms-asf</sourceMimeType>
+    <sourceMimeType>video/x-msvideo</sourceMimeType>
+    <sourceMimeType>video/flv</sourceMimeType>
+    <sourceMimeType>video/mp4</sourceMimeType>
+    <sourceMimeType>video/avi</sourceMimeType>
+    <destinationMimeType>video/mp4</destinationMimeType>
+    <parameters>
+      <parameter name="CommandLineName">ffmpeg-to-mp4-480p-crop-h264-aac</parameter>
+      <parameter name="videoMimeType">video/mp4</parameter>
+      <parameter name="videoExtension">mp4</parameter>
+      <parameter name="tmpDirectoryPrefix">to-mp4-480p-crop-h264-aac</parameter>
+    </parameters>
+  </converter>
+
+  <converter name="to-mp4-480p-letterbox-h264-aac" class="org.nuxeo.ecm.platform.video.convert.VideoConversionConverter">
+    <sourceMimeType>video/mpeg</sourceMimeType>
+    <sourceMimeType>video/webm</sourceMimeType>
+    <sourceMimeType>video/quicktime</sourceMimeType>
+    <sourceMimeType>video/ogg</sourceMimeType>
+    <sourceMimeType>video/x-ms-asf</sourceMimeType>
+    <sourceMimeType>video/x-msvideo</sourceMimeType>
+    <sourceMimeType>video/flv</sourceMimeType>
+    <sourceMimeType>video/mp4</sourceMimeType>
+    <sourceMimeType>video/avi</sourceMimeType>
+    <destinationMimeType>video/mp4</destinationMimeType>
+    <parameters>
+      <parameter name="CommandLineName">ffmpeg-to-mp4-480p-letterbox-h264-aac</parameter>
+      <parameter name="videoMimeType">video/mp4</parameter>
+      <parameter name="videoExtension">mp4</parameter>
+      <parameter name="tmpDirectoryPrefix">to-mp4-480p-letterbox-h264-aac</parameter>
+    </parameters>
+  </converter>
+
+  <converter name="to-mp4-passthrough-h264-aac" class="org.nuxeo.ecm.platform.video.convert.VideoConversionConverter">
+    <sourceMimeType>video/mpeg</sourceMimeType>
+    <sourceMimeType>video/webm</sourceMimeType>
+    <sourceMimeType>video/quicktime</sourceMimeType>
+    <sourceMimeType>video/ogg</sourceMimeType>
+    <sourceMimeType>video/x-ms-asf</sourceMimeType>
+    <sourceMimeType>video/x-msvideo</sourceMimeType>
+    <sourceMimeType>video/flv</sourceMimeType>
+    <sourceMimeType>video/mp4</sourceMimeType>
+    <sourceMimeType>video/avi</sourceMimeType>
+    <destinationMimeType>video/mp4</destinationMimeType>
+    <parameters>
+      <parameter name="CommandLineName">ffmpeg-to-mp4-passthrough-h264-aac</parameter>
+      <parameter name="videoMimeType">video/mp4</parameter>
+      <parameter name="videoExtension">mp4</parameter>
+      <parameter name="tmpDirectoryPrefix">to-mp4-passthrough-h264-aac</parameter>
+    </parameters>
+  </converter>
+
+  <converter name="to-mp4-720p-letterbox-h264-aac" class="org.nuxeo.ecm.platform.video.convert.VideoConversionConverter">
+    <sourceMimeType>video/mpeg</sourceMimeType>
+    <sourceMimeType>video/webm</sourceMimeType>
+    <sourceMimeType>video/quicktime</sourceMimeType>
+    <sourceMimeType>video/ogg</sourceMimeType>
+    <sourceMimeType>video/x-ms-asf</sourceMimeType>
+    <sourceMimeType>video/x-msvideo</sourceMimeType>
+    <sourceMimeType>video/flv</sourceMimeType>
+    <sourceMimeType>video/mp4</sourceMimeType>
+    <sourceMimeType>video/avi</sourceMimeType>
+    <destinationMimeType>video/mp4</destinationMimeType>
+    <parameters>
+      <parameter name="CommandLineName">ffmpeg-to-mp4-720p-letterbox-h264-aac</parameter>
+      <parameter name="videoMimeType">video/mp4</parameter>
+      <parameter name="videoExtension">mp4</parameter>
+      <parameter name="tmpDirectoryPrefix">to-mp4-720p-letterbox-h264-aac</parameter>
+    </parameters>
+  </converter>
+
+  <converter name="to-mp4-768-letterbox-h264-aac" class="org.nuxeo.ecm.platform.video.convert.VideoConversionConverter">
+    <sourceMimeType>video/mpeg</sourceMimeType>
+    <sourceMimeType>video/webm</sourceMimeType>
+    <sourceMimeType>video/quicktime</sourceMimeType>
+    <sourceMimeType>video/ogg</sourceMimeType>
+    <sourceMimeType>video/x-ms-asf</sourceMimeType>
+    <sourceMimeType>video/x-msvideo</sourceMimeType>
+    <sourceMimeType>video/flv</sourceMimeType>
+    <sourceMimeType>video/mp4</sourceMimeType>
+    <sourceMimeType>video/avi</sourceMimeType>
+    <destinationMimeType>video/mp4</destinationMimeType>
+    <parameters>
+      <parameter name="CommandLineName">ffmpeg-to-mp4-768-letterbox-h264-aac</parameter>
+      <parameter name="videoMimeType">video/mp4</parameter>
+      <parameter name="videoExtension">mp4</parameter>
+      <parameter name="tmpDirectoryPrefix">to-mp4-768-letterbox-h264-aac</parameter>
+    </parameters>
+  </converter>
+
+  <converter name="to-avi-480p-crop-xvid-mp3" class="org.nuxeo.ecm.platform.video.convert.VideoConversionConverter">
+    <sourceMimeType>video/mpeg</sourceMimeType>
+    <sourceMimeType>video/webm</sourceMimeType>
+    <sourceMimeType>video/quicktime</sourceMimeType>
+    <sourceMimeType>video/ogg</sourceMimeType>
+    <sourceMimeType>video/x-ms-asf</sourceMimeType>
+    <sourceMimeType>video/x-msvideo</sourceMimeType>
+    <sourceMimeType>video/flv</sourceMimeType>
+    <sourceMimeType>video/mp4</sourceMimeType>
+    <sourceMimeType>video/avi</sourceMimeType>
+    <destinationMimeType>video/avi</destinationMimeType>
+    <parameters>
+      <parameter name="CommandLineName">ffmpeg-to-avi-480p-crop-xvid-mp3</parameter>
+      <parameter name="videoMimeType">video/avi</parameter>
+      <parameter name="videoExtension">avi</parameter>
+      <parameter name="tmpDirectoryPrefix">to-avi-480p-crop-xvid-mp3</parameter>
+    </parameters>
+  </converter>
+
+  <converter name="to-avi-480p-letterbox-xvid-mp3" class="org.nuxeo.ecm.platform.video.convert.VideoConversionConverter">
+    <sourceMimeType>video/mpeg</sourceMimeType>
+    <sourceMimeType>video/webm</sourceMimeType>
+    <sourceMimeType>video/quicktime</sourceMimeType>
+    <sourceMimeType>video/ogg</sourceMimeType>
+    <sourceMimeType>video/x-ms-asf</sourceMimeType>
+    <sourceMimeType>video/x-msvideo</sourceMimeType>
+    <sourceMimeType>video/flv</sourceMimeType>
+    <sourceMimeType>video/mp4</sourceMimeType>
+    <sourceMimeType>video/avi</sourceMimeType>
+    <destinationMimeType>video/avi</destinationMimeType>
+    <parameters>
+      <parameter name="CommandLineName">ffmpeg-to-avi-480p-letterbox-xvid-mp3</parameter>
+      <parameter name="videoMimeType">video/avi</parameter>
+      <parameter name="videoExtension">avi</parameter>
+      <parameter name="tmpDirectoryPrefix">to-avi-480p-letterbox-xvid-mp3</parameter>
+    </parameters>
+  </converter>
+
+  <converter name="to-avi-576-letterbox-xvid-mp3" class="org.nuxeo.ecm.platform.video.convert.VideoConversionConverter">
+    <sourceMimeType>video/mpeg</sourceMimeType>
+    <sourceMimeType>video/webm</sourceMimeType>
+    <sourceMimeType>video/quicktime</sourceMimeType>
+    <sourceMimeType>video/ogg</sourceMimeType>
+    <sourceMimeType>video/x-ms-asf</sourceMimeType>
+    <sourceMimeType>video/x-msvideo</sourceMimeType>
+    <sourceMimeType>video/flv</sourceMimeType>
+    <sourceMimeType>video/mp4</sourceMimeType>
+    <sourceMimeType>video/avi</sourceMimeType>
+    <destinationMimeType>video/avi</destinationMimeType>
+    <parameters>
+      <parameter name="CommandLineName">ffmpeg-to-avi-576-letterbox-xvid-mp3</parameter>
+      <parameter name="videoMimeType">video/avi</parameter>
+      <parameter name="videoExtension">avi</parameter>
+      <parameter name="tmpDirectoryPrefix">to-avi-576-letterbox-xvid-mp3</parameter>
+    </parameters>
+  </converter>
+
+  <converter name="to-avi-800x400-letterbox-xvid-mp3" class="org.nuxeo.ecm.platform.video.convert.VideoConversionConverter">
+    <sourceMimeType>video/mpeg</sourceMimeType>
+    <sourceMimeType>video/webm</sourceMimeType>
+    <sourceMimeType>video/quicktime</sourceMimeType>
+    <sourceMimeType>video/ogg</sourceMimeType>
+    <sourceMimeType>video/x-ms-asf</sourceMimeType>
+    <sourceMimeType>video/x-msvideo</sourceMimeType>
+    <sourceMimeType>video/flv</sourceMimeType>
+    <sourceMimeType>video/mp4</sourceMimeType>
+    <sourceMimeType>video/avi</sourceMimeType>
+    <destinationMimeType>video/avi</destinationMimeType>
+    <parameters>
+      <parameter name="CommandLineName">ffmpeg-to-avi-800x400-letterbox-xvid-mp3</parameter>
+      <parameter name="videoMimeType">video/avi</parameter>
+      <parameter name="videoExtension">avi</parameter>
+      <parameter name="tmpDirectoryPrefix">to-avi-800x400-letterbox-xvid-mp3</parameter>
+    </parameters>
+  </converter>
+
+  <converter name="to-avi-800x400-scale-xvid-mp3" class="org.nuxeo.ecm.platform.video.convert.VideoConversionConverter">
+    <sourceMimeType>video/mpeg</sourceMimeType>
+    <sourceMimeType>video/webm</sourceMimeType>
+    <sourceMimeType>video/quicktime</sourceMimeType>
+    <sourceMimeType>video/ogg</sourceMimeType>
+    <sourceMimeType>video/x-ms-asf</sourceMimeType>
+    <sourceMimeType>video/x-msvideo</sourceMimeType>
+    <sourceMimeType>video/flv</sourceMimeType>
+    <sourceMimeType>video/mp4</sourceMimeType>
+    <sourceMimeType>video/avi</sourceMimeType>
+    <destinationMimeType>video/avi</destinationMimeType>
+    <parameters>
+      <parameter name="CommandLineName">ffmpeg-to-avi-800x400-scale-xvid-mp3</parameter>
+      <parameter name="videoMimeType">video/avi</parameter>
+      <parameter name="videoExtension">avi</parameter>
+      <parameter name="tmpDirectoryPrefix">to-avi-800x400-scale-xvid-mp3</parameter>
+    </parameters>
+  </converter>
+
+  <converter name="to-mp4-480p-crop-xvid-aac" class="org.nuxeo.ecm.platform.video.convert.VideoConversionConverter">
+    <sourceMimeType>video/mpeg</sourceMimeType>
+    <sourceMimeType>video/webm</sourceMimeType>
+    <sourceMimeType>video/quicktime</sourceMimeType>
+    <sourceMimeType>video/ogg</sourceMimeType>
+    <sourceMimeType>video/x-ms-asf</sourceMimeType>
+    <sourceMimeType>video/x-msvideo</sourceMimeType>
+    <sourceMimeType>video/flv</sourceMimeType>
+    <sourceMimeType>video/mp4</sourceMimeType>
+    <sourceMimeType>video/avi</sourceMimeType>
+    <destinationMimeType>video/mp4</destinationMimeType>
+    <parameters>
+      <parameter name="CommandLineName">ffmpeg-to-mp4-480p-crop-xvid-aac</parameter>
+      <parameter name="videoMimeType">video/mp4</parameter>
+      <parameter name="videoExtension">mp4</parameter>
+      <parameter name="tmpDirectoryPrefix">to-mp4-480p-crop-xvid-aac</parameter>
+    </parameters>
+  </converter>
+
+  <converter name="to-mp4-480p-letterbox-xvid-aac" class="org.nuxeo.ecm.platform.video.convert.VideoConversionConverter">
+    <sourceMimeType>video/mpeg</sourceMimeType>
+    <sourceMimeType>video/webm</sourceMimeType>
+    <sourceMimeType>video/quicktime</sourceMimeType>
+    <sourceMimeType>video/ogg</sourceMimeType>
+    <sourceMimeType>video/x-ms-asf</sourceMimeType>
+    <sourceMimeType>video/x-msvideo</sourceMimeType>
+    <sourceMimeType>video/flv</sourceMimeType>
+    <sourceMimeType>video/mp4</sourceMimeType>
+    <sourceMimeType>video/avi</sourceMimeType>
+    <destinationMimeType>video/mp4</destinationMimeType>
+    <parameters>
+      <parameter name="CommandLineName">ffmpeg-to-mp4-480p-letterbox-xvid-aac</parameter>
+      <parameter name="videoMimeType">video/mp4</parameter>
+      <parameter name="videoExtension">mp4</parameter>
+      <parameter name="tmpDirectoryPrefix">to-mp4-480p-letterbox-xvid-aac</parameter>
+    </parameters>
+  </converter>
+
+</extension>
+
+<extension target="org.nuxeo.ecm.platform.commandline.executor.service.CommandLineExecutorComponent" point="command">
+
+  <command name="ffmpeg-to-mp4-480p-crop-h264-aac" enabled="true">
+    <commandLine>ffmpeg</commandLine>
+    <parameterString>
+      -i #{inFilePath} -s 640x480 -vf "crop=ih/3*4:ih" -vcodec libx264 -r 30 -acodec libfaac -b:a 192k -ar 48000 -v 0 #{outFilePath}</parameterString>
+    <installationDirective>You need to install FFmpeg from http://ffmpeg.org</installationDirective>
+  </command>
+
+  <command name="ffmpeg-to-mp4-480p-letterbox-h264-aac" enabled="true">
+    <commandLine>ffmpeg</commandLine>
+    <parameterString>
+      -i #{inFilePath} -s 640x480 -vf "pad=iw:iw*3/4:(ow-iw)/2:(oh-ih)/2:black" -vcodec libx264 -r 30 -acodec libfaac -b:a 192k -ar 48000 -v 0 #{outFilePath}</parameterString>
+    <installationDirective>You need to install FFmpeg from http://ffmpeg.org</installationDirective>
+  </command>
+
+  <command name="ffmpeg-to-mp4-720p-letterbox-h264-aac" enabled="true">
+    <commandLine>ffmpeg</commandLine>
+    <parameterString>
+      -i #{inFilePath} -s 1280x720 -vf "pad=ih*16/9:ih:(ow-iw)/2:(oh-ih)/2:black" -vcodec libx264 -r 30 -acodec libfaac -b:a 192k -ar 48000 -v 0 #{outFilePath}</parameterString>
+    <installationDirective>You need to install FFmpeg from http://ffmpeg.org</installationDirective>
+  </command>
+
+  <command name="ffmpeg-to-mp4-passthrough-h264-aac" enabled="true">
+    <commandLine>ffmpeg</commandLine>
+    <parameterString>
+      -i #{inFilePath} -vcodec libx264 -r 30 -acodec libfaac -b:a 192k -ar 48000 -v 0 #{outFilePath}</parameterString>
+    <installationDirective>You need to install FFmpeg from http://ffmpeg.org</installationDirective>
+  </command>
+
+  <command name="ffmpeg-to-mp4-768-letterbox-h264-aac" enabled="true">
+    <commandLine>ffmpeg</commandLine>
+    <parameterString>
+      -i #{inFilePath} -s 1366x768 -vf "pad=ih*16/9:ih:(ow-iw)/2:(oh-ih)/2:black" -vcodec libx264 -r 30 -acodec libfaac -b:a 192k -ar 48000 -v 0 #{outFilePath}</parameterString>
+    <installationDirective>You need to install FFmpeg from http://ffmpeg.org</installationDirective>
+  </command>
+
+  <command name="ffmpeg-to-avi-480p-crop-xvid-mp3" enabled="true">
+    <commandLine>ffmpeg</commandLine>
+    <parameterString>
+      -i #{inFilePath} -s 640x480 -vcodec libxvid -vf "crop=ih/3*4:ih" -r 24 -g 300 -q:v 8 -acodec libmp3lame -b:a 96k -ar 44100 -v 0 #{outFilePath}</parameterString>
+    <installationDirective>You need to install FFmpeg from http://ffmpeg.org</installationDirective>
+  </command>
+
+  <command name="ffmpeg-to-avi-480p-letterbox-xvid-mp3" enabled="true">
+    <commandLine>ffmpeg</commandLine>
+    <parameterString>
+      -i #{inFilePath} -s 640x480 -vcodec libxvid -vf "pad=iw:iw*3/4:(ow-iw)/2:(oh-ih)/2:black" -r 24 -g 300 -q:v 8 -acodec libmp3lame -b:a 96k -ar 44100 -v 0 #{outFilePath}</parameterString>
+    <installationDirective>You need to install FFmpeg from http://ffmpeg.org</installationDirective>
+  </command>
+
+  <command name="ffmpeg-to-avi-576-letterbox-xvid-mp3" enabled="true">
+    <commandLine>ffmpeg</commandLine>
+    <parameterString>
+      -i #{inFilePath} -s 1008x576 -vcodec libxvid -vf "pad=ih*16/9:ih:(ow-iw)/2:(oh-ih)/2:black" -r 24 -g 300 -q:v 8 -acodec libmp3lame -b:a 96k -ar 44100 -v 0 #{outFilePath}</parameterString>
+    <installationDirective>You need to install FFmpeg from http://ffmpeg.org</installationDirective>
+  </command>
+
+  <command name="ffmpeg-to-avi-800x400-scale-xvid-mp3" enabled="true">
+    <commandLine>ffmpeg</commandLine>
+    <parameterString>
+      -i #{inFilePath} -vf scale=800:480 -vcodec libxvid -r 24 -g 300 -q:v 8 -acodec libmp3lame -b:a 96k -ar 44100 -v 0 #{outFilePath}</parameterString>
+    <installationDirective>You need to install FFmpeg from http://ffmpeg.org</installationDirective>
+  </command>
+
+  <command name="ffmpeg-to-avi-800x400-letterbox-xvid-mp3" enabled="true">
+    <commandLine>ffmpeg</commandLine>
+    <parameterString>
+      -i #{inFilePath} -s 800X480 -vcodec libxvid -vf "pad=ih*5/3:ih:(ow-iw)/2:(oh-ih)/2:black" -r 24 -g 300 -q:v 8 -acodec libmp3lame -b:a 96k -ar 44100 -v 0 #{outFilePath}</parameterString>
+    <installationDirective>You need to install FFmpeg from http://ffmpeg.org</installationDirective>
+  </command>
+
+  <command name="ffmpeg-to-mp4-480p-crop-xvid-aac" enabled="true">
+    <commandLine>ffmpeg</commandLine>
+    <parameterString>
+      -i #{inFilePath} -s 640x480 -vcodec libxvid -vf "crop=ih/3*4:ih" -r 24 -g 15 -q:v 31 -acodec libfaac -b:a 64k -ar 44100 -v 0 #{outFilePath}</parameterString>
+    <installationDirective>You need to install FFmpeg from http://ffmpeg.org</installationDirective>
+  </command>
+
+  <command name="ffmpeg-to-mp4-480p-letterbox-xvid-aac" enabled="true">
+    <commandLine>ffmpeg</commandLine>
+    <parameterString>
+      -i #{inFilePath} -s 640x480 -vcodec libxvid -vf "pad=iw:iw*3/4:(ow-iw)/2:(oh-ih)/2:black" -r 24 -g 15 -q:v 31 -acodec libfaac -b:a 64k -ar 44100 -v 0 #{outFilePath}</parameterString>
+    <installationDirective>You need to install FFmpeg from http://ffmpeg.org</installationDirective>
+  </command>
+
+  <command name="videoSlicer" enabled="true">
+    <commandLine>ffmpeg</commandLine>
+    <parameterString>-y -i #{sourceFilePath} -ss #{start} -t #{duration} #{outFilePath}</parameterString>
+    <installationDirective>You need to install ffmpeg.</installationDirective>
+  </command>
+
+</extension>
+
+<require>org.nuxeo.ecm.platform.video.service.contrib</require>
+
+<extension target="org.nuxeo.ecm.platform.video.service.VideoService" point="automaticVideoConversions">
+  <automaticVideoConversion name="MP4 480p" order="0"/>
+  <automaticVideoConversion name="WebM 480p" order="10"/>
+</extension>
+
+<require>org.nuxeo.platform.video.core.listeners</require>
+
+<extension target="org.nuxeo.ecm.core.event.EventServiceComponent" point="listener">
+  <listener enabled="false" name="videoChangedListener" class="org.nuxeo.ecm.platform.video.listener.VideoChangedListener"></listener>
+  <listener enabled="false" name="videoStoryboardListener" class="org.nuxeo.ecm.platform.video.listener.VideoStoryboardListener"></listener>
+  <listener enabled="false" name="videoAutomaticConversions" class="org.nuxeo.ecm.platform.video.listener.VideoAutomaticConversionListener"></listener>
+</extension>

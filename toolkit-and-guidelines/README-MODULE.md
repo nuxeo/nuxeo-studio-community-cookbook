@@ -10,7 +10,7 @@
 
 // Detail all addons which should be installed
 
-## Module Description
+## Description
 
 // Explain which use case you would like to answer to.
 
