@@ -11,3 +11,4 @@ Module | Description | Contributor | Feature category
 [`salesforce-ui`](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/salesforce-ui) | Display Salesforce metadata | Nuxeo | Salesforce, Layout
 [`ssn`](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/ssn) | Elements that show/hide the value of a field holding a social security number | Nuxeo | Security, Layout
 [`kibana`](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/kibana) | Displayed Kibana dashboards in the "Analytics" | Nuxeo | Web UI, Admin, Reporting
+[`related-documents`](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/related-documents) | Displayed Document Relations | Nuxeo | Web UI, Relations

@@ -1,0 +1,134 @@
+<!--
+@license
+(C) Copyright Nuxeo Corp. (http://nuxeo.com/)
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!--
+`nuxeo-se-add-relation-dialog`
+@group Nuxeo UI
+@element nuxeo-se-add-relation-dialog
+-->
+<dom-module id="nuxeo-se-add-relation-dialog">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+
+    <nuxeo-operation id="opCreateRelation"
+                     op="Document.AddRelation"
+                     input="[[document.uid]]"
+                     params='{"predicate": "[[predicate]]", "object": "[[toDoc.uid]]", "outgoing": "[[_getDirectionAsBool(direction)]]"}'
+                     on-response="_handleRelationCreated">
+    </nuxeo-operation>
+
+    <!--
+			Dialog: Add relation
+		-->
+    <nuxeo-dialog id="dialog" with-backdrop>
+      <h2>[[i18n('label.relation.addRelation')]]</h2>
+
+
+      <div role="widget">
+        <nuxeo-document-suggestion label="[[i18n('label.relation.pickDocument')]]"
+                                   value="{{path}}"
+                                   min-chars="0"
+                                   selected-item="{{toDoc}}" >
+        </nuxeo-document-suggestion>
+      </div>
+
+      <div role="widget">
+        <label id="label-direction">[[i18n('label.relation.direction')]]:</label>
+        <paper-radio-group aria-labelledby="label-direction" selected="{{direction}}">
+          <paper-radio-button name="outgoing">[[i18n('label.relation.outgoing')]]</paper-radio-button>
+          <paper-radio-button name="incoming">[[i18n('label.relation.incoming')]]</paper-radio-button>
+        </paper-radio-group>
+      </div>
+
+
+      <nuxeo-directory-suggestion directory-name="[[_getPredicatesDirectory(direction)]]"
+                                  label="[[i18n('label.relation.type')]]"
+                                  min-chars="0"
+                                  required="true"
+                                  value="{{predicate}}">
+      </nuxeo-directory-suggestion>
+
+      <div class="buttons">
+        <paper-button dialog-dismiss>[[i18n('command.cancel')]]</paper-button>
+        <paper-button id="addRelationButton" class="primary" on-tap="_addRelation">[[i18n('accept')]]</paper-button>
+      </div>
+    </nuxeo-dialog>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-se-add-relation-dialog',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+        /**
+         * @schema dublincore
+         */
+        document: {
+          type: Object
+        },
+
+        path: {
+          type: String,
+          value: '/'
+        },
+
+        direction: {
+          type: String,
+          value: 'incoming',
+          observer: '_resetSelectedPredicate'
+        }
+      },
+
+      toggle: function() {
+        this.$.dialog.toggle();
+      },
+
+      _getPredicatesDirectory: function(direct){
+        console.log('_getPredicatesDirectory(' + direct +')');
+        return (direct == 'incoming') ? 'inverse_predicates' : 'predicates';
+      },
+
+      _getDirectionAsBool: function(direct){
+        // SEE: http://explorer.nuxeo.com/nuxeo/site/distribution/Nuxeo%20DM-8.1/viewOperation/Document.AddRelation
+        //
+        // The 'outgoing' flag indicates the direction of the relation -
+        // the default is false which means the relation will go from the
+        //input object to the object specified as 'object' parameter.
+        return (direct == 'incoming') ? false : true;
+      },
+
+      _resetSelectedPredicate: function(){
+        this.set("predicate", "");
+      },
+
+      _addRelation: function(){
+        console.log("Creating relation ("+ this.predicate+") with doc: " + this.path);
+
+        this.$.opCreateRelation.execute();
+      },
+
+      _handleRelationCreated: function(e){
+        console.log("Relation successfully created");
+
+        this.dispatchEvent(new CustomEvent('relation-added', {detail: {document: e.detail.response}}));
+
+        this.toggle();
+      }
+    });
+  </script>
+</dom-module>

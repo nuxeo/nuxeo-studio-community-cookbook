@@ -1,0 +1,81 @@
+<!--
+@license
+(C) Copyright Nuxeo Corp. (http://nuxeo.com/)
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!--
+`nuxeo-se-remove-relation-button`
+@group Nuxeo UI
+@element nuxeo-se-remove-relation-button
+-->
+<dom-module id="nuxeo-se-remove-relation-button">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+
+    <nuxeo-operation id="opDeleteRelation"
+                     op="Relations.DeleteRelation"
+                     input="[[fromDocId]]"
+                     params='{"predicate": "[[predicate]]", "object": "[[toDocId]]", "outgoing": "[[incoming]]"}'
+                     on-response="_handleRelationRemoved">
+    </nuxeo-operation>
+
+    <iron-icon icon="icons:remove-circle-outline"
+               on-tap="_removeRelation"></iron-icon>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-se-remove-relation-button',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+        /**
+         * @schema dublincore
+         */
+        document: {
+          type: Object
+        },
+
+        fromDocId: {
+          type: String
+        },
+
+        toDocId: {
+          type: String
+        },
+
+        predicate: {
+          type: String
+        },
+
+        incoming: {
+          type: Boolean
+        }
+      },
+
+      _removeRelation: function(e){
+        console.log("_removeRelation: ");
+
+        this.$.opDeleteRelation.execute();
+      },
+
+      _handleRelationRemoved: function(event){
+        console.log("_handleRelationRemoved fire event 'relation-removed'");
+
+        this.dispatchEvent(new CustomEvent('relation-removed', {detail: {document: event.detail.response}}));
+      }
+    });
+  </script>
+</dom-module>
