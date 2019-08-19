@@ -1,0 +1,123 @@
+<!--
+@license
+(C) Copyright Nuxeo Corp. (http://nuxeo.com/)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<!--
+`nuxeo-workspace-view-layout`
+@group Nuxeo UI
+@element nuxeo-workspace-view-layout
+-->
+<dom-module id="nuxeo-workspace-view-layout">
+  <template>
+    <style include="iron-flex iron-flex-alignment nuxeo-styles">
+      *[role=widget] {
+        padding: 5px;
+      }
+
+      paper-card {
+        padding: 0;
+        border-radius: 2px;
+        --paper-card-content: {
+          padding-top: 0;
+        }
+        ;
+      }
+
+      .chip {
+        background-color: #7e90a5;
+        border-radius: 3px;
+        color: #fff;
+        padding: 0.06em 0.3em;
+        text-transform: uppercase;
+        vertical-align: baseline;
+        white-space: nowrap;
+        display: inline-flex;
+      }
+    </style>
+
+    <template is="dom-if" if="[[_isSFDCObject(document)]]">
+      <paper-card heading="[[document.properties.dc:title]]">
+        <div class="card-content">
+          <div class="layout horizontal wrap">
+
+            <!-- Left -->
+            <div class="layout vertical flex">
+              <div role="widget">
+                <label>Type</label>
+                <div class="chip">[[document.properties.sf:objectType]]</div>
+              </div>
+
+              <div role="widget">
+                <label>Salesforce ID</label>
+                <div class="chip">[[document.properties.sf:objectId]]</div>
+              </div>
+            </div>
+
+            <!-- Right -->
+            <div class="layout vertical flex">
+              <div role="widget">
+                <label>Date Received</label>
+                <div>[[formatDate(document.properties.dc:created)]]</div>
+              </div>
+
+              <div role="widget">
+                <label>Amount</label>
+                <div>[[_formatCurrency(document.properties.sf:objectAmount)]]</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </paper-card>
+    </template>
+
+    <nuxeo-document-content document="[[document]]"></nuxeo-document-content>
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-workspace-view-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+      /**
+         * @doctype Workspace
+         */
+      document: {
+        type: Object
+      }
+    },
+
+    _isSFDCObject: function(document) {
+        return document.facets.indexOf('salesforce') > -1;
+    },
+
+    _formatCurrency: function(value, region, style, currency) {
+        if (!region)
+          region = "us";
+        if (!style)
+          style = "currency";
+        if (!currency)
+          currency = "USD";
+
+        return Number(value).toLocaleString(region, {
+          "style": style,
+          "currency": currency
+        })
+      }
+  });
+  </script>
+
+</dom-module>

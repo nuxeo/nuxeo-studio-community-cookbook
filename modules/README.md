@@ -8,3 +8,4 @@ Module | Description | Contributor | Feature category
 [`email-templates-nuxeo`](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/email-templates-nuxeo) | Email templates | Nuxeo | Templates
 [`video-conversions`](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/video-conversions) | Additional video conversions | Nuxeo | DAM, Automation
 [`toggleable-form`](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/toggleable-form) | Inline card property edition | Nuxeo | Web UI, Layout
+[`salesforce-ui`](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/salesforce-ui) | Display Salesforce metadata | Nuxeo | Salesforce, Layout
