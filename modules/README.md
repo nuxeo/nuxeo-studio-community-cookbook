@@ -2,7 +2,7 @@
 
 Module | Description | Contributor | Feature category
 --- | --- | --- | ---
-<a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/workflow-status"><img src="../img/monitoring.png"/></a> | Monitor workflow instances status displayed in the "Analytics" area of Web UI. | Nuxeo | Workflow
+<a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/workflow-status"><img src="../img/monitoring.png" style="height:40px"/></a> | Monitor workflow instances status displayed in the "Analytics" area of Web UI. | Nuxeo | Workflow
 [`sensitive-data`](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/sensitive-data) | Display sensitive data details contained in a document | Nuxeo | AI
 [`convert-data-to-timestamp`](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/convert-data-to-timestamp) | Convert Data to Timestamp | Nuxeo | Automation
 [`email-templates-nuxeo`](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/email-templates-nuxeo) | Email templates | Nuxeo | Templates
