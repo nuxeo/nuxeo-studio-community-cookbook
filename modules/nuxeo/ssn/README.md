@@ -1,5 +1,7 @@
 # Social Security Number Display
 
+![SSN](ssn.png)
+
 ## Description
 
 Elements that show/hide the value of a field holding a social security number.
