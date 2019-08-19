@@ -18,10 +18,6 @@
 
 // Detail how to use your module for a end-user
 
-## Configuration
-
-// If relevant, explain how to adapt your module to answers closed needs.
-
 ## Installation
 
 ### Studio Modeler
@@ -31,6 +27,10 @@
 ### Studio Designer
 
 // Same here. You can upload to the repository the `UI` folder to ease copy-pasting.
+
+## Configuration
+
+// If relevant, explain how to adapt your module to answers closed needs.
 
 ## Known issues
 

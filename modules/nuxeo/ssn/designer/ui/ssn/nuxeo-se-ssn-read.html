@@ -1,0 +1,165 @@
+<!--
+(C) Copyright 2016 Nuxeo SA (http://nuxeo.com/) and others.
+
+Licensed under the Apache License, Version 2.0 (the 'License');
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an 'AS IS' BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!--
+`nuxeo-se-ssn-read`
+@group Nuxeo UI
+@element nuxeo-se-ssn-read
+
+@author Thibaud Arguillere
+-->
+<!-- Example
+  WARNING: Gourp list must be passed as JSON, with double quotes for strings, so:
+   <nuxeo-se-ssn-read document="[[document]]"
+                      ssn-field="person:ssn"
+                      allowed-groups='["grp1","grp2","grp3"]'></nuxeo-se-ssn-read>
+  once toggled, it is reset to "*****" after 8 seconds. This can be changed with hideAfter, expressed in seconds (not milliseconds):
+
+   <nuxeo-se-ssn-read document="[[document]]"
+                      ssn-field="person:ssn"
+                      allowed-groups='["grp1","grp2","grp3"]'
+                      hide-after="4"></nuxeo-se-ssn-read>
+-->
+<dom-module id="nuxeo-se-ssn-read">
+
+  <template>
+
+    <style>
+      *[role=widget] {
+        margin-bottom: 16px;
+      }
+
+      label {
+        @apply --nuxeo-label;
+      }
+    </style>
+    
+    <nuxeo-connection user="{{user}}"></nuxeo-connection>
+
+    <template is="dom-if"
+              if="[[_canReadSSN(user, document)]]">
+      <label>SSN</label>
+      [[ssnForDisplay]]
+      <paper-icon-button id="toggleSSNVisibility"
+                         on-tap="_toggleSSNVisibility"
+                         icon="[[ssnToggleIcon]]"></paper-icon-button>
+
+    </template>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-se-ssn-read',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+      /**
+         * @doctype File
+         */
+      document: Object, // REQUIRED
+
+      ssnField: String, // REQUIRED
+
+      // Administrators can always read
+      allowedGroups: {
+        type: Array,
+        value: []
+      },
+
+      ssnForDisplay: {
+        type: String,
+        value: "**********"
+      },
+
+      ssnDisplayClear: {
+        type: Boolean,
+        value: false
+      },
+
+      ssnToggleIcon: {
+        type: String,
+        value: "visibility"
+      },
+
+      ssnVisibilityTooltip: {
+        type: String,
+        value: "Show value"
+      },
+
+      hideAfter: {
+        type: Number,
+        value: 8
+      }
+    },
+
+    ready: function() {
+      this.ssnForDisplay = this._getSSNForDisplay();
+      //console.log(this.allowedGroups.join(" • "));
+    },
+
+    _getSSNForDisplay: function() {
+      if(this.ssnDisplayClear) {
+        return this.document.properties[this.ssnField];
+      }
+
+      return "**********";
+    },
+    
+    _canReadSSN: function(theUser) {
+      let groups = theUser ? theUser.properties.groups : [];
+
+      // Administrators can always read
+      if(groups.indexOf("administrators") > -1) {
+        return true;
+      }
+
+      let canRead = false;
+      for(var oneGroup of this.allowedGroups) {
+        if(groups.indexOf(oneGroup) > -1) {
+          canRead = true;
+          break;
+        }
+      }
+      return canRead;
+    },
+
+    _toggleSSNVisibility: function() {
+
+      this.ssnDisplayClear = !this.ssnDisplayClear;
+      if(this.ssnDisplayClear) {
+        this.ssnToggleIcon = "icons:visibility-off";
+        this.ssnVisibilityTooltip = "Hide Value";
+
+        // Auto-hide after n seconds
+        let ms = 8000;
+        if(this.hideAfter && this.hideAfter > 0) {
+          ms = this.hideAfter * 1000;
+        }
+        setTimeout(function() {
+          if(this.ssnDisplayClear) {
+            this._toggleSSNVisibility();
+          }
+        }.bind(this), ms);
+
+      } else {
+        this.ssnToggleIcon = "icons:visibility";
+        this.ssnVisibilityTooltip = "Show Value";
+      }
+      this.ssnForDisplay = this._getSSNForDisplay();
+    }
+  });
+  </script>
+
+</dom-module>

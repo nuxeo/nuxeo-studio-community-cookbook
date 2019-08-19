@@ -1,0 +1,165 @@
+<!--
+(C) Copyright 2016 Nuxeo SA (http://nuxeo.com/) and others.
+
+Licensed under the Apache License, Version 2.0 (the 'License');
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an 'AS IS' BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!--
+`nuxeo-se-ssn-edit`
+@group Nuxeo UI
+@element nuxeo-se-ssn-edit
+@author Thibaud Arguillere
+-->
+<!-- Example
+  WARNING #: inoput docupent must be pass using {{ and }}, not [[ and ]]
+  WARNING #2: Group list must be passed as JSON, with double quotes for strings, so:
+   <nuxeo-se-ssn-edit document="{{document}}"
+                      ssn-field="person:ssn"
+                      allowed-groups='["grp1","grp2","grp3"]'></nuxeo-se-ssn-edit>
+-->
+<dom-module id="nuxeo-se-ssn-edit">
+
+  <template>
+
+    <style>
+      *[role=widget] {
+        margin-bottom: 16px;
+      }
+
+      label {
+        @apply --nuxeo-label;
+      }
+    </style>
+    
+    <nuxeo-connection user="{{user}}"></nuxeo-connection>
+
+    <template is="dom-if"
+              if="[[_canEditSSN(user, document)]]">
+      <paper-input value="{{ssnValue}}"
+                   label="SSN"
+                   type="[[inputType]]"
+                   role="widget"></paper-input>
+      <paper-icon-button id="toggleSSNVisibility"
+                         on-tap="_toggleSSNVisibility"
+                         icon="[[ssnToggleIcon]]"></paper-icon-button>
+    </template>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-se-ssn-edit',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+      /**
+         * @doctype File
+         */
+      document: {     // REQUIRED
+        type: Object,
+        observer: "_documentChanged"
+      },
+
+      ssnField: String, // REQUIRED
+
+      // Administrators can always read
+      allowedGroups: { // OPTIONAL
+        type: Array,
+        value: []
+      },
+
+      inputType: {
+        type: String,
+        value: "password"
+      },
+
+      ssnDisplayClear: {
+        type: Boolean,
+        value: false
+      },
+
+      ssnToggleIcon: {
+        type: String,
+        value: "visibility"
+      },
+
+      ssnValue: {
+        type: String,
+        value: "",
+        observer: "_ssnValueChanged"
+      }
+    },
+
+    _ssnValueChanged: function(newValue) {
+      //console.log("ssnValue changed: " + newValue);
+      if(this.document && this.document.properties && typeof this.document.properties[this.ssnField] === "string") {
+        this.set("document.properties." + this.ssnField, newValue);
+      }
+    },
+
+    _documentChanged: function(newDoc, previousDoc) {
+      //console.log("document changed, ssnField received: " + this.ssnField);
+      if(newDoc && newDoc.properties) {
+        if(typeof newDoc.properties[this.ssnField] === "string") {
+          this.ssnValue = newDoc.properties[this.ssnField];
+        } else {
+          console.error("No SSN Field provided for this document");
+        }
+      } else {
+        this.ssnValue = "";
+      }
+
+      this.inputType = "password";
+      this.ssnToggleIcon = "icons:visibility";
+
+    },
+
+    ready: function() {
+      //console.log("READY...");
+      this._updateInputType();
+    },
+
+    _updateInputType: function() {
+      if(this.ssnDisplayClear) {
+        this.inputType = "text";
+        this.ssnToggleIcon = "icons:visibility-off";
+      } else {
+        this.inputType = "password";
+        this.ssnToggleIcon = "icons:visibility";
+      }
+    },
+
+    _toggleSSNVisibility: function() {
+      this.ssnDisplayClear = !this.ssnDisplayClear;
+      this._updateInputType();
+    },
+    
+    _canEditSSN: function(theUser) {
+      let groups = theUser ? theUser.properties.groups : [];
+
+      // Administrators can always read
+      if(groups.indexOf("administrators") > -1) {
+        return true;
+      }
+
+      let canRead = false;
+      for(var oneGroup of this.allowedGroups) {
+        if(groups.indexOf(oneGroup) > -1) {
+          canRead = true;
+          break;
+        }
+      }
+      return canRead;
+    }
+  });
+  </script>
+
+</dom-module>
