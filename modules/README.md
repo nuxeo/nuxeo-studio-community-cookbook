@@ -10,3 +10,4 @@ Module | Description | Contributor | Feature category
 [`toggleable-form`](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/toggleable-form) | Inline card property edition | Nuxeo | Web UI, Layout
 [`salesforce-ui`](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/salesforce-ui) | Display Salesforce metadata | Nuxeo | Salesforce, Layout
 [`ssn`](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/ssn) | Elements that show/hide the value of a field holding a social security number | Nuxeo | Security, Layout
+[`kibana`](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/kibana) | Displayed Kibana dashboards in the "Analytics" | Nuxeo | Web UI, Admin, Reporting

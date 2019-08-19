@@ -1,0 +1,28 @@
+<!-- `trk-metrics-analytics-layout` @group Nuxeo UI @element trk-metrics-analytics-layout -->
+<dom-module id="trk-metrics-analytics-layout">
+  <template>
+    <style include="iron-flex iron-flex-alignment">
+      :host {
+        display: block;
+      }
+
+      iframe {
+        width: 100%;
+        height: calc(100vh - 92px);
+        border: 0;
+      }
+    </style>
+
+    <iframe src="https://kibana-cm-claim.cloud.nuxeo.com/goto/25c58f5e853595a542084aee7d2f85a8?embed=true" height="600" width="800"></iframe>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'trk-metrics-analytics-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {}
+
+    });
+  </script>
+</dom-module>

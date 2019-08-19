@@ -1,0 +1,55 @@
+<!-- `trk-metrics-admin-layout` @group Nuxeo UI @element trk-metrics-admin-layout -->
+<dom-module id="trk-metrics-admin-layout">
+  <template>
+    <style include="iron-flex iron-flex-alignment nuxeo-styles">
+      :host {
+        display: block;
+      }
+
+      .content {
+        margin-top: 10px;
+        margin-left: 10%;
+        margin-right: 10%;
+      }
+
+      /*
+      ** Set back to default values.
+      ** These are overridden in themes/base.html
+      */
+      paper-card {
+        padding: 0;
+        border-radius: 2px;
+        --paper-card-content: {
+          padding-top: 0;
+        };
+        --paper-card-header-text: {
+          font-size: 20px;
+          font-weight: 400;
+        };
+      }
+    </style>
+
+    <nuxeo-page>
+
+      <div slot="header">
+        <span class="flex">Metrics Setup</span>
+      </div>
+
+      <paper-card heading="Metrics Data" class="layout flex content">
+        <div class="card-content layout vertical">
+          <nuxeo-operation-button event="refresh" icon="icons:assessment" label="Generate or Update Data" notification="Metrics Data Generated" operation="javascript.trk_GenerateData"></nuxeo-operation-button>
+        </div>
+      </paper-card>
+
+    </nuxeo-page>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'trk-metrics-admin-layout',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {}
+    });
+  </script>
+</dom-module>

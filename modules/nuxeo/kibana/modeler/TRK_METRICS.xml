@@ -1,0 +1,20 @@
+<extension point="doctype" target="org.nuxeo.ecm.core.schema.TypeService">
+  <facet name="Metrics">
+    <schema name="trk_metrics"/>
+  </facet>
+</extension>
+
+<extension target="org.nuxeo.ecm.platform.WebResources" point="resources">
+  <resource name="trk-metrics-bundle.html" type="import">
+    <uri>/ui/trk-metrics-bundle.html</uri>
+  </resource>
+</extension>
+
+<extension target="org.nuxeo.ecm.platform.WebResources" point="bundles">
+  <!-- main bundle with all import resources -->
+  <bundle name="web-ui">
+    <resources append="true">
+      <resource>trk-metrics-bundle.html</resource>
+    </resources>
+  </bundle>
+</extension>

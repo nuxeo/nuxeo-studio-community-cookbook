@@ -1,0 +1,44 @@
+<link rel="import" href="trk-metrics/trk-metrics-admin-layout.html">
+<link rel="import" href="trk-metrics/trk-metrics-analytics-layout.html">
+
+<!-- Contribs for the analytics page -->
+<!-- Contribution of element 'trk-metrics-analytics-layout' for slot 'ANALYTICS_PAGES' -->
+<nuxeo-slot-content name="trkAnalyticsPage" slot="ANALYTICS_PAGES" order="-1">
+  <template>
+    <trk-metrics-analytics-layout name="trkAnalytics"></trk-metrics-analytics-layout>
+  </template>
+</nuxeo-slot-content>
+
+<!-- Contribution of element 'nuxeo-page-item' for slot 'ANALYTICS_ITEMS' -->
+<nuxeo-slot-content name="trkAnalyticsItem" slot="ANALYTICS_ITEMS" order="-1">
+  <template>
+    <nuxeo-page-item name="trkAnalytics" label="Metrics"></nuxeo-page-item>
+  </template>
+</nuxeo-slot-content>
+
+<!-- Override default selected tab in Analytics -->
+<!-- This is because of https://github.com/elastic/kibana/issues/5810 -->
+<nuxeo-slot-content name="adminAnalyticsPage" slot="ADMINISTRATION_PAGES">
+  <template>
+    <nuxeo-filter user="[[user]]" expression="user.isAdministrator">
+      <template>
+        <nuxeo-analytics name="analytics" selected="trkAnalytics"></nuxeo-analytics>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+
+<!-- Contribs for the data setup page -->
+<!-- Contribution of element 'nuxeo-menu-item' for slot 'ADMINISTRATION_MENU' -->
+<nuxeo-slot-content name="trkMetricsButtons" slot="ADMINISTRATION_MENU" order="100">
+  <template>
+    <nuxeo-menu-item label="Metrics Setup" name="trkMetricsButtons" route="administration:trkMetricsButtons"></nuxeo-menu-item>
+  </template>
+</nuxeo-slot-content>
+
+<!-- Contribution of element 'trk-metrics-admin' for slot 'ADMINISTRATION_PAGES' -->
+<nuxeo-slot-content name="trkMetricsButtons" slot="ADMINISTRATION_PAGES">
+  <template>
+    <trk-metrics-admin-layout name="trkMetricsButtons"></trk-metrics-admin-layout>
+  </template>
+</nuxeo-slot-content>
