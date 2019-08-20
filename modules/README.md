@@ -4,6 +4,7 @@
 
 Module | Description | Contributor | Category
 --- | --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/saml-user-mapping"><img src="nuxeo/saml-user-mapping/saml.png" width="150px"/></a> | Map SAML user attributes to Nuxeo | Nuxeo | Authentication
 <a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/workflow-status"><img src="nuxeo/workflow-status/workflow-status.png" width="150px"/></a> | Monitor workflow instances status | Nuxeo | Workflow
 <a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/sensitive-data"><img src="nuxeo/sensitive-data/sensitive-data1.png" width="150px"/></a> | Display sensitive data details contained in a document | Nuxeo | AI
 <a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/convert-date-to-timestamp"><img src="nuxeo/convert-date-to-timestamp/date.png" width="150px"/></a> | Convert Data to Timestamp | Nuxeo | Automation

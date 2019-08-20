@@ -1,0 +1,24 @@
+<extension target="org.nuxeo.usermapper.service.UserMapperComponent" point="mapper">
+    <mapper name="saml" type="js">
+        <mapperScript>
+function getValue(attr) {
+    var items = attr.getAttributeValues();
+    if (items.size() > 0) {
+        var item = items.get(0);
+        try {
+            return item.getValue();
+        } catch (err) {
+            return item.getTextContent();
+        }     
+    }
+    return null;
+}
+
+searchAttributes.put("username", userObject.getNameID().getValue());
+userAttributes.put("username", userObject.getNameID().getValue());
+userAttributes.put("firstName", getValue(userObject.getAttributeByName("firstname")));
+userAttributes.put("lastName", getValue(userObject.getAttributeByName("lastname")));
+userAttributes.put("email", getValue(userObject.getAttributeByName("email")));
+        </mapperScript>
+    </mapper>
+</extension>
