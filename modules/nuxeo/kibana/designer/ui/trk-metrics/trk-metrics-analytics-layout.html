@@ -1,4 +1,3 @@
-<!-- `trk-metrics-analytics-layout` @group Nuxeo UI @element trk-metrics-analytics-layout -->
 <dom-module id="trk-metrics-analytics-layout">
   <template>
     <style include="iron-flex iron-flex-alignment">
@@ -13,7 +12,9 @@
       }
     </style>
 
-    <iframe src="https://kibana-cm-claim.cloud.nuxeo.com/goto/25c58f5e853595a542084aee7d2f85a8?embed=true" height="600" width="800"></iframe>
+    <nuxeo-operation auto="true" op="javascript.trk_GetKibanaURL" on-response="_setKibanaUrl"></nuxeo-operation>
+
+    <iframe src="[[_kibanaURL]]" height="600" width="800"></iframe>
 
   </template>
 
@@ -21,7 +22,15 @@
     Polymer({
       is: 'trk-metrics-analytics-layout',
       behaviors: [Nuxeo.LayoutBehavior],
-      properties: {}
+      properties: {
+        _kibanaURL: String
+      },
+
+      _setKibanaUrl: function (data) {
+        if (data && data.detail && data.detail.response && data.detail.response.value) {
+          this._kibanaURL = data.detail.response.value;
+        }
+      }
 
     });
   </script>
