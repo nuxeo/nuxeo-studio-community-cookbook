@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    xmlns:nxs="http://www.nuxeo.org/ecm/project/schemas/ocr" targetNamespace="http://www.nuxeo.org/ecm/project/schemas/ocr">
+
+    <xs:element name="data" type="nxs:itemList"/>
+    <xs:element name="processed" type="xs:boolean" default="false">
+
+    <xs:complexType name="itemList">
+        <xs:sequence>
+            <xs:element name="content" type="nxs:clob"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="clob">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="10485760"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>
