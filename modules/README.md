@@ -1,5 +1,7 @@
 # Module listing
 
+:information_source: Click on the module thumbnail to view the module contributions.
+
 Module | Description | Contributor | Category
 --- | --- | --- | ---
 <a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/workflow-status"><img src="nuxeo/workflow-status/workflow-status.png" width="150px"/></a> | Monitor workflow instances status | Nuxeo | Workflow
