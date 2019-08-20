@@ -1,4 +1,4 @@
-# //Module Name
+# Google Vision OCR
 
 ![OCR](ocr.png)
 
