@@ -1,0 +1,12 @@
+<link rel="import" href="elements/nuxeo-storyboard-dialog.html">
+
+<!-- Contribution of element 'nuxeo-storyboard-dialog' for slot 'DOCUMENT_ACTIONS' -->
+<nuxeo-slot-content name="VideoThumbnailSelection" slot="DOCUMENT_ACTIONS" order="16">
+  <template>
+    <nuxeo-filter document="[[document]]" facet="Video">
+      <template>
+        <nuxeo-storyboard-dialog document="[[document]]"></nuxeo-storyboard-dialog>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>

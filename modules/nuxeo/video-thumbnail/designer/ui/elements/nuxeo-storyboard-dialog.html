@@ -1,0 +1,156 @@
+<!--
+@license
+(C) Copyright Nuxeo Corp. (http://nuxeo.com/)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<!--
+An element for selecting thumbnail preview from storyboard.
+
+Example:
+
+    <nuxeo-storyboard-dialog document="[[document]]"></nuxeo-storyboard-dialog>
+
+@element nuxeo-storyboard-dialog
+-->
+<dom-module id="nuxeo-storyboard-dialog">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      #storyboard {
+        display: block;
+        background: var(--primary-background-color);
+      }
+
+      #thumbnails {
+        @apply --layout-horizontal;
+        overflow-x: auto;
+      }
+
+      .thumbnail {
+        padding: 4px 4px 2px 0;
+        cursor: pointer;
+      }
+    </style>
+
+    <nuxeo-operation id="setThumbnail" op="javascript.SetThumbnailByTimecode" input="[[document.uid]]" params="[[_params(selected)]]"></nuxeo-operation>
+
+    <template is="dom-if" if="[[_isAvailable(document)]]">
+      <div class="action" on-click="_toggleDialog">
+        <paper-icon-button icon="[[icon]]" noink></paper-icon-button>
+        <span class="label" hidden$="[[!showLabel]]">[[label]]</span>
+      </div>
+      <paper-tooltip>[[label]]</paper-tooltip>
+    </template>
+
+    <nuxeo-dialog id="dialog" with-backdrop>
+      <h2>Choose Thumbnail</h2>
+
+      <div id="storyboard">
+        <div id="thumbnails">
+          <template is="dom-repeat" items="[[storyboard]]" as="thumbnail">
+            <img class="thumbnail" on-click="_selectImage" src="[[thumbnail.content.data]]" />
+          </template>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+      </div>
+    </nuxeo-dialog>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-storyboard-dialog',
+      properties: {
+        /**
+         * The `sources` to be displayed.
+         */
+        document: Object,
+
+        /**
+         * The storyboard (array of thumbnails) for video navigation. If null or empty, the storyboard is not shown.
+         */
+        storyboard: {
+          type: Array,
+          computed: '_computeStoryboard(document)'
+        },
+
+        selected: Object,
+
+        icon: {
+          type: String,
+          value: 'image:burst-mode'
+        },
+
+        label: {
+          type: String,
+          value: "Assign Thumbnail"
+        },
+
+        showLabel: {
+          type: Boolean,
+          value: false
+        }
+      },
+
+      _isAvailable: function (document) {
+        return document && document.properties && document.properties['vid:storyboard'];
+      },
+
+      _toggleDialog: function () {
+        this.$.dialog.toggle();
+      },
+
+      _computeStoryboard: function () {
+        if (this.document && this.document.properties && this.document.properties['vid:storyboard']) {
+          return this.document.properties['vid:storyboard'];
+        }
+      },
+
+      _params: function (thumbnail) {
+        return {
+          "value": JSON.stringify(thumbnail),
+          "save": true,
+          "xpath": "thumb:thumbnail"
+        };
+      },
+
+      _showStoryboard: function () {
+        return this.storyboard && this.storyboard.length > 0;
+      },
+
+      _selectImage: function (e) {
+        this.selected = e.model.thumbnail.timecode;
+        console.log(this.selected);
+        this.$.dialog.toggle();
+        this.$.setThumbnail.execute().then(() => {
+          this.fire('document-updated');
+          this.fire('notify', {
+            message: "Thumbnail set for video"
+          });
+        }).catch((error) => {
+          console.log(error);
+          this.fire('notify', {
+            message: "Set Thumbnail Failed: " + error
+          });
+        });
+      }
+    });
+  </script>
+</dom-module>

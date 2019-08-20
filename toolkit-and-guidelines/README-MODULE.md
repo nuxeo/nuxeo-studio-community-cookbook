@@ -32,8 +32,4 @@
 
 // If relevant, explain how to adapt your module to answers closed needs.
 
-## Known issues
-
-Issue | Description | Walkaround
---- | --- | ---
-XXX | XXX  | XXX
+## Issues and Limitations

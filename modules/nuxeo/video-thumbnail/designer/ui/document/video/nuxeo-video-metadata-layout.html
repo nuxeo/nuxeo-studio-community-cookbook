@@ -1,0 +1,138 @@
+<!--
+@license
+(C) Copyright Nuxeo Corp. (http://nuxeo.com/)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!--
+`nuxeo-video-metadata-layout`
+@group Nuxeo UI
+@element nuxeo-video-metadata-layout
+-->
+<dom-module id="nuxeo-video-metadata-layout">
+
+  <template>
+    <style>
+      *[role=widget] {
+        margin-bottom: 16px;
+      }
+
+      label {
+        @apply --nuxeo-label;
+      }
+
+      div.multiline {
+        white-space: pre-line;
+      }
+
+      div {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        -webkit-hyphens: auto;
+        -moz-hyphens: auto;
+        -ms-hyphens: auto;
+        -o-hyphens: auto;
+        hyphens: auto;
+      }
+    </style>
+    
+    <nuxeo-operation id="op" op="Repository.PageProvider" params="[[_duplicates(document)]]"></nuxeo-operation>
+
+    <div role="widget">
+      <label>[[i18n('label.dublincore.title')]]</label>
+      <div name="title">[[document.properties.dc:title]]</div>
+    </div>
+
+<div role="widget"><label>Speaker Name</label><div>[[document.properties.tm:SpeakerName]]</div>
+</div>
+
+    <div role="widget" hidden$="[[!document.properties.dc:description]]">
+      <label>[[i18n('label.dublincore.description')]]</label>
+      <div name="description" class="multiline">[[document.properties.dc:description]]</div>
+    </div>
+
+    <div role="widget" hidden$="[[!document.properties.dc:expired]]">
+      <label>[[i18n('label.dublincore.expire')]]</label>
+      <div name="expired">[[formatDate(document.properties.dc:expired)]]</div>
+    </div>
+
+<nuxeo-directory-suggestion value="[[document.properties.tm:Language]]" label="Language" readonly="true" directory-name="Language" role="widget"></nuxeo-directory-suggestion>
+
+<nuxeo-directory-suggestion value="[[document.properties.tm:Month]]" label="Month" readonly="true" directory-name="Month" role="widget"></nuxeo-directory-suggestion>
+
+<nuxeo-directory-suggestion value="{{document.properties.tm:Year}}" label="Year" directory-name="Year" role="widget" readonly="true" min-chars="0"></nuxeo-directory-suggestion>
+
+<nuxeo-directory-suggestion value="[[document.properties.tm:Session]]" label="Session" readonly="true" directory-name="Session" role="widget"></nuxeo-directory-suggestion>
+
+<nuxeo-directory-suggestion value="[[document.properties.tm:Region]]" label="Region" readonly="true" directory-name="Region" role="widget"></nuxeo-directory-suggestion>
+
+<nuxeo-directory-suggestion value="[[document.properties.tm:Copyright]]" label="Copyright" readonly="true" directory-name="Copyright" role="widget"></nuxeo-directory-suggestion>
+
+        <nuxeo-document-suggestion label="Duplicates" value="[[duplicates]]" readonly="true" role="widget" min-chars="0" multiple="true"></nuxeo-document-suggestion>
+
+<div role="widget"><label>Notes</label><div>[[document.properties.tm:Notes]]</div>
+</div>
+
+    <div role="widget">
+      <label>Slate</label>
+      <div>[[document.properties.video_schema:slate]]</div>
+    </div>
+    
+    <nuxeo-document-suggestion role="widget" value="[[document.properties.video_schema:slate_doc]]" label="Default Slate" readonly="true"></nuxeo-document-suggestion>
+
+    <nuxeo-directory-suggestion value="[[document.properties.st:destination]]" label="Storage Location" readonly="true" directory-name="StorageDestination" role="widget" min-chars="3"></nuxeo-directory-suggestion>
+
+    <nuxeo-document-attachments role="widget" document="[[document]]"></nuxeo-document-attachments>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-video-metadata-layout',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+      /**
+         * @doctype Video
+         */
+        document: {
+          type: Object,
+          observer: '_documentChanged'
+        },
+      
+      duplicates: Array
+    },
+     _documentChanged: function () {
+        if (this.document && this.document.properties['file:content']) {
+          this.$.op.params = this._duplicates(this.document);
+          this.$.op.execute().then((res) => {
+            this.duplicates = res.entries;
+          });
+        } else {
+          this.duplicates = null;
+        }
+      },
+    _duplicates: function(document) {
+      var query = "0,0";
+      if (document && document.properties["file:content"]) {
+        query = document.uid + ',' + document.properties["file:content"]["digest"];
+      }
+    	return {
+        "providerName": "duplicate_docs",
+    		"queryParams": query
+  		}
+  	},
+  });
+  </script>
+
+</dom-module>

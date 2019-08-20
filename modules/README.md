@@ -4,6 +4,7 @@
 
 Module | Description | Contributor | Category
 --- | --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/video-thumbnail"><img src="nuxeo/video-thumbnail/video-thumbnail2.png" width="150px"/></a> | Sets the video poster and search thumbnail | Nuxeo | DAM
 <a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/google-vision-ocr"><img src="nuxeo/google-vision-ocr/ocr.png" width="150px"/></a> | Extract text from an image-based PDF with Google Vision | Nuxeo | AI
 <a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/saml-user-mapping"><img src="nuxeo/saml-user-mapping/saml.png" width="150px"/></a> | Map SAML user attributes to Nuxeo | Nuxeo | Authentication
 <a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/workflow-status"><img src="nuxeo/workflow-status/workflow-status.png" width="150px"/></a> | Monitor workflow instances status | Nuxeo | Workflow
