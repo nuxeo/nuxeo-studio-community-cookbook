@@ -52,7 +52,9 @@ You have to follow the repository contribution [guidelines](toolkit-and-guidelin
 - Create a README file to present your module, using the [README-MODULE.MD template](https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/toolkit-and-guidelines/README-MODULE.md).
 - Create a `/modeler` and `/designer` folders to upload respectively resources from Nuxeo Studio Modeler and Nuxeo Studio Designer.
 - Upload your resources.
-  - Your contribution will be then checked by the Nuxeo Team before being published.
+- Push your changes
+  - If you're from Nuxeo, reference your addon in the [module listing page](https://github.com/nuxeo/nuxeo-studio-custom-elements/tree/master/modules)
+  - If not, you won't be allowed to push directly to master. Your pull request will be then checked by the Nuxeo Team before being published.
 - Et voilà! :wink:
 
 ## Support
