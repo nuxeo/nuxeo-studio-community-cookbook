@@ -1,6 +1,6 @@
 <img src="nuxeo-logo.png" align="right" />
 
-# Nuxeo Studio Custom Elements
+# Nuxeo Studio Community Cookbook
 
 This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio projects. It provides a list of features and visual elements ready to be copy-pasted. The modules are for **LTS 2019**:
 
