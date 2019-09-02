@@ -1,4 +1,4 @@
-<img src="nuxeo-logo.png" align="right" />
+<img src="nuxeo-logo.png" style="width:20%" align="right" />
 
 # Nuxeo Studio Community Cookbook
 
