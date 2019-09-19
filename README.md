@@ -37,7 +37,7 @@ There is nothing to build. Each module generally contains:
 You can clone the repository locally:
 
 ```
-git clone https://github.com/nuxeo/nuxeo-studio-custom-elements.git
+git clone https://github.com/nuxeo/nuxeo-studio-community-cookbook.git
 ```
 
 ### Prerequisites
