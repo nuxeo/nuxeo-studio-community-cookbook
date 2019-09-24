@@ -88,7 +88,7 @@ Without forgetting to update the `<style>` line with `<style include="iron-flex 
 #### CSS properties to update when creating a new theme
 
 - Extract HTML corporate colors from a picture, like with [https://imagecolorpicker.com/](https://imagecolorpicker.com/)
-- https://www.w3schools.com/colors/colors_picker.asp
+- Use [https://www.w3schools.com/colors/colors_picker.asp](https://www.w3schools.com/colors/colors_picker.asp) to get colour derivatives
 - Apply main color on `--nuxeo-primary-color`
 - Apply a darker color from the previous one on `--nuxeo-secondary-color` and `--paper-spinner-layer-3-color`
 - Apply same color as the logo on `--nuxeo-sidebar-background`
