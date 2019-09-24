@@ -16,9 +16,7 @@ Switch to code on the layouts and elements in Studio Designer and adapt the code
 
 ## Installation
 
-### Studio Designer
-
-#### Create a table with two columns
+### Create a table with two columns
 
 ```
 <div style="width:100%;margin-top: 10px;">
@@ -27,7 +25,7 @@ Switch to code on the layouts and elements in Studio Designer and adapt the code
 </div>
 ```
 
-#### Position several Nuxeo elements in the same row
+### Position several Nuxeo elements in the same row
 
 ```
 <div class="layout horizontal flex">
@@ -39,7 +37,7 @@ Switch to code on the layouts and elements in Studio Designer and adapt the code
 
 Without forgetting to update the `<style>` line with `<style include="iron-flex iron-flex-alignment">`
 
-#### Get property name and property value on the same row (as the nuxeo-document-info section)
+### Get property name and property value on the same row (as the nuxeo-document-info section)
 
 1. Add in the `<style>` section:
 
@@ -77,7 +75,7 @@ Without forgetting to update the `<style>` line with `<style include="iron-flex 
 </div>      
 ```
 
-#### Put a header
+### Put a header
 
 ```
 <div style="margin-top: 20px;margin-bottom: 20px;background-color: #F2F2F2;">
@@ -85,7 +83,7 @@ Without forgetting to update the `<style>` line with `<style include="iron-flex 
 </div>
 ```
 
-#### CSS properties to update when creating a new theme
+### CSS properties to update when creating a new theme
 
 - Extract HTML corporate colors from a picture, like with [https://imagecolorpicker.com/](https://imagecolorpicker.com/)
 - Use [https://www.w3schools.com/colors/colors_picker.asp](https://www.w3schools.com/colors/colors_picker.asp) to get colour derivatives
