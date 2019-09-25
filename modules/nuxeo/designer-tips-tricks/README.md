@@ -92,3 +92,14 @@ Without forgetting to update the `<style>` line with `<style include="iron-flex 
 - Apply same color as the logo on `--nuxeo-sidebar-background`
 - Apply same main color on `--nuxeo-primary-color` and `--nuxeo-sidebar-background`
 
+### Update creation and edition screen size
+
+Add to your theme the following CSS variables:
+
+```
+--nuxeo-document-create-popup-width;
+--nuxeo-document-create-popup-heigh;
+--nuxeo-document-edit-popup-width;
+--nuxeo-document-edit-popup-height;
+```
+
