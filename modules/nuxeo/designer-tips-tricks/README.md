@@ -2,6 +2,15 @@
 
 ![designer-example](designer.png)
 
+## Table Of Content
+
+- [Create a table with two columns](#create-a-table-with-two-columns)
+- [Position several Nuxeo elements in the same row](#position-several-nuxeo-elements-in-the-same-row)
+- [Get property name and property value on the same row](#get-property-name-and-property-value-on-the-same-row-as-the-nuxeo-document-info-section)
+- [Put a header](#put-a-header)
+- [CSS properties to update when creating a new theme](#css-properties-to-update-when-creating-a-new-theme)
+- [Update creation and edition screen size](#update-creation-and-edition-screen-size)
+
 ## Prerequisites
 
 - Web UI installed
