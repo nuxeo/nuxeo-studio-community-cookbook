@@ -13,6 +13,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 Module | Description | Contributor | Category
 --- | --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/modeler-tips-tricks"><img src="modules/nuxeo/modeler-tips-tricks/modeler.png" width="100px"/></a> | Tips and tricks to design elements within Studio Modeler | Nuxeo | Business Logic
 <a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/designer-tips-tricks"><img src="modules/nuxeo/designer-tips-tricks/designer.png" width="100px"/></a> | Tips and tricks to design elements within Studio Designer | Nuxeo | Layout
 <a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/video-thumbnail"><img src="modules/nuxeo/video-thumbnail/video-thumbnail2.png" width="100px"/></a> | Sets the video poster and search thumbnail | Nuxeo | DAM
 <a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/google-vision-ocr"><img src="modules/nuxeo/google-vision-ocr/ocr.png" width="100px"/></a> | Extract text from an image-based PDF with Google Vision | Nuxeo | AI

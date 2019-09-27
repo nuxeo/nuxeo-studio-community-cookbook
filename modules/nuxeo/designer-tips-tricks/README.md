@@ -10,6 +10,7 @@
 - [Put a header](#put-a-header)
 - [CSS properties to update when creating a new theme](#css-properties-to-update-when-creating-a-new-theme)
 - [Update creation and edition screen size](#update-creation-and-edition-screen-size)
+- [Set height to nuxeo-data-table](#set-height-to-nuxeo-data-table)
 
 ## Prerequisites
 
@@ -23,7 +24,7 @@ This module helps you to tune the default element scaffolded by Studio Designer.
 
 Switch to code on the layouts and elements in Studio Designer and adapt the code to your needs.
 
-## Installation
+## Studio Designer Contributions
 
 ### Create a table with two columns
 
@@ -112,3 +113,17 @@ Add to your theme the following CSS variables:
 --nuxeo-document-edit-popup-height;
 ```
 
+### Set height to nuxeo-data-table
+
+By default, the `<nuxeo-data-table>` element has a fixed height. To make it dynamic, add these CSS contribution into the `<style>` tag.
+
+
+```
+nuxeo-data-table,
+            nuxeo-data-grid,
+            nuxeo-data-list {
+                display: block;
+                position: relative;
+                min-height: calc(100vh - 130px - var(--nuxeo-app-top));
+            }
+```
