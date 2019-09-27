@@ -3,7 +3,7 @@
 ## Table Of Content
 
 - [Get value from the parent document before creation](#get-value-from-the-parent-document-before-creation)
-- [Override the global search to perform the search with fulltext analyzer on every property](#override-the-global-search-to-perform-the-search-with fulltext-analyzer-on-every-property)
+- [Override the global search to perform the search with fulltext analyzer on every property](#override-the-global-search-to-perform-the-search-with-fulltext-analyzer-on-every-property)
 
 
 ## Prerequisites
