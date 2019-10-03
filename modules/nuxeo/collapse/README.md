@@ -1,6 +1,6 @@
-# Collapse
+# Collapse (Collapsible Element)
 
-<img src="nuxeo-se-collapse.png" alt="nuxeo-se-collapse">
+## Synopsis
 
 ```
 <nuxeo-se-collapse collapsestyle="[[collapsestyle]]"
@@ -12,6 +12,10 @@
 </nuxeo-se-collapse>
 ```
 
+## Screenshot
+
+<img src="nuxeo-se-collapse.png" alt="nuxeo-se-collapse">
+
 ## Module Description
 
 `<nuxeo-se-collapse>` creates a collapsible element, to toggle the display of content. By default, the content will be collapsed. Use `opened` or `toggle()` to show/hide the content. This element provides some additional configuration options to the `<nuxeo-card>` element, including:
@@ -21,8 +25,8 @@
 
 ## Installation
 
-Copy the content of `nuxeo-se-collapse.html` into your Nuxeo Studio Designer hierarchy.
+Copy the content of <a href="nuxeo-se-collapse.html">nuxeo-se-collapse.html</a> into your Nuxeo Studio Designer hierarchy.
 
 ## Usage
 
-Import and reference the element from your layout, using `my-element-example.html` as an example.
+Import and reference the element from your layout, using <a href="my-element-example.html">my-element-example.html</a> as an example.
