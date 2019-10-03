@@ -1,0 +1,153 @@
+<!--
+`nuxeo-se-collapse`
+@group Nuxeo UI
+@element nuxeo-se-collapse
+
+c.f.
+https://github.com/nuxeo/nuxeo-ui-elements/blob/master/widgets/nuxeo-card.html
+https://www.webcomponents.org/element/@polymer/iron-collapse
+-->
+
+<dom-module id="nuxeo-se-collapse">
+
+  <template>
+
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+      h3 {
+        display:inline;
+      }
+      label {
+        @apply --nuxeo-label;
+      }
+      :host {
+        display: block;
+        -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+        -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+        box-sizing: border-box;         /* Opera/IE 8+ */
+        background-color: inherit;
+      }
+      :host([collapsible]) {
+        padding-bottom: 1px;
+      }
+      :host([opened]) {
+        padding-bottom: 1px;
+      }
+      :host([collapsible]) h3:hover {
+        cursor: pointer;
+        @apply --nuxeo-link-hover;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      .collapse {
+        border-width:1px;
+        border-style:none;
+        border-color:black;
+      }
+      .header {
+        @apply --layout-horizontal;
+        @apply --layout-center;
+        margin:8px 0px 8px 0px;
+        margin:8px 0px 0px 0px;
+      }
+      .heading {
+        padding-left:0.5em;
+      }
+      .toggle {
+        opacity: var(--nuxeo-label_-_opacity);
+      }
+    </style>
+
+    <h3 class="header" on-tap="toggle">
+      <iron-icon class="toggle"
+                 icon="[[_toggleIcon(opened)]]"
+                 toggle
+                 hidden$="[[!collapsible]]"
+                 >
+      </iron-icon>
+      <span class="heading" style="[[headingstyle]]">[[heading]]</span>
+    </h3>
+
+    <iron-collapse class="collapse"
+                   opened="[[opened]]"
+                   style="[[collapsestyle]]"
+                   >
+      <slot></slot>
+    </iron-collapse>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-se-collapse',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+      collapsestyle: {
+        type: String,
+        value: "border:1px solid #ffffff00;"
+      },
+      collapsible: {
+        type: Boolean,
+        value: true,
+        reflectToAttribute: true
+      },
+      document: {
+        type: Object,
+        notify: true
+      },
+      heading: {
+        type: String,
+        value: null
+      },
+      headingclass: {
+        type: String,
+        value: "h2"
+      },
+      headingstyle: {
+        type: String,
+        value: ""
+      },
+      icon: {
+        type: String,
+        value: null
+      },
+      opened: {
+        type: Boolean,
+        value: false,
+        reflectToAttribute: true
+      }
+    },
+
+    toggle: function() {
+      if (this.collapsible) {
+        this.opened = !this.opened;
+      }
+    },
+
+    _collapseIcon: function(itemOpen) {
+      return itemOpen ? 'expand-less' : 'expand-more';
+    },
+    _collapseToggle: function(e) {
+      // Assume e.target is the paper-button or an immediate child
+      const selector = e.target.dataset.selector || e.target.parentElement.dataset.selector;
+      if (selector) {
+        this.$$(selector).toggle();
+        e.target.icon = this._collapseIcon(this.$$(selector).opened);
+      }
+    },
+    _hasHeading: function(icon, heading, collapsible) {
+      return icon || heading || collapsible;
+    },
+    _opened: function(opened, collapsible) {
+      return !collapsible || opened;
+    },
+    _toggleIcon: function(opened) {
+      return 'hardware:keyboard-arrow-' + (opened ? 'up' : 'down');
+    }
+  });
+  </script>
+
+</dom-module>

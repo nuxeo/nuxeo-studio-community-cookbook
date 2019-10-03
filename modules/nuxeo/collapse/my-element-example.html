@@ -1,0 +1,45 @@
+<link rel="import" href="nuxeo-se-collapse.html">
+
+<dom-module id="my-element-example">
+
+  <template>
+
+    <nuxeo-se-collapse collapsestyle="[[collapsestyle]]"
+                       heading="[[i18n('my.element.heading')]]"
+                       headingstyle="[[headingstyle]]"
+                       opened$="[[_true]]"
+                       >
+      <!-- your content here -->
+    </nuxeo-se-collapse>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'my-element-example',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+      collapsestyle: {
+        type: String,
+        value: "border:0px solid #f5f5f5;margin-left:0em;"
+      },
+      document: {
+        type: Object
+      },
+      headingstyle: {
+        type: String,
+        value: "font-size:1rem;font-weight:700;text-transform:uppercase;"
+      },
+      _false: {
+        type: Boolean,
+        value: false
+      },
+      _true: {
+        type: Boolean,
+        value: true
+      }
+    }
+  });
+  </script>
+
+</dom-module>
