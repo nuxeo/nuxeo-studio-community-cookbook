@@ -13,6 +13,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 Module | Description | Contributor | Category
 --- | --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/collapse"><img src="modules/nuxeo/collapse/nuxeo-se-collapse.png" width="120px"/></a> | Collapsible Element | Nuxeo | Layout
 <a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/modeler-tips-tricks"><img src="modules/nuxeo/modeler-tips-tricks/modeler.png" width="100px"/></a> | Tips and tricks to design elements within Studio Modeler | Nuxeo | Business Logic
 <a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/designer-tips-tricks"><img src="modules/nuxeo/designer-tips-tricks/designer.png" width="100px"/></a> | Tips and tricks to design elements within Studio Designer | Nuxeo | Layout
 <a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/video-thumbnail"><img src="modules/nuxeo/video-thumbnail/video-thumbnail2.png" width="100px"/></a> | Sets the video poster and search thumbnail | Nuxeo | DAM
@@ -28,7 +29,6 @@ Module | Description | Contributor | Category
 <a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/ssn"><img src="modules/nuxeo/ssn/ssn.jpg" width="100px"/></a> | Show/hide the value of a secret field | Nuxeo | Security
 <a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/kibana"><img src="modules/nuxeo/kibana/kibana.png" width="100px"/></a> | Display Kibana dashboards in the "Analytics" | Nuxeo | Reporting
 <a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/related-documents"><img src="modules/nuxeo/related-documents/nuxeo-related-documents.png" width="150px"/></a> | Display Document Relations | Nuxeo | Relations
-<a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/collapse"><img src="modules/nuxeo/collapse/nuxeo-se-collapse.png" width="120px"/></a> | Collapsible Element | Nuxeo | Layout
 
 ## Getting Started
 
