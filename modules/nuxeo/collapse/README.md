@@ -1,5 +1,7 @@
 # Collapse
 
+<img src="nuxeo-se-collapse.png" alt="nuxeo-se-collapse">
+
 ```
 <nuxeo-se-collapse collapsestyle="[[collapsestyle]]"
                    heading="[[i18n('my.element.heading')]]"
