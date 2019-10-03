@@ -12,7 +12,10 @@
 
 ## Module Description
 
-`<nuxeo-se-collapse>` creates a collapsible element, to toggle the display of content. By default, the content will be collapsed. Use `opened` or `toggle()` to show/hide the content. 
+`<nuxeo-se-collapse>` creates a collapsible element, to toggle the display of content. By default, the content will be collapsed. Use `opened` or `toggle()` to show/hide the content. This element provides somme additional configuration options to the `<nuxeo-card>` element, including:
+ - header styling
+ - collapsible div content styling
+ - can be used anywhere without using a `<nuxeo-card>`
 
 ## Installation
 
