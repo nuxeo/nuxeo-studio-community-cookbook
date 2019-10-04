@@ -13,7 +13,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 Module | Description | Contributor | Category
 --- | --- | --- | ---
-<a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/document-suggestion"><img src="modules/nuxeo/document-suggestion/document-suggestion.png" width="120px"/></a> | Custom Nuxeo Suggestion Display | Nuxeo | Layout
+<a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/document-suggestion"><img src="modules/nuxeo/document-suggestion/document-suggestion-watermark.png" width="120px"/></a> | Custom Nuxeo Suggestion Display | Nuxeo | Layout
 <a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/collapse"><img src="modules/nuxeo/collapse/nuxeo-se-collapse.png" width="120px"/></a> | Collapsible Element | Nuxeo | Layout
 <a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/modeler-tips-tricks"><img src="modules/nuxeo/modeler-tips-tricks/modeler.png" width="100px"/></a> | Tips and tricks to design elements within Studio Modeler | Nuxeo | Business Logic
 <a href="https://github.com/nuxeo/nuxeo-studio-custom-elements/blob/master/modules/nuxeo/designer-tips-tricks"><img src="modules/nuxeo/designer-tips-tricks/designer.png" width="100px"/></a> | Tips and tricks to design elements within Studio Designer | Nuxeo | Layout
