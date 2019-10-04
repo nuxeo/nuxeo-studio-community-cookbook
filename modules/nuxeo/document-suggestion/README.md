@@ -1,6 +1,6 @@
 # Custom Document Suggestion
 
-![document-suggestion](document-suggestion.png)
+![document-suggestion](document-suggestion-watermark.png)
 
 ## Prerequisites
 
