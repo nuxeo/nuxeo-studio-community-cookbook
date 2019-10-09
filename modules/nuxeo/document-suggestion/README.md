@@ -23,7 +23,7 @@ We will illustrate the installation through an example, with a Document property
 - Create a custom page provider to list the document which should appear in your suggestion element.
   - `VideoUtils_Watermark_PageProvider`
 - Create a property of type `Document` in the schema definition if needed.
-  - No the case here in this example
+  - Not the case here in this example
 
 ### Studio Designer
 
