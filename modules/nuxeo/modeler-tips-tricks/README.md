@@ -1,4 +1,4 @@
-# Designer Tips and Tricks
+# Modeler Tips and Tricks
 
 ## Table Of Content
 
