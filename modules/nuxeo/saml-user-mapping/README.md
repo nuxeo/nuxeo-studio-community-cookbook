@@ -10,3 +10,8 @@ SAML authorizations contain a number of Attributes that can be mapped for a part
 ### Studio Modeler
 
 Create an XML extension with the content of `mapping-config.xml`
+
+## Documentation Links
+
+- [Authentication and User Management](https://doc.nuxeo.com/nxdoc/authentication-and-user-management/)
+- [SAML 2.0 Authentication](https://doc.nuxeo.com/nxdoc/saml-20-authentication/)

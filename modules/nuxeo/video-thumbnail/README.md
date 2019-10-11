@@ -30,3 +30,8 @@ Click on the 'burst-mode' icon for the Video to set the storyboard thumbnail.
 ## Issues and Limitations
 
 - Sometimes the browser cache caused an image to not be updated
+
+## Documentation Links
+
+- [DAM](https://doc.nuxeo.com/nxdoc/dam/)
+- [HOWTO: Create and Reuse a Custom Element](https://doc.nuxeo.com/nxdoc/how-to-create-and-reuse-custom-element/)

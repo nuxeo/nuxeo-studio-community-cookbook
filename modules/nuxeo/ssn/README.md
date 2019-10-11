@@ -58,3 +58,9 @@ For nuxeo-se-ssn-read, an optional `hide-after` property can be set: The number 
 
 . . .
 ```
+
+## Documentation Links
+
+- [HOWTO: Create and Reuse a Custom Element](https://doc.nuxeo.com/nxdoc/how-to-create-and-reuse-custom-element/)
+- [HOWTO: Customize Document Layouts](https://doc.nuxeo.com/nxdoc/web-ui-document-layouts/)
+- [Web UI Layout Elements](https://doc.nuxeo.com/nxdoc/web-ui-layouts/)

@@ -22,3 +22,9 @@ Display a collapsible element.
 ### Studio Designer
 
 Copy the content of `nuxeo-se-collapse.html` into your Nuxeo Studio Designer hierarchy. Then import and reference the element from your layout, using `my-element-example.html` as an example.
+
+## Documentation Links
+
+- [HOWTO: Create and Reuse a Custom Element](https://doc.nuxeo.com/nxdoc/how-to-create-and-reuse-custom-element/)
+- [HOWTO: Customize Document Layouts](https://doc.nuxeo.com/nxdoc/web-ui-document-layouts/)
+- [Web UI Layout Elements](https://doc.nuxeo.com/nxdoc/web-ui-layouts/)

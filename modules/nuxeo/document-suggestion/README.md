@@ -106,3 +106,9 @@ _getThumbnailUrl: function(doc) {
         return "/nuxeo/api/v1/id/" + doc.uid + "/@rendition/thumbnail";
       },
 ```
+
+## Documentation Links
+
+- [HOWTO: Create and Reuse a Custom Element](https://doc.nuxeo.com/nxdoc/how-to-create-and-reuse-custom-element/)
+- [HOWTO: Customize Document Layouts](https://doc.nuxeo.com/nxdoc/web-ui-document-layouts/)
+- [Web UI Layout Elements](https://doc.nuxeo.com/nxdoc/web-ui-layouts/)

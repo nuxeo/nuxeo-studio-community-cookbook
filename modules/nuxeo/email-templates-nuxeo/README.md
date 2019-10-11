@@ -25,3 +25,7 @@ Use this mail templates for any notification triggered by the `Document.Mail` au
 
 - Upload `logo-dark.png` and `logo-light.png` in Resources > Images
 - Copy the content of the template HTML file to the corresponding object in your Studio configuration (Templates | Mail Templates). If the object does not exist, create a new one with the `id` listed above.
+
+## Documentation Links
+
+- [Templates](https://doc.nuxeo.com/studio/templates/)

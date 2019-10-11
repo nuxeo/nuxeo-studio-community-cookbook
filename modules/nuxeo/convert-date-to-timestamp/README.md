@@ -15,3 +15,7 @@ Copy the content of `convert-date-to-timestamp.js` into your automation script.
 ## Installation
 
 Nothing needed.
+
+## Documentation Links
+
+- [Working in Studio Modeler](https://doc.nuxeo.com/studio/working-in-studio/)

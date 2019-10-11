@@ -84,3 +84,7 @@ Note: this is not an explanation of how to use Kibana, it's just a list of thing
     * Split series by "category"
 * Create a dashboard with your visualizations
 * Set the Dashboard URL in Designer in trk-metrics-analytics-layout.html
+
+## Documentation Links
+
+- [Data Visualization](https://doc.nuxeo.com/nxdoc/data-visualization/)

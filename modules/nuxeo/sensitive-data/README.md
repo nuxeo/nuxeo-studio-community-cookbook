@@ -20,3 +20,7 @@ Display a Nuxeo card on the document view with Sensitive Data analysis results.
 ### Studio Designer
 
 - Import `sensitive-data.html` under the `UI` folder.
+
+## Documentation Links
+
+- [Nuxeo AI](https://doc.nuxeo.com/nxdoc/nuxeo-ai/)

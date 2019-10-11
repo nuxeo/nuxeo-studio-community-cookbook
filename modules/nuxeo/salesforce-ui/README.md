@@ -19,3 +19,7 @@ Simple layout to display Salesforce metadata when using [nuxeo-salesforce](https
 -OR-
 
 * Copy the customization of `nuxeo-workspace-view-layout` into your desired layout
+
+## Documentation Links
+
+- [Nuxeo for Salesforce](https://doc.nuxeo.com/nxdoc/nuxeo-for-salesforce/)

@@ -58,3 +58,7 @@ The, you have to create a XML extension:
     </suggester>
 </extension>
 ```
+
+## Documentation Links
+
+- [Working in Studio Modeler](https://doc.nuxeo.com/studio/working-in-studio/)

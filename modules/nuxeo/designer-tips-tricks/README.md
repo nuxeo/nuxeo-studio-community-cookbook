@@ -127,3 +127,7 @@ nuxeo-data-table,
                 min-height: calc(100vh - 130px - var(--nuxeo-app-top));
             }
 ```
+
+## Documentation Links
+
+- [Nuxeo Studio Designer](https://doc.nuxeo.com/studio/working-in-view-designer/)

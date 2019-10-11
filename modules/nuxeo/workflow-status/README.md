@@ -26,3 +26,8 @@ As a Nuxeo Administrator, navigate to Admin -> Analytics -> Workflow Status.
 ### Studio Designer
 
 - Install the content in the `ui` folder as Resources in Designer (including the subfolders).
+
+## Documentation Links
+
+- [Workflow in Nuxeo Studio Modeler](https://doc.nuxeo.com/studio/workflow/)
+- [Workflow Platform Services](https://doc.nuxeo.com/nxdoc/workflow/)

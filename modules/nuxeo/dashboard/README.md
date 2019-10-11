@@ -44,3 +44,9 @@ Customize the dashboard with your own pictures, links, cards.
   - `MY_SECOND_NUXEO_CARD`
 
 :information_source: You'll find code samples in comment to understand how to configure links, pictures and cards. In the provided dashboard, you'll find one of the default card displayed in the standard dashboard, and a new card using a specific page provider and icons. Feel free to reuse the one from the original one.
+
+## Documentation Links
+
+- [DAM](https://doc.nuxeo.com/nxdoc/dam/)
+- [HOWTO: Customize Dashboard](https://doc.nuxeo.com/nxdoc/web-ui-dashboard/)
+- [Web UI Layout Elements](https://doc.nuxeo.com/nxdoc/web-ui-layouts/)

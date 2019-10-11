@@ -24,3 +24,7 @@ Use the `ExtractDocumentText` automation endpoint to populate the `ocr` facet pr
 ## Configuration
 
 Configure `nuxeo-vision` with the Google Vision provider.
+
+## Documentation Links
+
+- [Nuxeo Vision](https://doc.nuxeo.com/nxdoc/nuxeo-vision/)

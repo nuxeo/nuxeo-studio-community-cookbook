@@ -32,4 +32,8 @@
 
 // If relevant, explain how to adapt your module to answers closed needs.
 
+## Documentation Links
+
+// Links to the related pages in doc.nuxeo.com
+
 ## Issues and Limitations
