@@ -1,12 +1,10 @@
-# Analytics with Kibana
+# Project metrics with Kibana
 
 ![Kibana](kibana.png)
 
 ## Description
 
 Module for generating data to be used in a Kibana dashboard, and displayed in the "Analytics" area of Web UI.
-
-## Usage
 
 Module for generating data to be used in a Kibana dashboard, and displayed in the "Analytics" area of Web UI.
 
