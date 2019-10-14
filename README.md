@@ -13,11 +13,12 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 Module | Description | Contributor | Category
 --- | --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/inject-html"><img src="modules/nuxeo/inject-html/html-injection.png" width="120px"/></a> | Inject HTML into a page using bound data | Nuxeo | Layout
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/dashboard"><img src="modules/nuxeo/dashboard/dashboard.png" width="120px"/></a> | Visual Dashboard with pictures | Nuxeo | Dashboard
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/document-suggestion"><img src="modules/nuxeo/document-suggestion/document-suggestion-watermark.png" width="120px"/></a> | Custom Nuxeo Suggestion Display | Nuxeo | Layout
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/collapse"><img src="modules/nuxeo/collapse/nuxeo-se-collapse.png" width="120px"/></a> | Collapsible Element | Nuxeo | Layout
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/modeler-tips-tricks"><img src="modules/nuxeo/modeler-tips-tricks/modeler.png" width="100px"/></a> | Tips and tricks to design elements within Studio Modeler | Nuxeo | Business Logic
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/designer-tips-tricks"><img src="modules/nuxeo/designer-tips-tricks/designer.png" width="100px"/></a> | Tips and tricks to implement backend logics with Studio Modeler | Nuxeo | Layout
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/modeler-tips-tricks"><img src="modules/nuxeo/modeler-tips-tricks/modeler.png" width="100px"/></a> | Tips and tricks to implement backend logics with Studio Modeler | Nuxeo | Business Logic
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/designer-tips-tricks"><img src="modules/nuxeo/designer-tips-tricks/designer.png" width="100px"/></a> | Tips and tricks to design elements within Studio Designer | Nuxeo | Layout
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/video-thumbnail"><img src="modules/nuxeo/video-thumbnail/video-thumbnail2.png" width="100px"/></a> | Sets the video poster and search thumbnail | Nuxeo | DAM
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/google-vision-ocr"><img src="modules/nuxeo/google-vision-ocr/ocr.png" width="100px"/></a> | Extract text from an image-based PDF with Google Vision | Nuxeo | AI
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/saml-user-mapping"><img src="modules/nuxeo/saml-user-mapping/saml.png" width="100px"/></a> | Map SAML user attributes to Nuxeo | Nuxeo | Authentication
