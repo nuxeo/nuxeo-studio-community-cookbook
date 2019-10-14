@@ -1,0 +1,34 @@
+<!--
+`nuxeo-inject-html`
+@group Nuxeo UI
+@element nuxeo-inject-html
+
+Usage:
+
+<nuxeo-inject-html result="[[someHtmlInAFieldOrVariable]]"></nuxeo-inject-html>
+-->
+<dom-module id="nuxeo-inject-html">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-inject-html',
+      properties: {
+        result: {
+          type: String,
+          observer: '_observeResult'
+        }
+      },
+
+      _observeResult: function() {
+        this.root.innerHTML = this.result;
+      }
+    });
+  </script>
+</dom-module>
