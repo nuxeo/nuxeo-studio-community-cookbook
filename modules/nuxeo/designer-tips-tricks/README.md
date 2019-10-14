@@ -4,6 +4,7 @@
 
 ## Table Of Content
 
+- [Update the children document listing in the View tab of folderish documents](#update-the-children-document-listing-in-the-view-tab-of-folderish-documents)
 - [Create a table with two columns](#create-a-table-with-two-columns)
 - [Position several Nuxeo elements in the same row](#position-several-nuxeo-elements-in-the-same-row)
 - [Get property name and property value on the same row](#get-property-name-and-property-value-on-the-same-row-as-the-nuxeo-document-info-section)
@@ -25,6 +26,39 @@ This module helps you to tune the default element scaffolded by Studio Designer.
 Switch to code on the layouts and elements in Studio Designer and adapt the code to your needs.
 
 ## Studio Designer Contributions
+
+### Update the children document listing in the View tab of folderish documents.
+
+Typically, if you need to update the default document listing on the "View" tab with properties from your custom document type.
+
+1. Create a page provider, and add the `ecm:parentId` as predicate with the `=` operator.
+2. Generate the corresponding result listing in Designer.
+3. Adapt the column which needs to appear on your listing. :information_source: If you're using suggestion elements, remove the `label` attribute from the listing so that they are not doubled
+4. Add the `nuxeo-page-provider` element in your result layout (by switching in code view), update the `provider` parameter with the one you created in "1." add the necessary `schemas`:
+```
+<nuxeo-page-provider id="nxProvider"
+                         provider="nxProvider"                  // TO BE UPDATED
+                         params='[[_computeParams(document)]]'
+                         enrichers="thumbnail, permissions"
+                         schemas="dublincore,common,uid"        // TO BE COMPLETED
+                         page-size="20"
+                         headers='{"X-NXfetch.document": "properties", "X-NXtranslate.directoryEntry": "label"}'
+                         auto>
+    </nuxeo-page-provider>
+```
+5. Add the following section of the Polymer part of the same document
+```
+ready: function() {
+      this.nxProvider = this.$.nxProvider; // <============== this is important
+    },
+    _computeParams: function (document) {
+      return document ? {system_parentId: this.document.uid} : {};
+    },
+
+```
+6. Go to your view layout of your folderish document. Generate the view layout and remove everything between `</style>` and `</template>`
+7. Add manually your result element. Donc forget to add the `document="[[document]]"` attribute to the result layout, and import the alement in your layout `<link rel="import" href="../../search/<page_provider_name>/nuxeo-<page_provider_name>-search-results.html">
+`
 
 ### Create a table with two columns
 
@@ -65,6 +99,9 @@ Without forgetting to update the `<style>` line with `<style include="iron-flex 
       }
       label{
         font-size: 12px;
+      }
+      .properties div {
+        min-width: 50em;
       }
     </style>
 ```
