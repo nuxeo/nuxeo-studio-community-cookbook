@@ -30,7 +30,7 @@ Module | Description | Contributor | Category
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/toggleable-form"><img src="modules/nuxeo/toggleable-form/screenshot.png" width="100px"/></a> | Inline card property edition | Nuxeo | Layout
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/salesforce-ui"><img src="modules/nuxeo/salesforce-ui/sfdc-webui.png" width="100px"/></a> | Display Salesforce metadata | Nuxeo | Salesforce
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/ssn"><img src="modules/nuxeo/ssn/ssn.jpg" width="100px"/></a> | Show/hide the value of a secret field | Nuxeo | Security
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/kibana"><img src="modules/nuxeo/kibana/kibana.png" width="100px"/></a> | Display Kibana dashboards in the "Analytics" menu | Nuxeo | Reporting
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/project-metrics"><img src="modules/nuxeo/project-metrics/kibana.png" width="100px"/></a> | Display Kibana dashboards in the "Analytics" menu | Nuxeo | Reporting
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/related-documents"><img src="modules/nuxeo/related-documents/nuxeo-related-documents.png" width="150px"/></a> | Display Document Relations | Nuxeo | Relations
 
 ## Getting Started
