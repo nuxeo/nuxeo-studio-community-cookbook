@@ -6,8 +6,6 @@
 
 Module for generating data to be used in a Kibana dashboard, and displayed in the "Analytics" area of Web UI.
 
-Module for generating data to be used in a Kibana dashboard, and displayed in the "Analytics" area of Web UI.
-
 This module supports a "story" that the duration of content with completion dates decreases over time, because Nuxeo makes things more efficient. It uses a exponential function, with some jiggle, to create this trend. Note the "Project Duration" graph:
 
 ![Dashboard Example](example.png)
