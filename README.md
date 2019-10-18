@@ -26,7 +26,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 Module | Description | Contributor | Category
 --- | --- | --- | ---
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/actions-versioned-documents"><img src="modules/nuxeo/inject-html/document-versions.png" width="120px"/></a> | Delete and Update Document Lifecycle state of versioned documents | Nuxeo | Automation
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/actions-versioned-documents"><img src="modules/nuxeo/actions-versioned-documents/document-versions.png" width="120px"/></a> | Delete and Update Document Lifecycle state of versioned documents | Nuxeo | Automation
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/inject-html"><img src="modules/nuxeo/inject-html/html-injection.png" width="120px"/></a> | Inject HTML into a page using bound data | Nuxeo | Layout
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/dashboard"><img src="modules/nuxeo/dashboard/dashboard.png" width="120px"/></a> | Visual Dashboard with pictures | Nuxeo | Dashboard
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/document-suggestion"><img src="modules/nuxeo/document-suggestion/document-suggestion-watermark.png" width="120px"/></a> | Custom Nuxeo Suggestion Display | Nuxeo | Layout
