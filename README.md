@@ -11,6 +11,8 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 :information_source: Click on the module thumbnail to view the module contributions.
 
+### Latest Modules
+
 Module | Description | Contributor | Category
 --- | --- | --- | ---
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/inject-html"><img src="modules/nuxeo/inject-html/html-injection.png" width="120px"/></a> | Inject HTML into a page using bound data | Nuxeo | Layout
@@ -20,18 +22,77 @@ Module | Description | Contributor | Category
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/modeler-tips-tricks"><img src="modules/nuxeo/modeler-tips-tricks/modeler.png" width="100px"/></a> | Tips and tricks to implement backend logics with Studio Modeler | Nuxeo | Business Logic
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/designer-tips-tricks"><img src="modules/nuxeo/designer-tips-tricks/designer.png" width="100px"/></a> | Tips and tricks to design elements within Studio Designer | Nuxeo | Layout
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/video-thumbnail"><img src="modules/nuxeo/video-thumbnail/video-thumbnail2.png" width="100px"/></a> | Sets the video poster and search thumbnail | Nuxeo | DAM
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/google-vision-ocr"><img src="modules/nuxeo/google-vision-ocr/ocr.png" width="100px"/></a> | Extract text from an image-based PDF with Google Vision | Nuxeo | AI
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/saml-user-mapping"><img src="modules/nuxeo/saml-user-mapping/saml.png" width="100px"/></a> | Map SAML user attributes to Nuxeo | Nuxeo | Authentication
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/workflow-status"><img src="modules/nuxeo/workflow-status/workflow-status.png" width="100px"/></a> | Monitor workflow instances status | Nuxeo | Workflow
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/sensitive-data"><img src="modules/nuxeo/sensitive-data/sensitive-data1.png" width="100px"/></a> | Display sensitive data details contained in a document | Nuxeo | AI
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/convert-date-to-timestamp"><img src="modules/nuxeo/convert-date-to-timestamp/calendar.png" width="100px"/></a> | Convert date to timestamp | Nuxeo | Automation
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/email-templates-nuxeo"><img src="modules/nuxeo/email-templates-nuxeo/dark.png" width="100px"/></a> | Email templates | Nuxeo | Templates
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/video-conversions"><img src="modules/nuxeo/video-conversions/movie.png" width="100px"/></a> | Additional video conversions | Nuxeo | DAM
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/toggleable-form"><img src="modules/nuxeo/toggleable-form/screenshot.png" width="100px"/></a> | Inline card property edition | Nuxeo | Layout
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/salesforce-ui"><img src="modules/nuxeo/salesforce-ui/sfdc-webui.png" width="100px"/></a> | Display Salesforce metadata | Nuxeo | Salesforce
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/ssn"><img src="modules/nuxeo/ssn/ssn.jpg" width="100px"/></a> | Show/hide the value of a secret field | Nuxeo | Security
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/project-metrics"><img src="modules/nuxeo/project-metrics/kibana.png" width="100px"/></a> | Display Kibana dashboards in the "Analytics" menu | Nuxeo | Reporting
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/related-documents"><img src="modules/nuxeo/related-documents/nuxeo-related-documents.png" width="150px"/></a> | Display Document Relations | Nuxeo | Relations
+
+
+### Tips and Tricks
+
+Module | Description | Contributor
+--- | --- | ---
+
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/modeler-tips-tricks"><img src="modules/nuxeo/modeler-tips-tricks/modeler.png" width="100px"/></a> | Tips and tricks to implement backend logics with Studio Modeler | Nuxeo
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/designer-tips-tricks"><img src="modules/nuxeo/designer-tips-tricks/designer.png" width="100px"/></a> | Tips and tricks to design elements within Studio Designer | Nuxeo
+
+
+### Layouts
+
+Module | Description | Contributor
+--- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/inject-html"><img src="modules/nuxeo/inject-html/html-injection.png" width="120px"/></a> | Inject HTML into a page using bound data | Nuxeo
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/dashboard"><img src="modules/nuxeo/dashboard/dashboard.png" width="120px"/></a> | Visual Dashboard with pictures | Nuxeo
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/document-suggestion"><img src="modules/nuxeo/document-suggestion/document-suggestion-watermark.png" width="120px"/></a> | Custom Nuxeo Suggestion Display | Nuxeo
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/collapse"><img src="modules/nuxeo/collapse/nuxeo-se-collapse.png" width="120px"/></a> | Collapsible Element | Nuxeo
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/toggleable-form"><img src="modules/nuxeo/toggleable-form/screenshot.png" width="100px"/></a> | Inline card property edition | Nuxeo
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/salesforce-ui"><img src="modules/nuxeo/salesforce-ui/sfdc-webui.png" width="100px"/></a> | Display Salesforce metadata | Nuxeo
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/ssn"><img src="modules/nuxeo/ssn/ssn.jpg" width="100px"/></a> | Show/hide the value of a secret field | Nuxeo
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/related-documents"><img src="modules/nuxeo/related-documents/nuxeo-related-documents.png" width="150px"/></a> | Display Document Relations | Nuxeo
+
+### DAM
+
+Module | Description | Contributor
+--- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/video-thumbnail"><img src="modules/nuxeo/video-thumbnail/video-thumbnail2.png" width="100px"/></a> | Sets the video poster and search thumbnail | Nuxeo
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/video-conversions"><img src="modules/nuxeo/video-conversions/movie.png" width="100px"/></a> | Additional video conversions | Nuxeo
+
+### AI
+
+Module | Description | Contributor
+--- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/google-vision-ocr"><img src="modules/nuxeo/google-vision-ocr/ocr.png" width="100px"/></a> | Extract text from an image-based PDF with Google Vision | Nuxeo
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/sensitive-data"><img src="modules/nuxeo/sensitive-data/sensitive-data1.png" width="100px"/></a> | Display sensitive data details contained in a document | Nuxeo
+
+### Security / Authentication / User and Group Management
+
+Module | Description | Contributor
+--- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/saml-user-mapping"><img src="modules/nuxeo/saml-user-mapping/saml.png" width="100px"/></a> | Map SAML user attributes to Nuxeo | Nuxeo
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/sensitive-data"><img src="modules/nuxeo/sensitive-data/sensitive-data1.png" width="100px"/></a> | Display sensitive data details contained in a document | Nuxeo
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/ssn"><img src="modules/nuxeo/ssn/ssn.jpg" width="100px"/></a> | Show/hide the value of a secret field | Nuxeo
+
+### Reporting
+
+Module | Description | Contributor
+--- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/workflow-status"><img src="modules/nuxeo/workflow-status/workflow-status.png" width="100px"/></a> | Monitor workflow instances status | Nuxeo
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/project-metrics"><img src="modules/nuxeo/project-metrics/kibana.png" width="100px"/></a> | Display Kibana dashboards in the "Analytics" menu | Nuxeo
+
+### Business Logics
+
+Module | Description | Contributor
+--- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/convert-date-to-timestamp"><img src="modules/nuxeo/convert-date-to-timestamp/calendar.png" width="100px"/></a> | Convert date to timestamp | Nuxeo
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/related-documents"><img src="modules/nuxeo/related-documents/nuxeo-related-documents.png" width="150px"/></a> | Display Document Relations | Nuxeo
+
+### Templates
+
+Module | Description | Contributor
+--- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/email-templates-nuxeo"><img src="modules/nuxeo/email-templates-nuxeo/dark.png" width="100px"/></a> | Email templates | Nuxeo
+
+### Integrations
+
+Module | Description | Contributor
+--- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/salesforce-ui"><img src="modules/nuxeo/salesforce-ui/sfdc-webui.png" width="100px"/></a> | Display Salesforce metadata | Nuxeo
 
 ## Getting Started
 
@@ -81,6 +142,10 @@ You have to follow the repository contribution [guidelines](toolkit-and-guidelin
 These solutions are provided for inspiration and we encourage customers to use them as code samples and learning resources.
 
 This is a moving project (no API maintenance, no deprecation process, etc.) If any of these solutions are found to be useful for the Nuxeo Platform in general, they will be integrated directly into platform, not maintained here.
+
+## Nuxeo Labs
+
+You can access complete Nuxeo Marketplace addons on [Nuxeo Marketplace - Nuxeo Labs](https://connect.nuxeo.com/nuxeo/site/marketplace/category/nuxeo-labs) category (done for PoC and test purposes)
 
 ## Learn
 
