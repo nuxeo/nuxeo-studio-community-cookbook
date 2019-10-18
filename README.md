@@ -7,6 +7,19 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 - They can be unrelated to the UI (to provide new backend features, such as utilities to handle multimedia files, specific conversions, email templates etc.).
 - They can provide UI elements for Nuxeo Web UI, or any frontend application.
 
+## Table Of Content
+
+- [Latest Modules](#latest-modules)
+- [Tips and Tricks](#tips-and-tricks)
+- [Layouts](#layouts)
+- [DAM](#dam)
+- [AI](#ai)
+- [Security / Authentication / User and Group Management](#security--authentication--user-and-group-management)
+- [Reporting](#reporting)
+- [Business Logics](#business-logics)
+- [Templates](#templates)
+- [Integrations](#integrations)
+
 ## Module listing
 
 :information_source: Click on the module thumbnail to view the module contributions.
@@ -15,13 +28,13 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 Module | Description | Contributor | Category
 --- | --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/actions-versioned-documents"><img src="modules/nuxeo/inject-html/document-versions.png" width="120px"/></a> | Delete and Update Document Lifecycle state of versioned documents | Nuxeo | Automation
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/inject-html"><img src="modules/nuxeo/inject-html/html-injection.png" width="120px"/></a> | Inject HTML into a page using bound data | Nuxeo | Layout
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/dashboard"><img src="modules/nuxeo/dashboard/dashboard.png" width="120px"/></a> | Visual Dashboard with pictures | Nuxeo | Dashboard
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/document-suggestion"><img src="modules/nuxeo/document-suggestion/document-suggestion-watermark.png" width="120px"/></a> | Custom Nuxeo Suggestion Display | Nuxeo | Layout
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/collapse"><img src="modules/nuxeo/collapse/nuxeo-se-collapse.png" width="120px"/></a> | Collapsible Element | Nuxeo | Layout
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/modeler-tips-tricks"><img src="modules/nuxeo/modeler-tips-tricks/modeler.png" width="100px"/></a> | Tips and tricks to implement backend logics with Studio Modeler | Nuxeo | Business Logic
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/designer-tips-tricks"><img src="modules/nuxeo/designer-tips-tricks/designer.png" width="100px"/></a> | Tips and tricks to design elements within Studio Designer | Nuxeo | Layout
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/video-thumbnail"><img src="modules/nuxeo/video-thumbnail/video-thumbnail2.png" width="100px"/></a> | Sets the video poster and search thumbnail | Nuxeo | DAM
 
 
 ### Tips and Tricks
@@ -78,6 +91,7 @@ Module | Description | Contributor
 
 Module | Description | Contributor
 --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/actions-versioned-documents"><img src="modules/nuxeo/inject-html/document-versions.png" width="120px"/></a> | Delete and Update Document Lifecycle state of versioned documents | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/convert-date-to-timestamp"><img src="modules/nuxeo/convert-date-to-timestamp/calendar.png" width="100px"/></a> | Convert date to timestamp | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/related-documents"><img src="modules/nuxeo/related-documents/nuxeo-related-documents.png" width="150px"/></a> | Display Document Relations | Nuxeo
 
