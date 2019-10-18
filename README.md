@@ -7,27 +7,18 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 - They can be unrelated to the UI (to provide new backend features, such as utilities to handle multimedia files, specific conversions, email templates etc.).
 - They can provide UI elements for Nuxeo Web UI, or any frontend application.
 
-## Table Of Content
-
-<table style="width:100%">
-  <tr>
-    <th>
-    - [Tips and Tricks](#tips-and-tricks)
-    - [Layouts](#layouts)
-    - [DAM](#dam)
-    - [AI](#ai)
-    - [Security / Authentication / User and Group Management](#security--authentication--user-and-group-management)
-    </th>
-    <th>
-    - [Reporting](#reporting)
-    - [Business Logics](#business-logics)
-    - [Templates](#templates)
-    - [Integrations](#integrations)
-    </th>
-  </tr>
-</table>
-
 ## Module listing
+
+- [Latest Modules](#latest-modules)
+- [Tips and Tricks](#tips-and-tricks)
+- [Layouts](#layouts)
+- [DAM](#dam)
+- [AI](#ai)
+- [Security / Authentication / User and Group Management](#security--authentication--user-and-group-management)
+- [Reporting](#reporting)
+- [Business Logics](#business-logics)
+- [Templates](#templates)
+- [Integrations](#integrations)
 
 :information_source: Click on the module thumbnail to view the module contributions.
 
