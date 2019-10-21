@@ -72,7 +72,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 ### Tips and Tricks
 
-<table style="width:100%">
+<table width="100%">
   <tr style="font-weight:bold">
     <th>Module</th>
     <th>Description</th>
