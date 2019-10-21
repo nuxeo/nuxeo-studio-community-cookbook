@@ -72,10 +72,24 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 ### Tips and Tricks
 
-Module | Description | Contributor
---- | --- | ---
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/modeler-tips-tricks"><img src="modules/nuxeo/modeler-tips-tricks/modeler.png" width="100px"/></a> | Tips and tricks to implement backend logics with Studio Modeler | Nuxeo
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/designer-tips-tricks"><img src="modules/nuxeo/designer-tips-tricks/designer.png" width="100px"/></a> | Tips and tricks to design elements within Studio Designer | Nuxeo
+<table style="width:100%">
+  <tr style="font-weight:bold">
+    <th>Module</th>
+    <th>Description</th>
+    <th>Author</th>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/modeler-tips-tricks"><img src="modules/nuxeo/modeler-tips-tricks/modeler.png" width="100px"/></a></td>
+    <td>Tips and tricks to implement backend logics with Studio Modeler</td>
+    <td>Nuxeo</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/designer-tips-tricks"><img src="modules/nuxeo/designer-tips-tricks/designer.png" width="100px"/></a></td>
+    <td>Tips and tricks to design elements within Studio Designer</td>
+    <td>Nuxeo</td>
+  </tr>
+</table>
+
 
 
 ### Layouts
