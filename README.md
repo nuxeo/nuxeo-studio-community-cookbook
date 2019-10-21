@@ -24,15 +24,50 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 ### Latest Modules
 
-Module | Description | Contributor | Category
---- | --- | --- | ---
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/actions-versioned-documents"><img src="modules/nuxeo/actions-versioned-documents/document-versions.png" width="120px"/></a> | Delete and Update Document Lifecycle state of versioned documents | Nuxeo | Automation
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/inject-html"><img src="modules/nuxeo/inject-html/html-injection.png" width="120px"/></a> | Inject HTML into a page using bound data | Nuxeo | Layout
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/dashboard"><img src="modules/nuxeo/dashboard/dashboard.png" width="120px"/></a> | Visual Dashboard with pictures | Nuxeo | Dashboard
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/document-suggestion"><img src="modules/nuxeo/document-suggestion/document-suggestion-watermark.png" width="120px"/></a> | Custom Nuxeo Suggestion Display | Nuxeo | Layout
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/collapse"><img src="modules/nuxeo/collapse/nuxeo-se-collapse.png" width="120px"/></a> | Collapsible Element | Nuxeo | Layout
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/modeler-tips-tricks"><img src="modules/nuxeo/modeler-tips-tricks/modeler.png" width="100px"/></a> | Tips and tricks to implement backend logics with Studio Modeler | Nuxeo | Business Logic
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/designer-tips-tricks"><img src="modules/nuxeo/designer-tips-tricks/designer.png" width="100px"/></a> | Tips and tricks to design elements within Studio Designer | Nuxeo | Layout
+<table style="width:100%">
+  <tr style="font-weight:bold">
+    <th>Module</th>
+    <th>Description</th>
+    <th>Author</th>
+    <th>Category</th>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/actions-versioned-documents"><img src="modules/nuxeo/actions-versioned-documents/document-versions.png" width="120px"/></a></td>
+    <td>Delete and Update Document Lifecycle state of versioned documents</td>
+    <td>Nuxeo</td>
+    <td>Automation</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/inject-html"><img src="modules/nuxeo/inject-html/html-injection.png" width="120px"/></a></td>
+    <td>Inject HTML into a page using bound data</td>
+    <td>Nuxeo</td>
+    <td>Layout</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/dashboard"><img src="modules/nuxeo/dashboard/dashboard.png" width="120px"/></a></td>
+    <td>Visual Dashboard with pictures</td>
+    <td>Nuxeo</td>
+    <td>Dashboard</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/document-suggestion"><img src="modules/nuxeo/document-suggestion/document-suggestion-watermark.png" width="120px"/></a></td>
+    <td>Custom Nuxeo Suggestion Display</td>
+    <td>Nuxeo</td>
+    <td>Layout</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/modeler-tips-tricks"><img src="modules/nuxeo/modeler-tips-tricks/modeler.png" width="100px"/></a></td>
+    <td>Tips and tricks to implement backend logics with Studio Modeler</td>
+    <td>Nuxeo</td>
+    <td>Business Logic</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/designer-tips-tricks"><img src="modules/nuxeo/designer-tips-tricks/designer.png" width="100px"/></a></td>
+    <td>Tips and tricks to design elements within Studio Designer</td>
+    <td>Nuxeo</td>
+    <td>Layout</td>
+  </tr>
+</table>
 
 
 ### Tips and Tricks
