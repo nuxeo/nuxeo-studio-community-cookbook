@@ -3,6 +3,7 @@
 ## Table Of Content
 
 - [Get value from the parent document before creation](#get-value-from-the-parent-document-before-creation)
+- [Update the default behaviour of the Template Rendering Output](#update-the-default-behaviour-of-the-template-rendering-output-format)
 - [Override the global search to perform the search with fulltext analyzer on every property](#override-the-global-search-to-perform-the-search-with-fulltext-analyzer-on-every-property)
 
 
@@ -19,6 +20,25 @@ This module helps you to tune all backend aspects with Nuxeo Studio Modeler.
 Adapt your Studio Modeler customization to fit your needs
 
 ## Studio Modeler Contributions
+
+### Update the default behaviour of the Template Rendering Output Format
+
+By default, the Template Rendering addon is ignoring the `Rendering Output Format` value and always generates PDFs. If you need to change it, create an automation scripting called `RenderPdf` (With `input=Document` and `output=Blob`) with the following content:
+
+```
+/* Replaces the default javascript.RenderPdf, as contribued by nuxeo-template-rendering, to
+return a blob of the type defined in the template. */
+function run(input, params) {
+
+  var blob = TemplateProcessor.Render(input, {
+    'templateName': params.templateName,
+    'attach': params.attach || false,
+    'templateData': params.templateData || null
+  });
+
+  return blob;
+}
+```
 
 ### Get value from the parent document before creation
 
@@ -62,3 +82,4 @@ The, you have to create a XML extension:
 ## Documentation Links
 
 - [Working in Studio Modeler](https://doc.nuxeo.com/studio/working-in-studio/)
+- [Nuxeo Template Rendering Addon](https://doc.nuxeo.com/nxdoc/template-rendering-addon/)
