@@ -43,6 +43,8 @@ Customize the dashboard with your own pictures, links, cards.
   - `MY_FIRST_NUXEO_CARD`
   - `MY_SECOND_NUXEO_CARD`
 
+- In the `_refresh` function, add/update the name of your `nuxeo-data-table` id like `this.$.<DATA_TABLE_ID>.fetch();`    
+
 :information_source: You'll find code samples in comment to understand how to configure links, pictures and cards. In the provided dashboard, you'll find one of the default card displayed in the standard dashboard, and a new card using a specific page provider and icons. Feel free to reuse the one from the original one.
 
 ## Documentation Links
