@@ -32,16 +32,16 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <th>Category</th>
   </tr>
   <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/progress-bar"><img src="modules/nuxeo/progress-bar/progress-bar.png" width="120px"/></a></td>
+    <td>Add a progress bar</td>
+    <td>Nuxeo</td>
+    <td>Layout</td>
+  </tr>
+  <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/actions-versioned-documents"><img src="modules/nuxeo/actions-versioned-documents/document-versions.png" width="120px"/></a></td>
     <td>Delete and Update Document Lifecycle state of versioned documents</td>
     <td>Nuxeo</td>
     <td>Automation</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/inject-html"><img src="modules/nuxeo/inject-html/html-injection.png" width="120px"/></a></td>
-    <td>Inject HTML into a page using bound data</td>
-    <td>Nuxeo</td>
-    <td>Layout</td>
   </tr>
   <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/dashboard"><img src="modules/nuxeo/dashboard/dashboard.png" width="120px"/></a></td>
@@ -90,12 +90,11 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
   </tr>
 </table>
 
-
-
 ### Layouts
 
 Module | Description | Contributor
 --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/progress-bar"><img src="modules/nuxeo/progress-bar/progress-bar.png" width="120px"/></a> | Add a progress bar | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/inject-html"><img src="modules/nuxeo/inject-html/html-injection.png" width="120px"/></a> | Inject HTML into a page using bound data | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/dashboard"><img src="modules/nuxeo/dashboard/dashboard.png" width="120px"/></a> | Visual Dashboard with pictures | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/document-suggestion"><img src="modules/nuxeo/document-suggestion/document-suggestion-watermark.png" width="120px"/></a> | Custom Nuxeo Suggestion Display | Nuxeo
