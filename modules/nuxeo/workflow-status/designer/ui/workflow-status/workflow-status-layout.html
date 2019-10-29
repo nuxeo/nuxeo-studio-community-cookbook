@@ -1,27 +1,23 @@
+
 <dom-module id="workflow-status-layout">
   <template>
     <style include="iron-flex iron-flex-alignment nuxeo-styles">
       :host {
         display: block;
       }
-
       paper-card {
         padding: 0;
         border-radius: 2px;
       }
-
       .status-list {
         height: calc(100vh - 101px);
       }
-
       .status-bar {
         height: 100px;
       }
-
       nuxeo-data-table {
         height: calc(100vh - 130px);
       }
-
       nuxeo-document-suggestion {
         width: 100%;
       }
@@ -36,7 +32,7 @@
         <!-- Table view -->
         <nuxeo-data-table id="tasksTable" nx-provider="tasksProvider" class="results" settings-enabled="false" empty-label="[[emptyLabel]]" empty-label-when-filtered="[[emptyLabelWhenFiltered]]">
 
-          <nuxeo-data-table-column name="Workflow" field="nt:processId" sort-by="nt:processId">
+          <nuxeo-data-table-column name="Workflow" field="nt:processId" sort-by="nt:processId" flex="70">
             <template>
               <nuxeo-document auto="true" response="{{workflow}}" doc-id="[[item.properties.nt:processId]]"></nuxeo-document>
               [[i18n(workflow.title)]]
@@ -49,15 +45,15 @@
             </template>
           </nuxeo-data-table-column>
 
-          <nuxeo-data-table-column name="Target" field="nt:targetDocumentsIds" flex="100">
+          <nuxeo-data-table-column name="Target" field="nt:targetDocumentsIds" flex="75">
             <template>
               <nuxeo-document-suggestion value="{{_getTaskTarget(item)}}" readonly="readonly"></nuxeo-document-suggestion>
             </template>
           </nuxeo-data-table-column>
 
-          <nuxeo-data-table-column name="Assignee(s)">
+          <nuxeo-data-table-column name="Assignee(s)" flex="75">
             <template>
-              <nuxeo-user-suggestion value="[[_getTaskAssignee(item)]]" readonly="readonly"></nuxeo-user-suggestion>
+              <nuxeo-user-tag user="[[_getTaskAssignee(item)]]"></nuxeo-user-tag>
             </template>
           </nuxeo-data-table-column>
 
@@ -89,42 +85,34 @@
   <script>
     Polymer({
       is: 'workflow-status-layout',
-
       behaviors: [Nuxeo.LayoutBehavior],
-
       properties: {
         visible: {
           type: Boolean,
           observer: '_visibleChanged'
         }
       },
-
       _visibleChanged: function (visible) {
         if (visible) {
           this._refresh();
         }
       },
-
       ready: function () {
         this._refresh();
       },
-
       _refresh: function () {
         this.$.tasksTable.fetch();
       },
-
       _getTaskTarget: function (item) {
         if (item && item.properties && item.properties["nt:targetDocumentsIds"] && item.properties["nt:targetDocumentsIds"].length > 0) {
           return item.properties["nt:targetDocumentsIds"][0];
         }
       },
-
       _getTaskAssignee: function (item) {
         if (item && item.properties && item.properties["nt:actors"] && item.properties["nt:actors"].length > 0) {
           return item.properties["nt:actors"][0];
         }
       }
-
     });
   </script>
 </dom-module>
