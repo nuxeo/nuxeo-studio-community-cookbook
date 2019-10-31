@@ -19,7 +19,6 @@ function run(input, params) {
       taskId    = currentTask.id;
       Console.info("    Session    : '" + Session + "' (" + typeof(Session) + ")");
       taskService.reassignTask(Session, taskId, newActors, comment);
-      Console.info("    result    : '" + result + "' (" + typeof(result) + ")");
     }
   }
 }
