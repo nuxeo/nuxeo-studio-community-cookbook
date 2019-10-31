@@ -1,0 +1,7 @@
+<require>org.nuxeo.automation.scripting.classfilter</require>
+
+<extension target="org.nuxeo.automation.scripting.internals.AutomationScriptingComponent" point="classFilter">
+  <classFilter>
+    <allow>org.nuxeo.ecm.platform.task.core.service.TaskServiceImpl</allow>
+  </classFilter>
+</extension>

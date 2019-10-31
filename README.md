@@ -23,6 +23,8 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 :information_source: Click on the module thumbnail to view the module contributions.
 
 ### Latest Modules
+modules/nuxeo/
+modules/nuxeo/bulk-workflow-reassignment/task_reassignment.png
 
 <table style="width:100%">
   <tr style="font-weight:bold">
@@ -30,6 +32,12 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <th>Description</th>
     <th>Author</th>
     <th>Category</th>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/bulk-workflow-reassignment"><img src="modules/nuxeo/bulk-workflow-reassignment/task_reassignment.png" width="120px"/></a></td>
+    <td>Bulk Workflow Reassignment</td>
+    <td>Nuxeo</td>
+    <td>Workflow</td>
   </tr>
   <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/progress-bar"><img src="modules/nuxeo/progress-bar/progress-bar.png" width="120px"/></a></td>
@@ -52,18 +60,6 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
   <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/document-suggestion"><img src="modules/nuxeo/document-suggestion/document-suggestion-watermark.png" width="120px"/></a></td>
     <td>Custom Nuxeo Suggestion Display</td>
-    <td>Nuxeo</td>
-    <td>Layout</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/modeler-tips-tricks"><img src="modules/nuxeo/modeler-tips-tricks/modeler.png" width="100px"/></a></td>
-    <td>Tips and tricks to implement backend logics with Studio Modeler</td>
-    <td>Nuxeo</td>
-    <td>Business Logic</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/designer-tips-tricks"><img src="modules/nuxeo/designer-tips-tricks/designer.png" width="100px"/></a></td>
-    <td>Tips and tricks to design elements within Studio Designer</td>
     <td>Nuxeo</td>
     <td>Layout</td>
   </tr>
@@ -122,6 +118,7 @@ Module | Description | Contributor
 
 Module | Description | Contributor
 --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/bulk-workflow-reassignment"><img src="modules/nuxeo/bulk-workflow-reassignment/task_reassignment.png" width="100px"/></a> | Bulk Workflow Reassignment | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/saml-user-mapping"><img src="modules/nuxeo/saml-user-mapping/saml.png" width="100px"/></a> | Map SAML user attributes to Nuxeo | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/sensitive-data"><img src="modules/nuxeo/sensitive-data/sensitive-data1.png" width="100px"/></a> | Display sensitive data details contained in a document | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/ssn"><img src="modules/nuxeo/ssn/ssn.jpg" width="100px"/></a> | Show/hide the value of a secret field | Nuxeo
