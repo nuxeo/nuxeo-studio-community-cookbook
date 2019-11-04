@@ -34,6 +34,12 @@ modules/nuxeo/bulk-workflow-reassignment/task_reassignment.png
     <th>Category</th>
   </tr>
   <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/qr-code"><img src="modules/nuxeo/qr-code/qrcode.png" width="120px"/></a></td>
+    <td>Document QR Code</td>
+    <td>Nuxeo</td>
+    <td>Business Logics</td>
+  </tr>
+  <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/bulk-workflow-reassignment"><img src="modules/nuxeo/bulk-workflow-reassignment/task_reassignment.png" width="120px"/></a></td>
     <td>Bulk Workflow Reassignment</td>
     <td>Nuxeo</td>
@@ -56,12 +62,6 @@ modules/nuxeo/bulk-workflow-reassignment/task_reassignment.png
     <td>Visual Dashboard with pictures</td>
     <td>Nuxeo</td>
     <td>Dashboard</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/document-suggestion"><img src="modules/nuxeo/document-suggestion/document-suggestion-watermark.png" width="120px"/></a></td>
-    <td>Custom Nuxeo Suggestion Display</td>
-    <td>Nuxeo</td>
-    <td>Layout</td>
   </tr>
 </table>
 
