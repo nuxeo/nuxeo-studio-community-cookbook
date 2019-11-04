@@ -36,12 +36,12 @@ This module allows you to generate a QR Code when a document is created in the p
 
 - You can choose to store the QR Code in any document property
 
-## Limitations
-
-- You cannot use the **Document** URL instead of the **File** URL because of the `#` character: even if it is encoded in the automation scripting, it is not decoded on Google side, building an incorrect URL
-
 ## Documentation Links
 
-// Links to the related pages in doc.nuxeo.com
+- [HOWTO: Create and Reuse a Custom Element](https://doc.nuxeo.com/nxdoc/how-to-create-and-reuse-custom-element/)
+- [HOWTO: Customize Document Layouts](https://doc.nuxeo.com/nxdoc/web-ui-document-layouts/)
+- [Web UI Layout Elements](https://doc.nuxeo.com/nxdoc/web-ui-layouts/)
 
 ## Issues and Limitations
+
+- You cannot use the **Document** URL instead of the **File** URL because of the `#` character: even if it is encoded in the automation scripting, it is not decoded on Google side, building an incorrect URL
