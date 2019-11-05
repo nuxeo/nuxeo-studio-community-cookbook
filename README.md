@@ -23,8 +23,6 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 :information_source: Click on the module thumbnail to view the module contributions.
 
 ### Latest Modules
-modules/nuxeo/
-modules/nuxeo/bulk-workflow-reassignment/task_reassignment.png
 
 <table style="width:100%">
   <tr style="font-weight:bold">
