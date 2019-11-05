@@ -9,7 +9,7 @@ function run(input, params) {
   var resultBlob = HTTP.call("", "", "GET", URL);
   resultBlob = Blob.AttachOnDocument(
   resultBlob, {
-    	'document': input.id,
+    	'document': input,
     	'save': "true",
       'xpath': "file_schema:qrcode"
     }
