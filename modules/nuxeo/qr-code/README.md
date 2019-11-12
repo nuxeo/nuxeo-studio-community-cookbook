@@ -41,6 +41,7 @@ This module allows you to generate a QR Code when a document is created in the p
 - [HOWTO: Create and Reuse a Custom Element](https://doc.nuxeo.com/nxdoc/how-to-create-and-reuse-custom-element/)
 - [HOWTO: Customize Document Layouts](https://doc.nuxeo.com/nxdoc/web-ui-document-layouts/)
 - [Web UI Layout Elements](https://doc.nuxeo.com/nxdoc/web-ui-layouts/)
+- [URLs for Files](https://doc.nuxeo.com/nxdoc/urls-for-files/)
 
 ## Issues and Limitations
 
