@@ -69,7 +69,7 @@ And uncheck "quote parameter"
 
 Ignore the validation warning "Number of parameters and number of occurrences of the '?' character in the query filter do not match"
 
-The, you have to create a XML extension:
+Then, you have to create an XML extension:
 
 ```
 <extension point="suggesters" target="org.nuxeo.ecm.platform.suggestbox.service.SuggestionService">
