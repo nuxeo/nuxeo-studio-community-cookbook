@@ -65,7 +65,9 @@ By default, it performs full text search only on `dc:title` property. To modify 
 
 `ecm:mixinType != 'HiddenInNavigation' AND ecm:isCheckedInVersion = 0 AND ecm:currentLifeCycleState != 'deleted' AND ecm:fulltext LIKE '?'`
 
-And uncheck escape quote parameter
+And uncheck "quote parameter"
+
+Ignore the validation warning "Number of parameters and number of occurrences of the '?' character in the query filter do not match"
 
 The, you have to create a XML extension:
 
