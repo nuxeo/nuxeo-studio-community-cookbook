@@ -136,7 +136,7 @@ Without forgetting to update the `<style>` line with `<style include="iron-flex 
 - Use [https://www.w3schools.com/colors/colors_picker.asp](https://www.w3schools.com/colors/colors_picker.asp) to get colour derivatives.
 - Apply main color on `--nuxeo-primary-color`. Eventually apply the same main color on `--nuxeo-sidebar-background`.
 - Apply a darker color from the previous one on `--nuxeo-secondary-color` and `--paper-spinner-layer-3-color`.
-- Apply same color as the logo on `--nuxeo-sidebar-background`.
+- Update the default font like (`--nuxeo-app-font: 'Arial', Helvetica, sans-serif;`)
 
 
 ### Update creation and edition screen size
