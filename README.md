@@ -61,6 +61,12 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <td>Nuxeo</td>
     <td>Dashboard</td>
   </tr>
+  <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/delete-all-trashed-documents"><img src="modules/nuxeo/delete-all-trashed-documents/DeleteAllTrashed" width="102"/></a></td>
+    <td> Permanently delete all trashed documents</td>
+    <td>Nuxeo</td>
+    <td> Automation </td>
+  </tr>
 </table>
 
 
@@ -135,6 +141,7 @@ Module | Description | Contributor
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/actions-versioned-documents"><img src="modules/nuxeo/actions-versioned-documents/document-versions.png" width="120px"/></a> | Delete and Update Document Lifecycle state of versioned documents | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/convert-date-to-timestamp"><img src="modules/nuxeo/convert-date-to-timestamp/calendar.png" width="100px"/></a> | Convert date to timestamp | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/related-documents"><img src="modules/nuxeo/related-documents/nuxeo-related-documents.png" width="150px"/></a> | Display Document Relations | Nuxeo
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/delete-all-trashed-documents"><img src="modules/nuxeo/delete-all-trashed-documents/DeleteAllTrashed.png" width="150px"/></a> | Permanently delete all trashed documents | Nuxeo
 
 ### Templates
 
