@@ -28,8 +28,7 @@
 
     <nuxeo-connection id="nxcon"></nuxeo-connection>
 
-    <nuxeo-operation auto
-                     id="opGetAllRelations"
+    <nuxeo-operation id="opGetAllRelations"
                      op="javascript.getAllRelations"
                      input="[[document]]"
                      params="{}"
@@ -109,12 +108,25 @@
          * @schema dublincore
          */
         document: {
-          type: Object
+          type: Object,
+          observer: "_documentChanged"
         },
 
         _relations: {
           type: Array
         },
+      },
+
+      _documentChanged: function (doc){
+        if (doc){
+          var op = this.$.opGetAllRelations;
+          op.execute().then(function(result) {
+            console.log(result);
+					}.bind(this))
+          .catch(function(error) {
+            alert("Error:\n" + error);
+          }.bind(this));
+        }
       },
 
       ready: function(){

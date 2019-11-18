@@ -33,7 +33,7 @@ function run(input, params) {
       return resultJson;
   }
 
-  function getRelatedDocuments(predicates){
+  function getRelatedDocuments(predicates,input){
     var i, j, k, predicate = null;
     var incoming = null;
     var incomings = [true, false];
@@ -110,7 +110,7 @@ function run(input, params) {
   var predicates = getPredicates( user.title, PREDICATES);
   Console.log(predicates);
   Console.log(JSON.stringify(predicates) );
-  var relDocuments = getRelatedDocuments(predicates);
+  var relDocuments = getRelatedDocuments(predicates,input);
 
   var numRelDocs = relDocuments === null? 0 : relDocuments.length;
   Console.log("# Related documents: " + numRelDocs);
