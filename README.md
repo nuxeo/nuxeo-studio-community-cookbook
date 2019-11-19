@@ -133,6 +133,7 @@ Module | Description | Contributor
 --- | --- | ---
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/workflow-status"><img src="modules/nuxeo/workflow-status/workflow-status.png" width="100px"/></a> | Monitor workflow instances status | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/project-metrics"><img src="modules/nuxeo/project-metrics/kibana.png" width="100px"/></a> | Display Kibana dashboards in the "Analytics" menu | Nuxeo
+<a href="https://github.com/nuxeo-sandbox/nuxeo-generic-dashboard-studio-template"></a> | Generic Web UI Analytic Dashboards | Nuxeo
 
 ### Business Logics
 
