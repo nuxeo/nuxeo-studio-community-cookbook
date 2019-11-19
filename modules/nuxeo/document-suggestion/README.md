@@ -36,7 +36,7 @@ We will illustrate the installation through an example, with a Document property
                     id="docSuggWatermark"
                     label="[[i18n('video.watermark.label.watermarkImage')]]"
                     name="watermarkDocId"
-                    value="{{watermarkDocId}}"
+                    value="{{XXXX}}" // YOUR DOCUMENT PROPERTY (ex: document.properties["mycustomschema:watermark"])
                     page-provider="VideoUtils_Watermark_PageProvider" // Link to the page provider we've defined before
                     placeholder=""
                     min-chars="0"
@@ -106,6 +106,8 @@ _getThumbnailUrl: function(doc) {
         return "/nuxeo/api/v1/id/" + doc.uid + "/@rendition/thumbnail";
       },
 ```
+
+- You can alternatively use the **operation** attribute of the suggestion element if you don't want to use a page provider: just create an automation which lists the documents you need to fetch, with `Repository.Query` operation, and use the `operation="my_operation_id` instead of the `page-provider="VideoUtils_Watermark_PageProvider` attribute.
 
 ## Documentation Links
 
