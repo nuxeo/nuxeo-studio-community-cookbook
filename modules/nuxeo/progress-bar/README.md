@@ -25,6 +25,9 @@ Integrate the visual element in any result layouts or document layouts.
 - Select the layout you need to edit
 - Add the following CSS contribution in the `<style>` tag:
 ```
+.wrapper {
+        width: 500px;
+      }
 .progress-bar {
         width: 100%;
         background-color: #e0e0e0;
