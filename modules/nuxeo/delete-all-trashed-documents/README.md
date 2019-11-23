@@ -33,5 +33,5 @@ Execute the cleanup action from a UI element, an event or a scheduler.
 ## Documentation Links
 
 - [Trash Service](https://doc.nuxeo.com/nxdoc/trash-service/)
-- [Trash Service](https://doc.nuxeo.com/nxdoc/garbage-collecting-orphaned-binaries/)
+- [Garbage-Collecting Orphaned Binaries](https://doc.nuxeo.com/nxdoc/garbage-collecting-orphaned-binaries/)
 - [HOWTO: Disable Trash Actions, Tab and Search](https://doc.nuxeo.com/nxdoc/how-to-disable-trash/)
