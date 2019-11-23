@@ -4,11 +4,11 @@
 
 ## Prerequisites
 
-This module is valid for Linux based OS (Ubuntu in particular). It is possible to have it in  Windows  or other OS,  but the server installation part should be adapted to deploy the needed third party softwares.
+This module needs external softwares to work correctly: The step-by-step instructions are specific to Linux based OS (Ubuntu in particular). It is probably possible to have the same software in Windows or other OS,  but it hasn't been tested.
 
 ## Description
 
-This modules allows you to preview .eml files (with mimetype as  `message/rfc822`)
+This modules allows you to preview .eml files (with mimetype as `message/rfc822`).
 
 ## Usage
 
@@ -25,14 +25,13 @@ Upload an eml file in Web UI: It generates a PDF conversion, displayed within th
 
 `sudo apt-get install xvfb`
 
-
 2. Install **wkhtmltopdf** (requires an X server e.g. xvfb)
 
 `sudo apt-get install wkhtmltopdf`
 
 3. Create [script](https://github.com/JazzCore/python-pdfkit/wiki/Using-wkhtmltopdf-without-X-server) to run wkhtmltopdf with xvfb
 
-- Create the `/usr/local/bin/wkhtmltopdf` (create the missing directories if needed)
+- Create the `/usr/local/bin/wkhtmltopdf` file (create the missing directories if needed)
 
 ```
 #!/bin/bash
@@ -41,15 +40,15 @@ xvfb-run -a --server-args="-screen 0, 1024x768x24" /usr/bin/wkhtmltopdf -q $*
 
 - `sudo chmod +x /usr/local/bin/wkhtmltopdf`
 
-4. Install **emailconverter-2.0.1-all.jar**
+4. Install **emailconverter**
 
-- `cd /usr/local/bin/``
+- `cd /usr/local/bin/`
 - `wget "https://github.com/nickrussler/eml-to-pdf-converter/releases/download/2.0.1/emailconverter-2.0.1-all.jar"`
 - `chmod 755 emailconverter-2.0.1-all.jar`
 
 5. Create a script to call emailconverter
 
-- Create the `/usr/local/bin/eml2pdf.sh` file
+- Create the `/usr/local/bin/eml2pdf.sh` file with:
 
 ```
 #!/bin/sh -x
@@ -85,11 +84,12 @@ xvfb-run -a --server-args="-screen 0, 1024x768x24" /usr/bin/wkhtmltopdf -q $*
   ls -l "${TARGET}" | tee -a "${LOG}"
 ```
 
-6. Reload your `$PATH` or reboot your server to load the new libraries.
+6. Reload your `PATH` or reboot your server to load the new libraries.
 
 ### Studio Modeler
 
-- Create a blob property on the document type storing the eml file. For this example, we've created a new property on the default `File` document type, called `pdfconversion`, of type `blob` (XPATH is `file_schema:pdfconversion`)
+- Create a blob property on the document type storing the eml file. For this example, we've created a new property on the default `File` document type, called `pdfconversion`, of type `blob`
+  - Consequently, its XPATH is `file_schema:pdfconversion`
 - Create the converter with a XML Contrib with the content of the `EML_TO_PDF.xml` file.
 - Create an automation scripting with the content of `eml_to_pdf.js` file. It accepts `document` and provide a `document`.
 - Create an event handler:
