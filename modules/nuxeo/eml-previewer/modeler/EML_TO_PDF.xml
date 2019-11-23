@@ -1,0 +1,29 @@
+<extension
+  point="command"
+  target="org.nuxeo.ecm.platform.commandline.executor.service.CommandLineExecutorComponent">
+
+  <command
+    name="eml2pdf-eml-to-pdf"
+    enabled="true">
+    <commandLine>eml2pdf.sh</commandLine>
+    <parameterString>#{sourceFilePath} #{targetFilePath}</parameterString>
+    <installationDirective>You need to install eml2pdf</installationDirective>
+  </command>
+
+</extension>
+
+<extension
+  point="converter"
+  target="org.nuxeo.ecm.core.convert.service.ConversionServiceImpl">
+
+  <converter
+    name="eml2pdf-eml-to-pdf"
+    class="org.nuxeo.ecm.platform.convert.plugins.CommandLineConverter">
+    <sourceMimeType>message/rfc822</sourceMimeType>
+    <destinationMimeType>application/pdf</destinationMimeType>
+    <parameters>
+      <parameter name="CommandLineName">eml2pdf-eml-to-pdf</parameter>
+    </parameters>
+  </converter>
+
+</extension>
