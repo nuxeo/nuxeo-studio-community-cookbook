@@ -19,7 +19,7 @@ Comment a document and search for the comment author and the comment content.
     - Create a sub-field called `user` of type **User / Group**, with restriction to get **only users**
     - Create a sub-field called `comment` of type **String**
 - Add the schema to the document type which comments should be indexed
-- Declare a new core event in **SETTINGS** > **Registries** > **Core Events** with the following code:
+- Declare a new core event in **Settings** > **Registries** > **Core Events** with the following code:
 
 ```json
 {
@@ -38,21 +38,13 @@ Comment a document and search for the comment author and the comment content.
 
 ### Studio Designer
 
-- Create a search form, a result layout and a drawer item to display the search within Nuxeo Web UI.
+Create a search form, a result layout and a drawer item to display the search within Nuxeo Web UI.
 
 ## Issues and Limitations
 
-- It would be nice to update the Elasticsearch mapping to perform fulltext search on the comment content.
+It would be nice to update the Elasticsearch mapping to perform fulltext search on the comment content.
 
 ## Documentation Links
 
 - [Nuxeo Comments](https://doc.nuxeo.com/nxdoc/comments/)
 - [Nuxeo Elasticsearch Mapping](https://doc.nuxeo.com/nxdoc/configuring-the-elasticsearch-mapping/#making-ilike-work-case-insensitive-search)
-
-
-
-
-
-
-
----
