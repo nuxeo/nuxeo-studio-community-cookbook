@@ -32,10 +32,16 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <th>Category</th>
   </tr>
   <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/comment-indexing"><img src="modules/nuxeo/comment-indexing/comments.png" width="80px"/></a></td>
+    <td>Comment Indexing</td>
+    <td>Nuxeo</td>
+    <td>Search</td>
+  </tr>
+  <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/eml-previewer"><img src="modules/nuxeo/eml-previewer/eml-previewer.png" width="80px"/></a></td>
     <td> Preview EML Files</td>
     <td>Nuxeo</td>
-    <td> Conversion </td>
+    <td>Conversion</td>
   </tr>
   <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/delete-all-trashed-documents"><img src="modules/nuxeo/delete-all-trashed-documents/trash.png" width="80px"/></a></td>
