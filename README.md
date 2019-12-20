@@ -32,7 +32,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <th>Category</th>
   </tr>
   <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/automation-script-utils"><img src="modules/nuxeo/automation-script-utils/script-utils.png" width="80px"/></a></td>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/automation-script-utils"><img src="modules/nuxeo/automation-script-utils/script-utils-2.png" width="80px"/></a></td>
     <td>Automation Script Utilities</td>
     <td>Nuxeo</td>
     <td>Automation</td>
