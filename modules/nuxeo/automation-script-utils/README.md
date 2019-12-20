@@ -1,6 +1,5 @@
 # Automation Script utilities
 
-
 ## Prerequisites
 
 - None
@@ -23,7 +22,27 @@ Look at the script you need and copy/paste it in your Studio project. The commen
   </tr>
   <tr>
     <td><a href="modeler/utils_FollowTransitionIfPossible.js">utils_FollowTransitionIfPossible</a></td>
-    <td>FollowLifecycleTransition throws an error if the Document is in a state that does not allow following the transition. When bulk updating a list of documents, we may want to avoid that.</td>
+    <td>FollowLifecycleTransition throws an error if the Document is in a state that does not allow following the transition. When bulk updating a list of documents, we may want to avoid that</td>
+  </tr>
+  <tr>
+    <td><a href="modeler/utils_getUserFullName.js">utils_getUserFullName</a></td>
+    <td>Receives as input a user ID, returns a string, the full name (firstname + " " + lastname)</td>
+  </tr>
+  <tr>
+    <td><a href="modeler/utils_LockDocument.js">utils_LockDocument</a></td>
+    <td>Lock the input doc if it was not already locked (avoid a NuxeoException)</td>
+  </tr>
+  <tr>
+    <td><a href="modeler/utils_PictureGetView.js">utils_PictureGetView</a></td>
+    <td>Set ctx.pictureView Context Variable to the PictureView object, whose title is passed in the viewName parameter (null if not found)</td>
+  </tr>
+  <tr>
+    <td><a href="modeler/utils_SetLifleCycleState.js">utils_SetLifleCycleState</a></td>
+    <td>Used mainly when setting up some data (typically demo data)</td>
+  </tr>
+  <tr>
+    <td><a href="modeler/utils_UnlockDocument.js">utils_UnlockDocument</a></td>
+    <td>Unlock the input doc if it was not already unlocked (avoid a NuxeoException)</td>
   </tr>
 </table>
 
