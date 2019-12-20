@@ -22,7 +22,7 @@ Look at the script you need and copy/paste it in your Studio project. The commen
     <th>Description</th>
   </tr>
   <tr>
-    <td>[README](./modeler/utils_FollowTransitionIfPossible.js)</td>
+    <td>![utils_FollowTransitionIfPossible](./modeler/utils_FollowTransitionIfPossible.js)</td>
     <td>FollowLifecycleTransition throws an error if the Document is in a state that does not allow following the transition. When bulk updating a list of documents, we may want to avoid that.</td>
   </tr>
 </table>
