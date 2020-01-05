@@ -51,3 +51,8 @@ Look at the script you need and copy/paste it in your Studio project. The commen
 ### Studio Modeler
 
 Create the automation script(s) and copy the content from the original(s). You can of course change the names to fit your naming convention.
+
+## Documentation
+
+- [Automation Platform Services](https://doc.nuxeo.com/nxdoc/automation/)
+- [Automation Scripting](https://doc.nuxeo.com/studio/automation-scripting/)
