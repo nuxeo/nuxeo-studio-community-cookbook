@@ -1,3 +1,7 @@
+/*
+   input: document
+   output: documents
+*/
 function run(input, params) {
 
   var PREDICATES = 'predicates';
