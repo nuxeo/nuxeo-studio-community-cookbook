@@ -27,6 +27,10 @@ Integrate `<nuxeo-se-document-relations document="[[document]]"></nuxeo-se-docum
 
 - Create a `related-documents` folder under the `UI` folder
 - Import `nuxeo-se-add-relation-dialog.html`, `nuxeo-se-document-relations.html`, `nuxeo-se-remove-relation-button.html` in the `related-documents` folder.
+- Add the references in `nuxeo-[project-name]-custom-bundle.html` :
+    `<link rel="import" href="related-documents/nuxeo-se-add-relation-dialog.html">`
+    `<link rel="import" href="related-documents/nuxeo-se-document-relations.html">`
+    `<link rel="import" href="related-documents/nuxeo-se-remove-relation-button.html">`
 - Create a new default translation file (`messages.json`), and add the entries of `/designer/mesages.json` without including the `{}`
 
 ## Documentation Links
