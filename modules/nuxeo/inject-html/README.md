@@ -1,7 +1,5 @@
 # HTML Injection
 
-![html-injection](html-injection.png) ![alt text 2](screenrecording.gif)
-
 ## Description
 
 Polymer will not stamp unescaped HTML via data-binding because it becomes a vulnerability for XSS attacks. This is a workaround to inject HTML into a page using bound data, but please note that it *is still considered a vulnerability*.
@@ -14,5 +12,5 @@ Polymer will not stamp unescaped HTML via data-binding because it becomes a vuln
 
 ### Studio Designer
 
-1. Install `nuxeo-inject-html.html` as a Resources in Designer
-2. Import `nuxeo-inject-html` in your custom bundle.
+1. Upload `nuxeo-inject-html.html` under Resources in Designer.
+2. Import `nuxeo-inject-html.html` in your custom bundle file.
