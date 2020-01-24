@@ -14,5 +14,5 @@ Polymer will not stamp unescaped HTML via data-binding because it becomes a vuln
 
 ### Studio Designer
 
-1. Install `nuxeo-inject-html` as a Resources in Designer
+1. Install `nuxeo-inject-html.html` as a Resources in Designer
 2. Import `nuxeo-inject-html` in your custom bundle.
