@@ -116,6 +116,7 @@ Module | Description | Contributor
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/ssn"><img src="modules/nuxeo/ssn/ssn.jpg" width="100px"/></a> | Show/hide the value of a secret field | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/related-documents"><img src="modules/nuxeo/related-documents/nuxeo-related-documents.png" width="150px"/></a> | Display Document Relations | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/barcode-widget">barcode-widget</a> | Display text using barcode font | Nuxeo
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/suggestion-result-formatters">suggestion-result-formatters</a> | Format results of suggestion widgets | Nuxeo
 
 ### DAM
 
