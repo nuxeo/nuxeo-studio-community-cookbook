@@ -24,12 +24,21 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 ### Latest Modules
 
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/barcode-widget"><img src="modules/nuxeo/barcode-widget/barcode-widget.png" width="150px"/></a> | Display text using barcode font | Nuxeo
+
+
 <table style="width:100%">
   <tr style="font-weight:bold">
     <th>Module</th>
     <th>Description</th>
     <th>Author</th>
     <th>Category</th>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/barcode-widget"><img src="modules/nuxeo/barcode-widget/barcode-widget.png" width="80px"/></a></td>
+    <td>Display Text using Barcode Font</td>
+    <td>Nuxeo</td>
+    <td>Layout</td>
   </tr>
   <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/automation-script-utils"><img src="modules/nuxeo/automation-script-utils/script-utils-2.png" width="80px"/></a></td>
@@ -66,12 +75,6 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <td>Bulk Workflow Reassignment</td>
     <td>Nuxeo</td>
     <td>Workflow</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/progress-bar"><img src="modules/nuxeo/progress-bar/progress-bar.png" width="120px"/></a></td>
-    <td>Add a progress bar</td>
-    <td>Nuxeo</td>
-    <td>Layout</td>
   </tr>
 </table>
 
@@ -115,7 +118,7 @@ Module | Description | Contributor
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/salesforce-ui"><img src="modules/nuxeo/salesforce-ui/sfdc-webui.png" width="100px"/></a> | Display Salesforce metadata | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/ssn"><img src="modules/nuxeo/ssn/ssn.jpg" width="100px"/></a> | Show/hide the value of a secret field | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/related-documents"><img src="modules/nuxeo/related-documents/nuxeo-related-documents.png" width="150px"/></a> | Display Document Relations | Nuxeo
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/barcode-widget">barcode-widget</a> | Display text using barcode font | Nuxeo
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/barcode-widget"><img src="modules/nuxeo/barcode-widget/barcode-widget.png" width="150px"/></a> | Display text using barcode font | Nuxeo
 
 ### DAM
 
