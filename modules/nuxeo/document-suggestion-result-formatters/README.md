@@ -1,6 +1,6 @@
 # Custom Document Suggestion
 
-![document-suggestion](document-suggestion-watermark.png)
+![suggest result formatters picture](suggestion-result-formatters.png)
 
 ## Prerequisites
 
@@ -33,6 +33,7 @@ We will illustrate the installation through an example, with a Document property
 ```
 <nuxeo-document-suggestion
                     role="widget"
+                    enrichers="thumbnail" // Make sure your suggestor returns thumbnails
                     id="docSuggWatermark"
                     label="[[i18n('video.watermark.label.watermarkImage')]]"
                     name="watermarkDocId"
@@ -40,7 +41,7 @@ We will illustrate the installation through an example, with a Document property
                     page-provider="VideoUtils_Watermark_PageProvider" // Link to the page provider we've defined before
                     placeholder=""
                     min-chars="0"
-                    result-formatter="[[watermarkResultFormatter]]" // Formatter used to create the custom display (HTML)
+                    result-formatter="[[thumbnailFormatter]]" // Formatter used to create the custom display (HTML)
                     required="true">
 </nuxeo-document-suggestion>
 ```
@@ -50,6 +51,20 @@ We will illustrate the installation through an example, with a Document property
 Polymer({
       is: 'video-watermark',
       behaviors: [Nuxeo.LayoutBehavior, Nuxeo.Select2Behavior],
+```
+
+Bind the formatter to a property in your element:
+
+```
+properties: {
+
+  thumbnailFormatter: {
+    type: Function,
+    value: function() {
+      return this._thumbnailFormatter.bind(this);
+    }
+  }
+},
 ```
 
 - Create a function for a selected entry of the Formatter.
@@ -69,45 +84,50 @@ Polymer({
 - Create the Formatter logic and UI:
 
 ```
-_watermarkResultFormatter: function(doc) {
+_thumbnailFormatter: function(doc) {
 
-        if (!doc.properties) {
-          return "Bad result format";
-        }
+  if (doc && doc.properties && doc.contextParameters && doc.contextParameters.thumbnail) {
 
-        let pictInfo = doc.properties["picture:info"];
+    // These values are used in the second row
+    var lable1 = "Type";
+    var value1 = doc.type;
 
-        let markup = "";
+    var lable2 = "State";
+    var value2 = doc.state;
 
-        markup += "<table width='100%'><tbody>";
-        // Title
-        markup += "<tr>";
-          markup += "<td width='100px' style='text-align: center'>";
-            markup += "<img src='" + this._getThumbnailUrl(doc) + "' style='max-width: 100px; max-height=25px;' >";
-          markup += "</td>";
-          markup += "<td>";
-            markup += "<div style='margin-left:15px'><span style='font-weight: bold;'>"
-              //markup += this.$.escapeHTML(doc.title) +"</span>";
-              markup += doc.title +"</span>";
-              markup += "<br />" + pictInfo.width + " x " + pictInfo.height;
-            markup += "</div>";
-          markup += "</td>";
-          markup += "</tr>"
-        markup += "</tbody></table>";
+    var lable3 = "Version";
+    var value3 = doc.properties["uid:major_version"] + "." + doc.properties["uid:minor_version"];
 
-        return markup;
-      }
+    var markup = "";
+
+    markup += "<table width='100%'><tbody>";
+    markup += "<tr>";
+    // Thumbnail
+    markup += "<td width='100px' style='text-align: center'>";
+    markup += "<img src='" + doc.contextParameters.thumbnail.url + "' style='max-width: 100px; max-height=25px;' >";
+    markup += "</td>";
+    // Details
+    markup += "<td>";
+    // First Row
+    markup += "<div style='margin-left:15px'><span style='font-weight: bold; font-size: large'>";
+    markup += doc.title + "</span>";
+    // Second Row
+    markup += "<br /> <span style='font-weight: bold;'>" + lable1 + ":</span> " + value1;
+    markup += " <span style='font-weight: bold;margin-left:15px;'>" + lable2 + ":</span> " + value2;
+    markup += " <span style='font-weight: bold;margin-left:15px;'>" + lable3 + ":</span> " + value3;
+    // Third Row
+    markup += "<br /> <span style='font-weight: bold;'>Path:</span> " + doc.path;
+    markup += "</div>";
+    markup += "</td>";
+    markup += "</tr>";
+    markup += "</tbody></table>";
+
+    return markup;
+  }
+}
 ```
 
-- Notice we want to display the document thumbnail, so we need a specific function to do that:
-
-```
-_getThumbnailUrl: function(doc) {
-        return "/nuxeo/api/v1/id/" + doc.uid + "/@rendition/thumbnail";
-      },
-```
-
-- You can alternatively use the **operation** attribute of the suggestion element if you don't want to use a page provider: just create an automation which lists the documents you need to fetch, with `Repository.Query` operation, and use the `operation="my_operation_id` instead of the `page-provider="VideoUtils_Watermark_PageProvider` attribute.
+:information_note: You can alternatively use the **operation** attribute of the suggestion element if you don't want to use a page provider: just create an automation which lists the documents you need to fetch, with `Repository.Query` operation, and use the `operation="my_operation_id` instead of the `page-provider="VideoUtils_Watermark_PageProvider` attribute.
 
 ## Documentation Links
 
