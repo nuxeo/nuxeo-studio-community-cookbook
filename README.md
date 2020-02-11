@@ -32,37 +32,37 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <th>Category</th>
   </tr>
   <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/highlight"><img src="modules/nuxeo/highlight/highlight-logo.png" width="80px"/></a></td>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/highlight"><img src="modules/nuxeo/highlight/highlight-logo.png" width="120px"/></a></td>
     <td>Display Highlight in Custom Searches</td>
     <td>Nuxeo</td>
     <td>Search</td>
   </tr>
   <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/barcode-widget"><img src="modules/nuxeo/barcode-widget/barcode-widget.png" width="80px"/></a></td>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/barcode-widget"><img src="modules/nuxeo/barcode-widget/barcode-widget.png" width="120px"/></a></td>
     <td>Display Text using Barcode Font</td>
     <td>Nuxeo</td>
     <td>Layout</td>
   </tr>
   <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/automation-script-utils"><img src="modules/nuxeo/automation-script-utils/script-utils-2.png" width="80px"/></a></td>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/automation-script-utils"><img src="modules/nuxeo/automation-script-utils/script-utils-2.png" width="120px"/></a></td>
     <td>Automation Script Utilities</td>
     <td>Nuxeo</td>
     <td>Automation</td>
   </tr>
   <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/comment-indexing"><img src="modules/nuxeo/comment-indexing/comments.png" width="80px"/></a></td>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/comment-indexing"><img src="modules/nuxeo/comment-indexing/comments.png" width="120px"/></a></td>
     <td>Comment Indexing</td>
     <td>Nuxeo</td>
     <td>Search</td>
   </tr>
   <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/eml-previewer"><img src="modules/nuxeo/eml-previewer/eml-previewer.png" width="80px"/></a></td>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/eml-previewer"><img src="modules/nuxeo/eml-previewer/eml-previewer.png" width="120px"/></a></td>
     <td> Preview EML Files</td>
     <td>Nuxeo</td>
     <td>Conversion</td>
   </tr>
   <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/delete-all-trashed-documents"><img src="modules/nuxeo/delete-all-trashed-documents/trash.png" width="80px"/></a></td>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/delete-all-trashed-documents"><img src="modules/nuxeo/delete-all-trashed-documents/trash.png" width="120px"/></a></td>
     <td> Permanently delete all trashed documents</td>
     <td>Nuxeo</td>
     <td> Automation </td>
