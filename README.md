@@ -35,6 +35,12 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <th>Category</th>
   </tr>
   <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/highlight"><img src="modules/nuxeo/highlight/highlight.png" width="80px"/></a></td>
+    <td>Display Highlight in Custom Searches</td>
+    <td>Nuxeo</td>
+    <td>Search</td>
+  </tr>
+  <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/barcode-widget"><img src="modules/nuxeo/barcode-widget/barcode-widget.png" width="80px"/></a></td>
     <td>Display Text using Barcode Font</td>
     <td>Nuxeo</td>
@@ -70,12 +76,6 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <td>Nuxeo</td>
     <td>Business Logics</td>
   </tr>
-  <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/bulk-workflow-reassignment"><img src="modules/nuxeo/bulk-workflow-reassignment/task_reassignment.png" width="120px"/></a></td>
-    <td>Bulk Workflow Reassignment</td>
-    <td>Nuxeo</td>
-    <td>Workflow</td>
-  </tr>
 </table>
 
 
@@ -108,6 +108,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 Module | Description | Contributor
 --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/highlight"><img src="modules/nuxeo/highlight/highlight.png" width="120px"/></a> | Highlight in Custom Searches | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/eml-previewer"><img src="modules/nuxeo/eml-previewer/eml-previewer.png" width="120px"/></a> | Display EML Preview | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/progress-bar"><img src="modules/nuxeo/progress-bar/progress-bar.png" width="120px"/></a> | Add a progress bar | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/inject-html"><img src="modules/nuxeo/inject-html/html.jpeg" width="120px"/></a> | Inject HTML into a page using bound data | Nuxeo
