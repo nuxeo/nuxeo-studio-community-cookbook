@@ -24,9 +24,6 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 ### Latest Modules
 
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/barcode-widget"><img src="modules/nuxeo/barcode-widget/barcode-widget.png" width="150px"/></a> | Display text using barcode font | Nuxeo
-
-
 <table style="width:100%">
   <tr style="font-weight:bold">
     <th>Module</th>
@@ -35,7 +32,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <th>Category</th>
   </tr>
   <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/highlight"><img src="modules/nuxeo/highlight/highlight.png" width="80px"/></a></td>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/highlight"><img src="modules/nuxeo/highlight/highlight-logo.png" width="80px"/></a></td>
     <td>Display Highlight in Custom Searches</td>
     <td>Nuxeo</td>
     <td>Search</td>
