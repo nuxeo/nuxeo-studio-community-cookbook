@@ -16,8 +16,8 @@ function getValue(attr) {
 
 searchAttributes.put("username", userObject.getNameID().getValue());
 userAttributes.put("username", userObject.getNameID().getValue());
-userAttributes.put("firstName", getValue(userObject.getAttributeByName("firstname")));
-userAttributes.put("lastName", getValue(userObject.getAttributeByName("lastname")));
+userAttributes.put("firstName", getValue(userObject.getAttributeByName("firstname"))); // or userAttributes.put("firstName", userObject.getAttributeByName("user.firstName").getAttributeValues().get(0).value);
+userAttributes.put("lastName", getValue(userObject.getAttributeByName("lastname"))); // or userAttributes.put("lastName", userObject.getAttributeByName("user.lastName").getAttributeValues().get(0).value); 
 userAttributes.put("email", getValue(userObject.getAttributeByName("email")));
         </mapperScript>
     </mapper>
