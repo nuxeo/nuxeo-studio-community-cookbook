@@ -46,3 +46,6 @@ Show/Hide fields based on user input
         this.$.state.removeAttribute("hidden");
     },
 ```
+
+## Documentation Links
+- [HOWTO: Filter Data in Suggestions](https://doc.nuxeo.com/nxdoc/how-to-filter-data-in-directory-suggestion/)
