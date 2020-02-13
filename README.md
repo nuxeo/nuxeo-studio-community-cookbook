@@ -32,6 +32,12 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <th>Category</th>
   </tr>
   <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/cascading-fields"><img src="modules/nuxeo/cascading-fields/cascading.png" width="120px"/></a></td>
+    <td>Cascading Fields in Document Layouts</td>
+    <td>Nuxeo</td>
+    <td>Layout</td>
+  </tr>
+  <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/highlight"><img src="modules/nuxeo/highlight/highlight-logo.png" width="120px"/></a></td>
     <td>Display Highlight in Custom Searches</td>
     <td>Nuxeo</td>
@@ -105,6 +111,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 Module | Description | Contributor
 --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/cascading-fields"><img src="modules/nuxeo/cascading-fields/cascading.png" width="120px"/></a> | Cascading Fields in Document Layouts | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/highlight"><img src="modules/nuxeo/highlight/highlight-logo.png" width="120px"/></a> | Highlight in Custom Searches | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/eml-previewer"><img src="modules/nuxeo/eml-previewer/eml-previewer.png" width="120px"/></a> | Display EML Preview | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/progress-bar"><img src="modules/nuxeo/progress-bar/progress-bar.png" width="120px"/></a> | Add a progress bar | Nuxeo
