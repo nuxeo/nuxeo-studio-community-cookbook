@@ -12,6 +12,7 @@
 - [CSS properties to update when creating a new theme](#css-properties-to-update-when-creating-a-new-theme)
 - [Update creation and edition screen size](#update-creation-and-edition-screen-size)
 - [Set height to nuxeo-data-table](#set-height-to-nuxeo-data-table)
+- [Update Nuxeo Favicon](#update-nuxeo-favicon)
 
 ## Prerequisites
 
@@ -164,6 +165,10 @@ nuxeo-data-table,
                 min-height: calc(100vh - 130px - var(--nuxeo-app-top));
             }
 ```
+### Update Nuxeo Favicon
+
+- Create this folder structure in designer (or the mp): `UI/images/touch` 
+- Upload the files named: favicon-16x16.png and favicon-32x32.png
 
 ## Documentation Links
 
