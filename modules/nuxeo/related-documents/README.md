@@ -21,7 +21,7 @@ Integrate `<nuxeo-se-document-relations document="[[document]]"></nuxeo-se-docum
 ### Studio Modeler
 
 - Create in the following automation scripting
-  - `getAllRelations.js`
+  - `getAllRelations.js` as `getAllRelations`
 
 ### Studio Designer
 
