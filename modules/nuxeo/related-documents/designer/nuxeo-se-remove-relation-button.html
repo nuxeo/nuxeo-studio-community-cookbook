@@ -26,8 +26,8 @@ limitations under the License.
 
     <nuxeo-operation id="opDeleteRelation"
                      op="Relations.DeleteRelation"
-                     input="[[fromDocId]]"
-                     params='{"predicate": "[[predicate]]", "object": "[[toDocId]]", "outgoing": "[[incoming]]"}'
+                     input="[[_fromDocId]]"
+                     params='{"predicate": "[[predicate]]", "object": "[[_toDocId]]", "outgoing": true}'
                      on-response="_handleRelationRemoved">
     </nuxeo-operation>
 
@@ -52,7 +52,15 @@ limitations under the License.
           type: String
         },
 
+        _fromDocId: {
+          type: String
+        },
+
         toDocId: {
+          type: String
+        },
+
+        _toDocId: {
           type: String
         },
 
@@ -62,6 +70,20 @@ limitations under the License.
 
         incoming: {
           type: Boolean
+        }
+      },
+
+      observers: [
+        '_relation(fromDocId, toDocId, incoming)'
+      ],
+
+      _relation: function(from, to, incoming) {0
+        if (incoming) {
+          this._fromDocId = to;
+          this._toDocId = from;
+        } else {
+          this._fromDocId = from;
+          this._toDocId = to;
         }
       },
 
