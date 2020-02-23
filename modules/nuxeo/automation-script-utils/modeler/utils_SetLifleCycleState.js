@@ -1,11 +1,18 @@
 /* Used mainly when setting up some data (typically demo data).
-   Setting the lifecycle directly does not trigger events, does not check the value is valid, etc.
+
+   ************************** WARNING **************************
+   Setting the lifecycle directly does not trigger events, does
+   not check the value is valid in the lifecycle policy, etc.
+   *************************************************************
 
    inpout: document
    output: document
 
    Parameter:
-     newState: String, the name of the lifecycle state
+     newState:
+       String, required
+          The name of the lifecycle state
+          Make sure it is valid state for the lifecyclepolicy of the document.
 
    Usage:
    input = javascript.utils_SetLifleCycleState(input, {'newState': "Approved"});
@@ -15,9 +22,7 @@
 
 */
 function run(input, params) {
-  
-  //Console.log("utils_SetLifleCycleState");
-    
+      
   if(typeof params.newState !== "string" || !params.newState) {
     throw new org.nuxeo.ecm.core.api.NuxeoException("utils_SetLifleCycleState: Missing parameter");
   }
