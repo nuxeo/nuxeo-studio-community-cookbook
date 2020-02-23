@@ -1,0 +1,26 @@
+<script>
+  var Nuxeo = Nuxeo || {};
+  (function() {
+
+    /**
+     * @polymerBehavior Nuxeo.CurrencyFormatBehavior
+     */
+    Nuxeo.CurrencyFormatBehavior = {
+
+      _formatCurrency: function(value, region, style, currency) {
+        if (!region)
+          region = "en-US";
+        if (!style)
+          style = "currency";
+        if (!currency)
+          currency = "USD";
+
+        return Number(value).toLocaleString(region, {
+          "style": style,
+          "currency": currency
+        }).slice(0, -3)
+      }
+
+    };
+  })();
+</script>
