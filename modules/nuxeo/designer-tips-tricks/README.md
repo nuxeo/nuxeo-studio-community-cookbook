@@ -5,6 +5,7 @@
 ## Table Of Content
 
 - [Update the children document listing in the View tab of folderish documents](#update-the-children-document-listing-in-the-view-tab-of-folderish-documents)
+- [Refresh current folder's listing after clicking an operation action that moves one of the child document](#refresh-current-folders-listing-after-clicking-an-operation-action-that-moves-one-of-the-child-document)
 - [Create a table with two columns](#create-a-table-with-two-columns)
 - [Position several Nuxeo elements in the same row](#position-several-nuxeo-elements-in-the-same-row)
 - [Get property name and property value on the same row](#get-property-name-and-property-value-on-the-same-row-as-the-nuxeo-document-info-section)
