@@ -60,7 +60,8 @@ ready: function() {
 6. Go to your view layout of your folderish document. Generate the view layout and remove everything between `</style>` and `</template>`
 7. Add manually your result element. Donc forget to add the `document="[[document]]"` attribute to the result layout, and import the alement in your layout `<link rel="import" href="../../search/<page_provider_name>/nuxeo-<page_provider_name>-search-results.html">`
 
-### Refresh current folder's listing after clicking an operation action that moves one of the child document
+
+### Refresh current folder's listing after clicking an operation action that moves one of the child document
 
 Add this section to your custom action button function:
 
