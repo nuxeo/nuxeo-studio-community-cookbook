@@ -32,6 +32,12 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <th>Category</th>
   </tr>
   <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/send-email-from-webui"><img src="modules/nuxeo/send-email-from-webui/mail2.png" width="120px"/></a></td>
+    <td>Send emails from Nuxeo Web UI</td>
+    <td>Nuxeo</td>
+    <td>Mail, Layouts, Automation, Templates</td>
+  </tr>
+  <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/currency"><img src="modules/nuxeo/currency/currency2.jpg" width="120px"/></a></td>
     <td>Display a field with Currency format</td>
     <td>Nuxeo</td>
@@ -167,6 +173,7 @@ Module | Description | Contributor
 
 Module | Description | Contributor
 --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/send-email-from-webui"><img src="modules/nuxeo/send-email-from-webui/mail2.png" width="100px"/></a> | Send emails from Nuxeo Web UI | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/actions-versioned-documents"><img src="modules/nuxeo/actions-versioned-documents/document-versions.png" width="120px"/></a> | Delete and Update Document Lifecycle state of versioned documents | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/convert-date-to-timestamp"><img src="modules/nuxeo/convert-date-to-timestamp/calendar.png" width="100px"/></a> | Convert date to timestamp | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/related-documents"><img src="modules/nuxeo/related-documents/nuxeo-related-documents.png" width="150px"/></a> | Display Document Relations | Nuxeo
@@ -177,6 +184,7 @@ Module | Description | Contributor
 
 Module | Description | Contributor
 --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/send-email-from-webui"><img src="modules/nuxeo/send-email-from-webui/mail2.png" width="100px"/></a> | Send emails from Nuxeo Web UI | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/email-templates-nuxeo"><img src="modules/nuxeo/email-templates-nuxeo/dark.png" width="100px"/></a> | Email templates | Nuxeo
 
 ### Integrations
