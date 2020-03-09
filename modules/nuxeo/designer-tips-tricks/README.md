@@ -5,6 +5,7 @@
 ## Table Of Content
 
 - [Update the children document listing in the View tab of folderish documents](#update-the-children-document-listing-in-the-view-tab-of-folderish-documents)
+- [Refresh current folder's listing after clicking an operation action that moves one of the child document](#refresh-current-folders-listing-after-clicking-an-operation-action-that-moves-one-of-the-child-document)
 - [Create a table with two columns](#create-a-table-with-two-columns)
 - [Position several Nuxeo elements in the same row](#position-several-nuxeo-elements-in-the-same-row)
 - [Get property name and property value on the same row](#get-property-name-and-property-value-on-the-same-row-as-the-nuxeo-document-info-section)
@@ -58,8 +59,18 @@ ready: function() {
 
 ```
 6. Go to your view layout of your folderish document. Generate the view layout and remove everything between `</style>` and `</template>`
-7. Add manually your result element. Donc forget to add the `document="[[document]]"` attribute to the result layout, and import the alement in your layout `<link rel="import" href="../../search/<page_provider_name>/nuxeo-<page_provider_name>-search-results.html">
-`
+7. Add manually your result element. Donc forget to add the `document="[[document]]"` attribute to the result layout, and import the alement in your layout `<link rel="import" href="../../search/<page_provider_name>/nuxeo-<page_provider_name>-search-results.html">`
+
+
+### Refresh current folder's listing after clicking an operation action that moves one of the child document
+
+Add this section to your custom action button function:
+
+```
+var op = this.$.op; <=== Assuming your nuxeo-operation element id is "op"
+op.headers || (op.headers = {});
+op.headers["nx_es_sync"] = true;
+```
 
 ### Create a table with two columns
 
