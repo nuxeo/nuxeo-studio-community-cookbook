@@ -41,7 +41,7 @@
 
       <iron-icon id="addRelationIcon" icon="icons:add-circle-outline" class="left-box" on-tap="_toggleDialog"></iron-icon>
 
-      <nuxeo-data-table id="relationsTable" items="[[_relations]]" emptyLabel="[[i18n('label.relation.noRelatedDocuments')]]">
+      <nuxeo-data-table id="relationsTable" items="[[_relations]]" empty-label="[[i18n('label.relation.noRelatedDocuments')]]">
         <nuxeo-data-table-column name="Icon" flex="2" width="50px">
           <template>
             <a href="[[_getDocURL(item.path)]]">
