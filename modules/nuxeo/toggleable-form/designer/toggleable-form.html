@@ -10,39 +10,79 @@
         display: flex;
       }
 
+      /*
+      ** Set back to default paper-card values.
+      ** These are overridden in themes/base.html
+      */
       paper-card {
         padding: 0;
         border-radius: 2px;
+        margin-bottom: 0px;
         --paper-card-content: {
           padding-top: 0;
-        }
-        ;
+        };
         --paper-card-header-text: {
           font-size: 20px;
           font-weight: 400;
-        }
-        ;
+        };
+      }
+
+      /*
+      ** Even though the paper-card will grow to fill it's container, the
+      ** card-content div would not, I don't know why. I.e. if I have two of
+      ** these elements next to each other, the actions were not on the same
+      ** line. This is the only way I could get it to work. See:
+      ** https://github.com/PolymerElements/paper-card/issues/48
+      */
+      .fix-height {
+        height: calc(100% - 124px);
+      }
+
+      .edit-mode-container {
+        background-color: var(--paper-card-background-color, var(--primary-background-color));
+      }
+
+      .edit-mode-header {
+        padding: 16px 16px 0 16px;
+        font-size: 20px;
+        font-weight: 400;
       }
     </style>
 
-    <nuxeo-connection id="nxcon"></nuxeo-connection>
-
+    <!-- Metadata Mode -->
     <paper-card class="layout flex"
-                heading="[[title]]">
-      <div class="card-content">
-        <nuxeo-document-metadata document="[[document]]"
-                                 hidden$="[[edit]]"></nuxeo-document-metadata>
-        <nuxeo-document-edit document="[[document]]"
-                             hidden$="[[!edit]]"></nuxeo-document-edit>
+                heading="[[title]]"
+                hidden$="[[_edit]]">
+      <div class="card-content fix-height">
+        <nuxeo-document-metadata document="[[document]]"></nuxeo-document-metadata>
       </div>
-      <div class="card-actions">
+      <div class="card-actions"
+           hidden$="[[!_canEdit(document)]]">
         <paper-icon-button id="edit"
                            icon="editor:mode-edit"
-                           on-tap="_editMode"
-                           hidden$="[[!_canEdit(document,edit)]]"></paper-icon-button>
-
+                           on-tap="_editMode">
+        </paper-icon-button>
+        <template is="dom-if"
+                  if="[[enableExternalLink]]">
+          <a href="[[document.contextParameters.documentURL]]"
+             target="_blank">
+            <paper-icon-button icon="icons:open-in-new"></paper-icon-button>
+          </a>
+        </template>
       </div>
     </paper-card>
+
+    <!-- Edit Mode -->
+    <!-- nuxeo-document-edit doesnt play well with paper-card so it's in its own
+    div. -->
+    <div class="layout vertical flex edit-mode-container"
+         hidden$="[[!_edit]]">
+      <div class="edit-mode-header">Edit [[title]]</div>
+      <nuxeo-document-edit class="layout flex"
+                           document="[[document]]">
+      </nuxeo-document-edit>
+    </div>
+
 
   </template>
 
@@ -51,45 +91,39 @@
       is: 'toggleable-form',
       behaviors: [Nuxeo.LayoutBehavior],
       properties: {
-        //You can use either @schema or @doctype annotation in your model
-        /**
-         * @schema dublincore
-         */
         document: {
           type: Object,
           observer: '_documentChanged'
         },
-        edit: {
+        _edit: {
           type: Boolean,
           value: false
         },
-        title: String
-      },
-
-      _documentChanged: function() {
-        if (this.document) {
-          this.edit = false;
+        title: String,
+        enableExternalLink: {
+          type: Boolean,
+          value: false
         }
       },
 
-      _isMutable: function(doc) {
-        var mutable = !this.hasFacet(doc, 'Immutable') && doc.type !== 'Root' && doc.state !== 'deleted';
+      _documentChanged: function () {
+        if (this.document) {
+          this._edit = false;
+        }
+      },
+
+      _isMutable: function (doc) {
+        var mutable = !this.hasFacet(doc, 'Immutable') && doc.type !== 'Root' && !doc.isTrashed;
         return mutable;
       },
 
-      _canEdit: function(doc, edit) {
-        var canEdit = !edit && doc && doc.type !== 'Root' && this.hasPermission(doc, 'Write') && this._isMutable(doc);
+      _canEdit: function (doc) {
+        var canEdit = doc && doc.type !== 'Root' && this.hasPermission(doc, 'Write') && this._isMutable(doc);
         return canEdit;
       },
 
-      _editMode: function() {
-        this.edit = true;
-      },
-
-      _iconFor: function(doc) {
-        if (doc && doc.properties && doc.properties['common:icon']) {
-          return this.$.nxcon.client._baseURL + doc.properties['common:icon'];
-        }
+      _editMode: function () {
+        this._edit = true;
       }
 
     });
