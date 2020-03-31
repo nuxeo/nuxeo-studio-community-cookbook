@@ -1,0 +1,5 @@
+type,name,title,dc:description,dc:title,geoloc:latitude,geoloc:longitude
+File,Palisades Park,"Palisades Park, NJ","520 4th St, Palisades Park, NJ 07650","Palisades Park, NJ",40.8499861000806,-73.9884556111361
+File,Manhattan,"Manhattan, NY","110 W 34th St, New York, NY 10001","Manhattan, NY",40.7499861000806,-73.9884556111361
+File,Blairstown," Blairstown, NJ",," Blairstown, NJ",41.00,-75.00
+File,Dumont,"Dumont, NJ","Midland Ave, Paramus, NJ 07652","Dumont, NJ",40.961988,-74.092749

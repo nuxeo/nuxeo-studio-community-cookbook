@@ -1,0 +1,382 @@
+<!--
+`nuxeo-geodistance-search`
+@group Nuxeo UI
+@element nuxeo-geodistance-search
+-->
+<!--
+Displays, in a Google Map with markers, the result of a geodistance search.
+
+======================================
+REQUIREMENTS
+======================================
+* nuxeo-google-map (and its nuxeo-google-maps-api elements).
+* The Maps JavaScript API must be activated on your Google API Key
+* Plus the backend requirement:
+    - Schema, page provider, etc.
+    - But also, the elasticsearch mapping, at the core of the geodistance search
+
+
+======================================
+USAGE
+======================================
+The geodistance search based on the _current document_, using the `geodistance` page provider:
+    * After a search, a marker is displayed in the map for each document found,
+      and the map zooms to include all markers.
+        - Notice: An initial search is always performed when the current document changes.
+
+    * A click on a marker displays an info window, which content is filled in
+      the _builContentForInfoWindow() function. Usually return HTML, to add links,
+      style the content, etc.
+
+Example #1. Simple, using the element's default values. See below how the element
+fetches the API Key.
+    <nuxeo-geodistance-search document="[[document]]"></nuxeo-geodistance-search>
+
+Example #2. Changing the values display in the search (also used in the initial search)
+    <nuxeo-geodistance-search
+          document="[[document]]"
+          distance-value="20"
+          distance-unit="miles">
+    </nuxeo-geodistance-search>
+
+Example #3. Setting defaults values used for the initial search when the current document changes
+    <nuxeo-geodistance-search
+          document="[[document]]"
+          initial-distance-value="10"
+          initial-distance-unit="km">
+    </nuxeo-geodistance-search>
+
+======================================
+Changes - Adapting to your project
+======================================
+This element expects the following resources to exist in your Studio project:
+  - The geodistance page provider, which performs the search, with a predicate
+    using the corresponding elasticsearch hint.
+  - The geoloc schema with
+      * geoloc:location, string, concatenation "latitude,longitude"
+      * geoloc:latitude, float or string
+      * and geoloc:longitude, float or string
+  - The JavaScript.GeolocTools_GetGoogleMapsApiKey automation gets the API Key value
+    from configuration environment. Maybe you will get it in another way.
+
+You can, of course, adapt and modify this element (or make a copy and give another
+dom-module id). You will then likely change:
+  - The schema used for the geolocation.
+    Search for "geoloc:" in this file to detect where to change the values for yours.
+  - The name of the page provider. Search for geodistance
+  - The way the parameters are built for the search: See _setSearchParameters()
+  - The content of the infoWindow: _builContentForInfoWindow()
+
+
+======================================
+WARNING - ADVANCED
+======================================
+If this element is used in a tab, with a filter letting WebUI decide when to actually
+display it or not, it is then _always_ loaded every time a document is displayed. It is
+once the document is loaded that the filter applies. This, of course, is problematic,
+since the element assumes a geoloc schema, will perform a search, etc., event if it is
+not displayed at all. Typical example: The user displays the "Browse" drawer, and clicks
+on the domain => No geodistance search for it => multiple failures in the log and error
+throne, ruining the navigation.
+
+=> This is handled in the _documentChanged() observer, but it is important to understand
+   the fact that, in this ocn,text (a tab + filter) the element, and the GMap and the
+   GMAp API, etc. are loaded.
+-->
+<link rel="import" href="nuxeo-googlemap-elements/nuxeo-google-map.html">
+<dom-module id="nuxeo-geodistance-search">
+  <template>
+    <style include="iron-flex iron-flex-alignment nuxeo-styles">
+      .page,
+      .content {
+        @apply(--layout-vertical);
+      }
+
+      #distanceValue {
+        max-width: 80px;
+        margin-right: 20px;
+        text-align: center;
+      }
+
+      #distanceUnit {
+        margin-top: 10px;
+      }
+
+      #doSearch {
+        margin-left: 20px;
+      }
+
+      nuxeo-google-map {
+        height: 500px;
+        width: 100%;
+      }
+    </style>
+
+    <nuxeo-operation
+          auto
+          op="javascript.GetGoogleMapApiKey"
+          on-response="_getApiKeyResponse"></nuxeo-operation>
+
+    <nuxeo-page-provider id="geodistanceProvider"
+                         provider="geodistance"
+                         page-size="40"
+                         enrichers="thumbnail, permissions"
+                         params="[[params]]"
+                         schemas="dublincore,common,uid,geoloc"
+                         headers='{"X-NXfetch.document": "properties", "X-NXtranslate.directoryEntry": "label"}'>
+    </nuxeo-page-provider>
+    
+
+    <div class="page">
+      <div class="content">
+        <paper-card>
+          <div class="layout horizontal">
+            <nuxeo-input id="distanceValue" label="Distance" type="number" value="{{distanceValue}}"></nuxeo-input>
+            <paper-radio-group ID="distanceUnit" selected="{{distanceUnit}}" id="unit">
+              <paper-radio-button name="km" checked>KM</paper-radio-button>
+                <paper-radio-button name="miles">Miles</paper-radio-button>
+            </paper-radio-group>
+            <paper-button id="searchButton" on-tap="_search">Update</paper-button>
+        </div>
+        </paper-card>
+
+        <paper-card id="mapContainer">
+          <nuxeo-google-map
+            id="gmap"
+            api-key="[[apiKey]]"
+            latitude="[[document.properties.geoloc:latitude]]"
+            longitude="[[document.properties.geoloc:longitude]]"
+            zoom="[[zoom]]"
+            markers="[[markers]]"
+            fit-to-markers>
+          </nuxeo-google-map>
+        </paper-card>
+
+      </div>
+    </div>
+
+  </template>
+
+  <script>
+
+    Polymer({
+      is: 'nuxeo-geodistance-search',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+    /* ==================== @public Properties ==================== */
+        document: {
+          type: Object,
+          observer: "_documentChanged"
+        },
+
+        apiKey: String,
+
+        // geodistance page provider params
+        params: {
+          type: Object,
+          value: {},
+          notify: true
+        },
+
+        // Default zoom for the map, when displaying only the current document
+        zoom: {
+          type: Number,
+          value: 14,
+          observer: "_zoomChanged"
+        },
+
+        distanceValue: {
+          type: Number,
+          value: 10
+        },
+
+        initialDistanceValue: {
+          type: Number,
+          value: 10
+        },
+
+        distanceUnit: {
+          type: String,
+          value: "km"
+        },
+
+        initialDistanceUnit: {
+          type: String,
+          value: "km"
+        },
+
+        initialZoom: {
+          type: Number,
+          value: 14
+        },
+
+    /* ==================== @private Properties ==================== */
+        markers: Array,
+
+        currentDocCanUseGMap: {
+          type: Boolean,
+          value: false
+        }
+
+      },
+
+      _documentChanged: function(newValue, previousValue) {
+        // Need to reset the map if we are changing the document.
+        // But as this element could be loaded everywhere (and then, displayed or not
+        // depending on a filter), we need to check if it does have the geoloc schema
+        if(newValue && !this.hasSchema(newValue, "geoloc")) {
+          //console.log(newValue.title + " (" + newValue.type + ") does not have the 'geoloc' schema => not reseting the map");
+          return;
+        }
+
+        if(previousValue) {
+          this.distanceValue = this.initialDistanceValue;
+          this.distanceUnit = this.initialDistanceUnit;
+          this.zoom = this.initialZoom;
+
+          this._resetMap();
+        }
+
+        if(newValue) {
+          setTimeout(function() {
+            this._search();
+          }.bind(this), 500);
+        }
+      },
+
+      _zoomChanged: function(newValue, prevValue) {
+        if(newValue && this.gmap) {
+          this.gmap.setZoom(newValue);
+        } 
+      },
+
+      // Using the geodistance page provider, which expects this parameter
+      // in the geoloc distance predicate
+      _setSearchParameters: function() {
+        let params = {};
+        if(this.document && this.document.properties) {
+          params = {
+            "geoloc_location": [
+              this.document.properties["geoloc:location"],
+              "" + this.distanceValue + this.distanceUnit
+            ]
+          };
+        }
+        this.params = params;
+      },
+
+      _search: function() {
+        if(!this.document) {
+          return;
+        }
+
+        this._setSearchParameters();
+        this.$.geodistanceProvider.fetch()
+            // -------------------------------
+            .then(function(response) {
+            // -------------------------------
+              this._updateMarkers(response);
+            }.bind(this))
+            // -------------------------------
+            .catch(function(error) {
+            // -------------------------------
+              // . . .
+            }.bind(this));
+      },
+
+      _updateMarkers: function(documents) {
+
+        let markers = [];
+
+        if(!documents || !documents["entity-type"] || documents["entity-type"] !== "documents") {
+          console.warn("_updateMarkers: No valid list of documents received");
+          return;
+        }
+
+        // Algo. could be smarter. Add the new elements, remove the one that are not in the array, typically.
+        // This is called "room for improvment" :-)
+        // Set the current document marker as first element
+        markers.push(this._buildDocumentMarker(this.document));
+        // First doc => bigger marker, yello.
+        markers[0].iconUrl = "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png";
+        markers[0].iconSize = 48;
+        // Loop on the others
+        for(var doc of documents.entries) {
+          if(doc.uid !== this.document.uid) {
+            markers.push(this._buildDocumentMarker(doc));
+          }
+        }
+
+        this.markers = markers;
+      },
+
+      // As expected by nuxeo-google-map
+      _buildDocumentMarker: function(doc) {
+
+        if(!doc || !doc.properties) {
+          return;
+        }
+
+        let marker = {
+          latitude: doc.properties["geoloc:latitude"],
+          longitude: doc.properties["geoloc:longitude"],
+          title: doc.title,
+          infoWindowContent: this._builContentForInfoWindow(doc)
+        };
+
+        return marker;
+
+      },
+
+      _builContentForInfoWindow: function(doc) {
+
+        if(!doc) {
+          return "(no input document => no info to display)";
+        }
+        let contentString;
+        if(doc.uid === this.document.uid) {
+          contentString = "<h3>" + doc.title + "</h3>";
+        } else {
+          contentString = "<h3><a href='/nuxeo/ui/#!/doc/" + doc.uid + "'>" + doc.title + "</a></h3>";
+        }
+        if(doc.properties["dc:description"]) {
+          contentString += doc.properties["dc:description"];
+        }
+        contentString += "<p>State: " + doc.state + "   -   Version: " + doc.properties["uid:major_version"] + "." + doc.properties["uid:minor_version"] +"</p>";
+
+        return contentString;
+      },
+
+      _getApiKeyResponse: function(e) {
+        if(typeof this.apiKey !== "string" || this.apiKey !== "") {
+          this.apiKey = e.detail.response.value;
+
+          // In some navigaiton context (to be explored), changing teh current document
+          // somehow clears our nuxeo-google-map element. We know that it happened because
+          // this operation is called again.
+          // We suspect it happens when the infoWinfowContent has a link to a document that
+          // does not use WebUI (building the URL with the Doc uid for example)
+          if(!this.$.gmap.map) {
+            // console.log("_getApiKeyResponse => Need to reset the map");
+            this._resetMap();
+          }
+        }
+      },
+
+      _resetMap: function() {
+        if(!this.document) {
+          console.error("Cannot reset the map if we have no document");
+          return;
+        }
+        this.$.gmap.reset({
+          latitude: this.document.properties["geoloc:latitude"],
+          longitude: this.document.properties["geoloc:longitude"],
+          markers: [],
+          zoom: this.zoom,
+          apiKey: this.apiKey
+        });
+      }
+
+    });
+  </script>
+</dom-module>
