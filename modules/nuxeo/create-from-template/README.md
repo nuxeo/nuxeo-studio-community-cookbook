@@ -2,7 +2,7 @@
 
 ![Create from Template](CreateFromTemplate.png)
 
-## Prerequisites
+## Prerequisite
 
 - Install nuxeo-template-rendering addon.
 
@@ -29,7 +29,7 @@ This behaviour is often requested in document management platform, when specific
 
 ## Installation
 
-All required files are available in the folders designer and modeler.
+- All required files are available in the folders designer and modeler.
 
 ### Studio Modeler
 
