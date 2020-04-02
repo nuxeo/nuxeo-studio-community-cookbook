@@ -33,15 +33,15 @@ All required files are available in the folders designer and modeler.
 
 ### Studio Modeler
 
-Create Schema : `fileTemplate` importing `fileTemplate.xsd`
-Create Automation Chain : `AC_SearchTemplates` (copy paste content from file `AC_SearchTemplates`)
-Create Automation Script : `AS_CreateFromTemplate` (copy paste content+instructions from file `AS_CreateFromTemplate.js`)
-Create Event Handler : `EH_AS_CreateFromTemplate` (follow instructions from file `EH_AS_CreateFromTemplate`)
+- Create Schema : `fileTemplate` importing `fileTemplate.xsd`
+- Create Automation Chain : `AC_SearchTemplates` (copy paste content from file `AC_SearchTemplates`)
+- Create Automation Script : `AS_CreateFromTemplate` (copy paste content+instructions from file `AS_CreateFromTemplate.js`)
+- Create Event Handler : `EH_AS_CreateFromTemplate` (follow instructions from file `EH_AS_CreateFromTemplate`)
 
 ### Studio Designer
 
-Copy Paste folder and files available in `designer>UI`.
-Add `<link rel="import" href="create-from-template/nuxeo-file-template-select-element.html">` in your custom bundle.
+- Copy Paste folder and files available in `designer>UI`.
+- Add `<link rel="import" href="create-from-template/nuxeo-file-template-select-element.html">` in your custom bundle.
 
 ## Documentation
 
