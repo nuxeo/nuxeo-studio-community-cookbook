@@ -1,0 +1,4 @@
+- Repository.Query:
+    language: NXQL
+    query: "SELECT * FROM Document WHERE ecm:mixinType != 'HiddenInNavigation'AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:primaryType = 'TemplateSource'"
+    sortOrder: ASC

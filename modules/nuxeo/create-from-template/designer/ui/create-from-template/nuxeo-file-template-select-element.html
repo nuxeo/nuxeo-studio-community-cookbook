@@ -1,0 +1,64 @@
+<!--
+`nuxeo-fileTemplate-select-element`
+@group Nuxeo UI
+@element nuxeo-fileTemplate-select-element
+-->
+<dom-module id="nuxeo-file-template-select-element">
+  <template>
+
+    <nuxeo-document-suggestion role="widget" id="docTemplateSugg" label="[[i18n('label.filetemplate.select')]]" name="TemplateId" value="{{document.properties.ftemp:templateID}}" min-chars="0" result-formatter="[[ResultFormatter]]" operation="AC_SearchTemplates" required>
+    </nuxeo-document-suggestion>
+    
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-file-template-select-element',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+      /**
+         * @doctype File
+         */
+      document: Object,
+      ResultFormatter: {
+        type: Function,
+        value: function() {
+          return this._ResultFormatter.bind(this);
+        }
+      },
+    },
+
+    _ResultFormatter: function(doc) {
+
+      if (!doc.properties) {
+        return "Bad result format";
+      }
+
+
+      let markup = "";
+
+      markup += "<table width='100%' style=\"background-color:#F2F2F2;\"><tbody>";
+      markup += "<tr>";
+      markup += "<td width='100px' style='text-align: center'>";
+      markup += "<img src='" + this._getThumbnailUrl(doc) + "' style='max-width: 100px; max-height=25px;' >";
+      markup += "</td>";
+      markup += "<td>";
+      markup += "<div style='margin-left:15px'><span style='font-weight: bold;color:black'>"
+      markup += doc.title +"</span>";
+      markup += "</div>";
+      markup += "<div style='margin-left:15px'><span style='color:black'>"
+      markup += doc.properties["dc:description"] +"</span>";
+      markup += "</div>";
+      markup += "</td>";
+      markup += "</tr>"
+      markup += "</tbody></table>";
+
+      return markup;
+    },
+    _getThumbnailUrl: function(doc) {
+      return "/nuxeo/api/v1/id/" + doc.uid + "/@rendition/thumbnail";
+    }
+  });
+  </script>
+  
+</dom-module>
