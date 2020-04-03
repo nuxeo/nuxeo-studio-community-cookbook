@@ -32,6 +32,12 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <th>Category</th>
   </tr>
   <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/create-from-template"><img src="modules/nuxeo/create-from-template/CreateFromTemplate.png" width="120px"/></a></td>
+    <td>Create from template</td>
+    <td>Nuxeo</td>
+    <td>Templates</td>
+  </tr>
+  <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/geodistance-search-and-google-map"><img src="modules/nuxeo/geodistance-search-and-google-map/geodistance.png" width="120px"/></a></td>
     <td>Geodistance Search + Google Map</td>
     <td>Nuxeo</td>
@@ -48,24 +54,6 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <td>Display a field with Currency format</td>
     <td>Nuxeo</td>
     <td>Layout</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/cascading-fields"><img src="modules/nuxeo/cascading-fields/cascading.png" width="120px"/></a></td>
-    <td>Cascading Fields in Document Layouts</td>
-    <td>Nuxeo</td>
-    <td>Layout</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/comment-indexing"><img src="modules/nuxeo/comment-indexing/comments.png" width="120px"/></a></td>
-    <td>Comment Indexing</td>
-    <td>Nuxeo</td>
-    <td>Search</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/qr-code"><img src="modules/nuxeo/qr-code/qrcode.png" width="120px"/></a></td>
-    <td>Document QR Code</td>
-    <td>Nuxeo</td>
-    <td>Business Logics</td>
   </tr>
 </table>
 
@@ -99,6 +87,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 Module | Description | Contributor
 --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/geodistance-search-and-google-map"><img src="modules/nuxeo/geodistance-search-and-google-map/geodistance.png" width="120px"/></a> | Geodistance Search + Google Map | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/currency"><img src="modules/nuxeo/currency/currency2.jpg" width="120px"/></a> | Display a field with Currency format | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/cascading-fields"><img src="modules/nuxeo/cascading-fields/cascading.png" width="120px"/></a> | Cascading Fields in Document Layouts | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/highlight"><img src="modules/nuxeo/highlight/highlight-logo.png" width="120px"/></a> | Highlight in Custom Searches | Nuxeo
@@ -163,6 +152,7 @@ Module | Description | Contributor
 --- | --- | ---
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/send-email-from-webui"><img src="modules/nuxeo/send-email-from-webui/mail2.png" width="100px"/></a> | Send emails from Nuxeo Web UI | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/email-templates-nuxeo"><img src="modules/nuxeo/email-templates-nuxeo/dark.png" width="100px"/></a> | Email templates | Nuxeo
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/create-from-template"><img src="modules/nuxeo/create-from-template/CreateFromTemplate.png" width="100px"/></a> | Document templates | Nuxeo
 
 ### Integrations
 
