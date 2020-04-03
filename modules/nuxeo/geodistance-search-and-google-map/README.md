@@ -2,7 +2,7 @@
 
 Performs a geodistance search ("search all accidents which are 100km around the current accident"), and displays the result in a Google Map, with clickable markers. A click on a marker displays any information you want.
 
-!geodistance.png](geodistance.png)
+![geodistance.png](geodistance.png)
 
 <div style="margin-left:50px;font-style:italic">If you don't need to display the result in a Google Map, you can just ignore everything around it and rework the nuxeo-geodistance-search.hml to display the results in another way.</div>
 
