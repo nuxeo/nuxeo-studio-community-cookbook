@@ -6,9 +6,10 @@
 <dom-module id="nuxeo-file-template-select-element">
   <template>
 
+    <!-- Update the value -->
     <nuxeo-document-suggestion role="widget" id="docTemplateSugg" label="[[i18n('label.filetemplate.select')]]" name="TemplateId" value="{{document.properties.ftemp:templateID}}" min-chars="0" result-formatter="[[ResultFormatter]]" operation="AC_SearchTemplates" required>
     </nuxeo-document-suggestion>
-    
+
   </template>
 
   <script>
@@ -60,5 +61,5 @@
     }
   });
   </script>
-  
+
 </dom-module>

@@ -7,7 +7,7 @@
 function run(input, params) {
 
   // Get the template ID
-  var templateId = input["ftemp:templateID"];
+  var templateId = input["ftemp:templateID"]; // TO BE UPDATED !!!
 
 
   if (templateId !== null && templateId.length() > 0) {

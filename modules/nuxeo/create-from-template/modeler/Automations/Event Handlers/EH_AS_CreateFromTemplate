@@ -1,8 +1,0 @@
-Create an Event Handler
-name  : EH_AS_CreateFromTemplate
-Event Handler Definition:
-    Events : Document Created
-Event Handler Activation:
-    Current document has one of types: "Select the type on which you want to enable the Create From Template capability"
-Event Handler Execution:
-    script : javascript.AS_CreateFromTemplate
