@@ -155,4 +155,4 @@ This example is about displaying the `nuxeo-geodistance-search` in a view layout
 ## Documentation
 
 - [Elasticsearch hints](https://doc.nuxeo.com/nxdoc/nxql/#elasticsearch-nxql-hints)
-- [Configuration template for elasticsearch mapping](https://doc.nuxeo.com/nxdoc/elasticsearch-setup/#changingelasticsearchmapping)
+- [Configuration template for elasticsearch mapping](https://doc.nuxeo.com/nxdoc/configuring-the-elasticsearch-mapping/)
