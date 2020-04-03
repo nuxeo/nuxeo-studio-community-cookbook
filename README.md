@@ -35,7 +35,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/geodistance-search-and-google-map"><img src="modules/nuxeo/geodistance-search-and-google-map/geodistance.png" width="120px"/></a></td>
     <td>Geodistance Search + Google Map</td>
     <td>Nuxeo</td>
-    <td>Layouts, Elasticsearch Hints, Google Map API, Automation, Server Templates</td>
+    <td>Layouts, Search, Automation</td>
   </tr>
   <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/send-email-from-webui"><img src="modules/nuxeo/send-email-from-webui/mail2.png" width="120px"/></a></td>
