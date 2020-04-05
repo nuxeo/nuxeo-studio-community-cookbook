@@ -1,3 +1,5 @@
+:warning: **DEPRECATED** : This contribution is now highly improved by the DAM Configurable Dashboard Studio External Template. Please read the template description from **Nuxeo Studio Modeler**  > **CONFIGURATION** > **External Templates** :warning:
+
 # Visual Dashboard
 
 ![dashboard](dashboard.png)
