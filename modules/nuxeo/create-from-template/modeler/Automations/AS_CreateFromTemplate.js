@@ -30,7 +30,8 @@ function run(input, params) {
           'save' : true
         }
       );
-      var newName = input["file:name"];
+     //Renaming the template blob, so it's not always the same and related to the document name
+     var newName = input["dc:title"] + "-" + input["file:content"].filename;
      input = Document.SetBlobName(
        input,    {
           'name': newName,
