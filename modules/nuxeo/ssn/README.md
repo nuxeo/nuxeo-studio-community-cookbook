@@ -1,6 +1,6 @@
 # Social Security Number Display
 
-![SSN](ssn.png)
+![SSN](ssn.jpg)
 
 ## Description
 
