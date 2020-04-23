@@ -6,6 +6,7 @@
 
 - [Update the children document listing in the View tab of folderish documents](#update-the-children-document-listing-in-the-view-tab-of-folderish-documents)
 - [Refresh current folder's listing after clicking an operation action that moves one of the child document](#refresh-current-folders-listing-after-clicking-an-operation-action-that-moves-one-of-the-child-document)
+- [Suggestion formatters](#suggestion-formatters)
 - [Create a table with two columns](#create-a-table-with-two-columns)
 - [Position several Nuxeo elements in the same row](#position-several-nuxeo-elements-in-the-same-row)
 - [Get property name and property value on the same row](#get-property-name-and-property-value-on-the-same-row-as-the-nuxeo-document-info-section)
@@ -33,34 +34,36 @@ Switch to code on the layouts and elements in Studio Designer and adapt the code
 
 Typically, if you need to update the default document listing on the "View" tab with properties from your custom document type.
 
-1. Create a page provider, and add the `ecm:parentId` as predicate with the `=` operator.
-2. Generate the corresponding result listing in Designer.
+1. Create a document type with a folderish facet, or inheriting from Workspace/Folder, and generate the view layout in Designer
+2. Create a page provider, and add the `ecm:parentId` as predicate with the `=` operator. Then you can add also any additional predicates or aggregates you would need. Interesting for filtering columns as in the [nuxeo-document-content](https://github.com/nuxeo/nuxeo-web-ui/blob/10.10/elements/nuxeo-results/nuxeo-document-content.html#L201) element 
 3. Adapt the column which needs to appear on your listing. :information_source: If you're using suggestion elements, remove the `label` attribute from the listing so that they are not doubled
-4. Add the `nuxeo-page-provider` element in your result layout (by switching in code view), update the `provider` parameter with the one you created in "1." add the necessary `schemas`:
+4. Edit the following attributes in the `nuxeo-page-provider` element inside your view element
+
+- `provider="advanced_document_content"` by `provider="YOUR_PAGE_PROVIDER_ID"`
+- `params="[[params]]"` by `params="[[_computeParams(document)]]`
+- In `schemas`, add the schemas used by your aggregates and predicates
+
+5. Add the following section in the Polymer part, right after the `@doctype` annotation section. 
 ```
-<nuxeo-page-provider id="nxProvider"
-                         provider="nxProvider"                  // TO BE UPDATED
-                         params='[[_computeParams(document)]]'
-                         enrichers="thumbnail, permissions"
-                         schemas="dublincore,common,uid"        // TO BE COMPLETED
-                         page-size="20"
-                         headers='{"X-NXfetch.document": "properties", "X-NXtranslate.directoryEntry": "label"}'
-                         auto>
-    </nuxeo-page-provider>
-```
-5. Add the following section of the Polymer part of the same document
-```
-ready: function() {
-      this.nxProvider = this.$.nxProvider; // <============== this is important
+document: {
+        type: Object,
+      },
+      params: {
+        type: Object
+      }},
+
+    ready: function() {
+      this.nxProvider = this.$.nxProvider; 
     },
+
     _computeParams: function (document) {
       return document ? {system_parentId: this.document.uid} : {};
     },
+  });
+  </script>
+</dom-module>
 
 ```
-6. Go to your view layout of your folderish document. Generate the view layout and remove everything between `</style>` and `</template>`
-7. Add manually your result element. Donc forget to add the `document="[[document]]"` attribute to the result layout, and import the alement in your layout `<link rel="import" href="../../search/<page_provider_name>/nuxeo-<page_provider_name>-search-results.html">`
-
 
 ### Refresh current folder's listing after clicking an operation action that moves one of the child document
 
@@ -71,6 +74,17 @@ var op = this.$.op; <=== Assuming your nuxeo-operation element id is "op"
 op.headers || (op.headers = {});
 op.headers["nx_es_sync"] = true;
 ```
+### Suggestion formatters
+
+If you are not satisfied with the padding and margin of the suggestion elements, you can use the formatters instead:
+
+- `[[formatDirectory(document.properties.XXX:XXX)]]` for vocabularies
+- `[[formatVersion(XXX)]]` for versions
+
+For multivalued properties, here is [an example](https://github.com/nuxeo/nuxeo-web-ui/blob/10.10/elements/nuxeo-results/nuxeo-document-content.html#L204)
+
+The complete list is available [here](https://github.com/nuxeo/nuxeo-elements/blob/master/ui/nuxeo-format-behavior.js)
+
 
 ### Create a table with two columns
 
