@@ -36,12 +36,13 @@ Typically, if you need to update the default document listing on the "View" tab 
 
 1. Create a document type with a folderish facet, or inheriting from Workspace/Folder, and generate the view layout in Designer
 2. Create a page provider, and add the `ecm:parentId` as predicate with the `=` operator. Then you can add also any additional predicates or aggregates you would need. Interesting for filtering columns as in the [nuxeo-document-content](https://github.com/nuxeo/nuxeo-web-ui/blob/10.10/elements/nuxeo-results/nuxeo-document-content.html#L201) element 
-3. Adapt the column which needs to appear on your listing. :information_source: If you're using suggestion elements, remove the `label` attribute from the listing so that they are not doubled
-4. Edit the following attributes in the `nuxeo-page-provider` element inside your view element
+3. Edit the following attributes in the `nuxeo-page-provider` element inside your view element
 
 - `provider="advanced_document_content"` by `provider="YOUR_PAGE_PROVIDER_ID"`
 - `params="[[params]]"` by `params="[[_computeParams(document)]]`
 - In `schemas`, add the schemas used by your aggregates and predicates
+
+4. Adapt the column which needs to appear on your listing. :information_source: If you're using suggestion elements, remove the `label` attribute from the listing so that they are not doubled
 
 5. Add the following section in the Polymer part, right after the `@doctype` annotation section. 
 ```
