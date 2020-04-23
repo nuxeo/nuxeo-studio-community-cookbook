@@ -178,8 +178,42 @@ nuxeo-data-table,
 ```
 ### Update Nuxeo Favicon
 
-- Create this folder structure in designer (or the mp): `UI/images/touch` 
-- Upload the files named: favicon-16x16.png and favicon-32x32.png
+- Get/create your source favicon image (preferably SVG format).
+- Go to: https://realfavicongenerator.net/
+  - Click “Select your Favicon image” and upload your source image.
+  - Go to section “Favicon for Android Chrome” → “Assets”, select “Modern versions” option “Create all documented icons” (need this to generate android-chrome-384x384.png)
+  - Go to section “Favicon Generator Options” → “App name”, set “Specific app name” = “Nuxeo” (or other client/project name as appropriate)
+  - Fill in other relevant details as appropriate (or just leave defaults as is)
+  - Click “Generate your Favicons and HTML code” button at bottom.
+  - Click the (Download your package) “Favicon package”. It might take a minute for the button to appear after generating all the Android Chrome renditions.
+  - Extract downloaded zip file locally.
+- Create icon-128x128.png from one of the downloaded files e.g.
+  - `convert android-chrome-256x256.png -resize 128x128 icon-128x128.png`
+- Create 144 pixel renditions e.g.
+  - `cp mstile-144x144.png ms-icon-144x144.png`
+  - `cp mstile-144x144.png ms-touch-icon-144x144-precomposed.png`
+- In Studio, Navigate to Designer → Resources, create the following folder structure: `UI/images/touch` 
+- Upload the following files:
+
+```
+android-chrome-192x192.png
+android-chrome-384x384.png
+apple-touch-icon.png
+favicon.ico
+favicon-16x16.png
+favicon-32x32.png
+icon-128x128.png
+ms-icon-144x144.png
+ms-touch-icon-144x144-precomposed.png
+mstile-150x150.png
+safari-pinned-tab.svg
+```
+
+- Copy `/ui/manifest.json` from core platform and change name and short_name as appropriate.
+- Copy `/ui/index.jsp` from core platform and change as follows:
+  - Change all href values to use full pathnames (see: NXP-28681 - Context not set correctly when navigating back to dashboard after workflow completion OPEN
+  - Change: `href="<%=context%>/icons/favicon.ico"` to ` href="/nuxeo/ui/images/touch/favicon.ico"` 
+
 
 ## Documentation Links
 
