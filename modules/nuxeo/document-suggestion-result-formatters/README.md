@@ -22,6 +22,7 @@ We will illustrate the installation through an example, with a Document property
 
 - Create a custom page provider to list the document which should appear in your suggestion element.
   - `VideoUtils_Watermark_PageProvider`
+  - :warning: You need to end the **Query Filter** by `AND ecm:fulltext = '?*'` and **uncheck** in the Advanced Configuration the checkbox of **Quote parameters**.
 - Create a property of type `Document` in the schema definition if needed.
   - No the case here in this example
 
@@ -127,7 +128,6 @@ _thumbnailFormatter: function(doc) {
 }
 ```
 
-:information_note: You can alternatively use the **operation** attribute of the suggestion element if you don't want to use a page provider: just create an automation which lists the documents you need to fetch, with `Repository.Query` operation, and use the `operation="my_operation_id` instead of the `page-provider="VideoUtils_Watermark_PageProvider` attribute.
 
 ## Documentation Links
 
