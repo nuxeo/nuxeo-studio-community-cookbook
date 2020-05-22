@@ -172,10 +172,8 @@ Without forgetting to update the `<style>` line with `<style include="iron-flex 
 Add to your theme the following CSS variables:
 
 ```
---nuxeo-document-create-popup-width;
---nuxeo-document-create-popup-heigh;
---nuxeo-document-edit-popup-width;
---nuxeo-document-edit-popup-height;
+--nuxeo-document-form-popup-max-height: 60vh;
+--nuxeo-document-form-popup-min-width: 915px;
 ```
 
 ### Set height to nuxeo-data-table
