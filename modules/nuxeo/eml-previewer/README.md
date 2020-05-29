@@ -100,6 +100,12 @@ xvfb-run -a --server-args="-screen 0, 1024x768x24" /usr/bin/wkhtmltopdf -q $*
 ### Studio Designer
 
 - Open the File view layout (`UI/document/file/nuxeo-file-view-layout.hml`)
+- Add `nuxeo-connection` element
+
+```
+  <nuxeo-connection id="nxcon"></nuxeo-connection>
+```
+
 - Substitute the line `<nuxeo-document-viewer role="widget" document="[[document]]"></nuxeo-document-viewer>` with
 
 ```
