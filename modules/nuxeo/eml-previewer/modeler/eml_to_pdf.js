@@ -36,7 +36,7 @@ function run(input, params) {
     opts = {
       "document": input,
       "save": true,
-      "xpath": "files:files"
+      "xpath": "file_schema:pdfconversion"
     };
     try {
       Console.info("  Blob.AttachOnDocument" + JSON.stringify(opts) + " : '" + output + "'");
