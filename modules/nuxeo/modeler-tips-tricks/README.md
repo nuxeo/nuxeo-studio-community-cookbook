@@ -5,7 +5,7 @@
 - [Get value from the parent document before creation](#get-value-from-the-parent-document-before-creation)
 - [Update the default behaviour of the Template Rendering Output](#update-the-default-behaviour-of-the-template-rendering-output-format)
 - [Override the global search to perform the search with fulltext analyzer on every property](#override-the-global-search-to-perform-the-search-with-fulltext-analyzer-on-every-property)
-
+- [Perform calculation on a document list](#perform-calculation-on-a-document-list)
 
 ## Prerequisites
 
@@ -79,6 +79,22 @@ Then, you have to create an XML extension:
       </parameters>
     </suggester>
 </extension>
+```
+
+### Perform calculation on a document list
+
+Here is an example on how to manage average, minimum and maximum on a document list:
+
+```
+function run(input, params) {
+  var resultSet, nxql, result;
+  nxql = "SELECT AVG(claim:claimAmount), MIN(claim:claimAmount), MAX(claim:claimAmount) FROM Document WHERE claim:claimAmount IS NOT NULL";
+  resultSet = Repository.ResultSetQuery(null, {'query': nxql});
+  result = resultSet.get(0); // We have only one result in this context (resultSet is a Java List of hash maps, key = field/expression used in SELECT)
+  Console.log(result["AVG(claim:claimAmount)"]);
+  Console.log(result["MIN(claim:claimAmount)"]);
+  Console.log(result["MAX(claim:claimAmount)"]);
+}
 ```
 
 ## Documentation Links
