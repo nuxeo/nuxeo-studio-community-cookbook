@@ -10,6 +10,7 @@ function run(input, params) {
     if (isAdmin > -1){
       admingroupofuser = [];
       orginal_groupname=group;
+      // We need to remove the suffix for the group display
       final_groupname = orginal_groupname.replace("-administrators", "");
       adminGroupsOfUser.push(final_groupname);
     }

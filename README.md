@@ -125,13 +125,6 @@ Module | Description | Contributor
 
 ### Security / Authentication / User and Group Management
 
-<tr>
-  <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/user-group-management"><img src="modules/nuxeo/user-group-management/user-group-management.png" width="120px"/></a></td>
-  <td>Local Administrators</td>
-  <td>Nuxeo</td>
-  <td>Administration</td>
-</tr>
-
 Module | Description | Contributor
 --- | --- | ---
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/user-group-management"><img src="modules/nuxeo/user-group-management/user-group-management.png" width="100px"/></a> | Local Group Administrators | Nuxeo

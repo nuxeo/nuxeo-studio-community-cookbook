@@ -8,7 +8,7 @@
 
 ## Description
 
-This module allows you to provide group management capabilities to regular users, without being powerusers or administrators.
+This module offers group management capabilities to regular users, without being inside the `powerusers` or the `administrators` group:
   
 - Get the list of members of a group
 - Add a new member
@@ -20,7 +20,7 @@ To be a group administrator, you need to create an additional group, suffixed by
 
 - For example, users belonging to the `grp-legal-department-administrators` group will be able to administrate users of the `grp-legal-department` group.
 
-When a user belong to at least one administration group, a new drawer entry is displayed: the list of all administrable group are listed by clicking on the "Group Administration" drawer entry.
+When a user belong to at least one administration group, a new drawer entry is displayed: the list of all administrable groups are listed by clicking on the "Group Administration" drawer entry.
 
 The security checks are executed in the backend, inside the automation scripting contributions to make sure the addition and removal of users are allowed (these operations are temporarily executed as `Administrator`).
 
