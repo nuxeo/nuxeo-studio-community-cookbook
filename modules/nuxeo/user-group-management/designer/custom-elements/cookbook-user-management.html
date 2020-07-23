@@ -1,0 +1,70 @@
+<!--
+`cookbook-user-management`
+@group Nuxeo UI
+@element cookbook-user-management
+-->
+<dom-module id="cookbook-user-management">
+  <template>
+    <style include="nuxeo-styles iron-flex iron-flex-alignment iron-positioning">
+      .headerText {
+        background-color: #7e90a5;
+        border-radius: 3px;
+        color: #fff;
+        padding: 0.7em 0.9em;
+        text-transform: uppercase;
+        vertical-align: center;
+        white-space: nowrap;
+        margin-left: 10px;
+        font-size: larger;
+      }
+    </style>
+
+    <nuxeo-connection id="nxcon" user="{{user}}"></nuxeo-connection>
+		<nuxeo-operation id="GetAdminGroupsOfUser" op="javascript.GetAdminGroupsOfUser"></nuxeo-operation>  
+
+    <nuxeo-page>
+      <template is="dom-repeat" items="[[adminGroupsOfUser]]" as="group">
+        <nuxeo-card heading="[[i18n('label.userGroupManagement.managementOf', group)]]">
+       				<cookbook-group-management group-name="[[group]]" group-path="/group/[[group]]"></cookbook-group-management>
+         </nuxeo-card>
+      </template>
+    </nuxeo-page>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'cookbook-user-management',
+      behaviors: [Nuxeo.I18nBehavior, Nuxeo.RoutingBehavior],
+      properties: {
+        adminGroupsOfUser: {
+          type: Array,
+        },
+				
+        visible: {
+          					type: Boolean,
+          					observer: '_visibleChanged'
+        				},
+        user: {
+          type: Object,
+          observer: '_onUserChange'
+        }
+      },
+      
+     			 _visibleChanged: function(visible) {
+        			if (visible) {
+          			this._refresh();
+        			}
+      			},
+
+             _refresh: function() {
+        			if (this.$.nxcon.client.user){
+                  this.$.GetAdminGroupsOfUser.execute().then(function(result) {
+                    this.adminGroupsOfUser =  result.value;
+                    }.bind(this))
+                    .catch(function(error) {
+                    }.bind(this));
+                  }
+          			},
+    });
+  </script>
+</dom-module>

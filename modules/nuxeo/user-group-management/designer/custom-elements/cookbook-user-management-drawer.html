@@ -1,0 +1,67 @@
+
+<!--
+`cookbook-user-management-drawer`
+@group Nuxeo UI
+@element cookbook-user-management-drawer
+-->
+<dom-module id="cookbook-user-management-drawer">
+    <template>
+        <style include="nuxeo-styles">
+          .content {
+            @apply --layout-vertical;
+          }
+          
+          .list-item {
+            cursor: pointer;
+            padding: 1em;
+            border-bottom: 1px solid var(--nuxeo-border);
+          }
+
+          
+        </style>
+
+        <nuxeo-connection id="nxcon" user="{{currentUser}}"></nuxeo-connection>
+				<nuxeo-operation id="GetAdminGroupsOfUser" op="javascript.GetAdminGroupsOfUser"></nuxeo-operation>  
+      
+        <div class="header">[[i18n('label.userGroupManagement.list')]]</div>
+      
+      
+      	<div class="content">
+          <template is="dom-repeat" items="[[adminGroupsOfUser]]" as="group">
+            	<div class="list-item"><a href="#!/admin/user-group-management/group/[[group]]">[[group]]</a></div>
+          </template>
+      </div>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'cookbook-user-management-drawer',
+            behaviors: [Nuxeo.I18nBehavior],
+            properties: {
+                adminGroupsOfUser: {
+                    type: Array,
+                },
+              	visible: {
+          					type: Boolean,
+          					observer: '_visibleChanged'
+        				}
+      			},
+      			_visibleChanged: function(visible) {
+        			if (visible) {
+          			this._refresh();
+        			}
+      			},
+
+             _refresh: function() {
+        			if (this.$.nxcon.client.user){
+								this.$.GetAdminGroupsOfUser.execute().then(function(result) {
+                    this.adminGroupsOfUser =  result.value;
+                    }.bind(this))
+                    .catch(function(error) {
+                    }.bind(this));
+                  }
+          			},
+         });
+    </script>
+</dom-module>

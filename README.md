@@ -32,6 +32,12 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <th>Category</th>
   </tr>
   <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/user-group-management"><img src="modules/nuxeo/user-group-management/user-group-management.png" width="120px"/></a></td>
+    <td>Local Group Administrators</td>
+    <td>Nuxeo</td>
+    <td>Administration</td>
+  </tr>
+  <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/create-from-template"><img src="modules/nuxeo/create-from-template/CreateFromTemplate.png" width="120px"/></a></td>
     <td>Create from template</td>
     <td>Nuxeo</td>
@@ -119,8 +125,16 @@ Module | Description | Contributor
 
 ### Security / Authentication / User and Group Management
 
+<tr>
+  <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/user-group-management"><img src="modules/nuxeo/user-group-management/user-group-management.png" width="120px"/></a></td>
+  <td>Local Administrators</td>
+  <td>Nuxeo</td>
+  <td>Administration</td>
+</tr>
+
 Module | Description | Contributor
 --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/user-group-management"><img src="modules/nuxeo/user-group-management/user-group-management.png" width="100px"/></a> | Local Group Administrators | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/bulk-workflow-reassignment"><img src="modules/nuxeo/bulk-workflow-reassignment/task_reassignment.png" width="100px"/></a> | Bulk Workflow Reassignment | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/saml-user-mapping"><img src="modules/nuxeo/saml-user-mapping/saml.png" width="100px"/></a> | Map SAML user attributes to Nuxeo | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/sensitive-data"><img src="modules/nuxeo/sensitive-data/sensitive-data1.png" width="100px"/></a> | Display sensitive data details contained in a document | Nuxeo

@@ -1,0 +1,427 @@
+<!--
+`cookbook-group-management`
+@group Nuxeo UI
+@element cookbook-group-management
+-->
+<dom-module id="cookbook-group-management">
+  <template>
+    <style include="iron-flex iron-flex-alignment iron-flex-factors">
+      :host {
+        display: block;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      h2 {
+        color: var(--nuxeo-title-color, #213f7d);
+      }
+
+      nuxeo-user-group-permissions-table {
+        margin-top: 1em;
+      }
+
+      .header-actions paper-button {
+        margin-left: 1em;
+      }
+
+      .header-actions iron-icon {
+        width: 1.3rem;
+        margin-right: .5rem;
+      }
+
+      .card {
+        background: none var(--nuxeo-box, #fff);
+        box-shadow: 0 3px 5px rgba(0,0,0,0.04);
+        margin: 2em 0;
+        padding: 2em 1.5em;
+      }
+
+      .card-heading {
+        flex-basis: var(--layout-flex_-_flex-basis);
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+      }
+
+      .header {
+        margin-bottom: 2rem;
+        @apply --layout-start;
+      }
+
+      h3 iron-icon {
+        width: 1.3em;
+        margin-right: .2rem;
+      }
+
+      .groupname {
+        margin: .5rem 0 0;
+      }
+
+      .grouplabel,
+      .counter {
+        font-weight: normal;
+        margin: .5rem 0 0;
+      }
+
+      .avatar {
+        margin: .5rem .5rem 0 0;
+        width: 2rem;
+      }
+
+      .header-actions {
+        height: 2.8rem;
+        margin-top: .5em;
+      }
+
+      .activity-entry {
+        margin-top: 15px;
+      }
+
+      .remove {
+        @apply --nuxeo-link;
+        text-decoration: underline;
+        padding-left: .5em;
+        font-size: .8rem;
+      }
+
+      .remove:hover {
+        @apply --nuxeo-link-hover;
+      }
+
+      /* Table */
+      .title {
+        margin: 0 0 .8em 0;
+        padding: 0;
+      }
+
+      .table {
+        border: 1px solid var(--nuxeo-border, #e3e3e3);
+      }
+
+      .table-header {
+        @apply --layout-horizontal;
+        @apply --layout-center;
+        background-color: var(--nuxeo-table-header-background, #fafafa);
+        color: var(--nuxeo-table-header-titles, rgba(0, 0, 0, 0.54));
+        font-weight: 400;
+        min-height: 48px;
+        padding: 0 0 0 12px;
+        border-bottom: 2px solid var(--nuxeo-border, #eee);
+        box-shadow: 0 -1px 0 rgba(0,0,0,0.2) inset;
+      }
+
+      .table-row {
+        @apply --layout-horizontal;
+        @apply --layout-center;
+        padding: 12px 0 12px 12px;
+        border-bottom: 1px solid var(--nuxeo-border, #eee);
+        cursor: pointer;
+      }
+
+      .table-row:hover {
+        background: var(--nuxeo-container-hover, #fafafa);
+      }
+
+      .table-row:last-of-type {
+        border-bottom: none;
+      }
+
+      .table-actions {
+        /*width: 3em;*/
+      }
+
+      .filter-wrapper {
+        margin-top: 1em;
+      }
+
+      nuxeo-dialog[id="editGroupDialog"] {
+        width: 40%;
+      }
+
+      .buttons {
+        @apply --buttons-bar;
+      }
+
+      #editForm {
+        padding: 1em 2em 2em;
+      }
+
+      .emptyResult {
+        opacity: .5;
+        display: block;
+        font-weight: 300;
+        padding: 1.5em .7em;
+        text-align: center;
+      }
+
+      .preserve-white-space {
+        white-space: pre;
+      }
+
+      /* buttons */
+      paper-button.primary {
+        background-color: var(--nuxeo-button-primary, #00adff);
+        color: #fff;
+      }
+
+      paper-button.primary:hover,
+      paper-button.primary:focus {
+        background-color: var(--nuxeo-button-primary-focus, #0079b3);
+        font-weight: inherit;
+        color: #fff !important;
+      }
+      iron-icon{
+        height: 12px;
+        width: 12px;
+        margin-right: 8px;
+      }
+    </style>
+
+    <nuxeo-connection id="nxcon" user="{{user}}"></nuxeo-connection>
+
+    <paper-toast id="toast"></paper-toast>
+
+    <nuxeo-resource id="userSearch" auto path="/user/search" response="{{userToAdd}}"></nuxeo-resource>
+
+    <nuxeo-resource id="group" auto
+                    path="{{groupPath}}"
+                    response="{{group}}"
+                    headers='{"fetch.group": "memberUsers","fetch.document": "memberUsers"}'>
+    </nuxeo-resource>
+
+    <nuxeo-resource id="users" auto
+                    path="{{groupPath}}/@users"
+                    response="{{users}}"
+                    headers='{"fetch.group": "memberUsers","fetch.document": "memberUsers"}'>
+    </nuxeo-resource>
+
+
+    <nuxeo-operation id="updateUsersToGroup" op="javascript.updateUsersToGroup"></nuxeo-operation>
+    <nuxeo-dialog id="rmFromGroupDialog" with-backdrop class="vertical layout">
+      <h2>[[i18n('groupManagement.removeUserFromGroup.confirm', _removedMember.id)]]</h2>
+      <div class="buttons horizontal end-justified layout">
+        <div class="flex start-justified">
+          <paper-button noink dialog-dismiss>[[i18n('label.no')]]</paper-button>
+        </div>
+        <paper-button noink class="primary" dialog-confirm on-click="_removeMember">[[i18n('label.yes')]]</paper-button>
+      </div>
+    </nuxeo-dialog>
+
+    <div class="card layout vertical" hidden$="[[!showEditMembers]]">
+    
+      
+      <div class="card-heading"><iron-icon icon="nuxeo:user"></iron-icon>[[i18n('label.userGroupManagement.addUser', groupName)]]</div>
+      <nuxeo-user-suggestion id="picker"
+                             search-type="USER_TYPE"
+                             placeholder="[[i18n('label.userGroupManagement.addUser.placeholder')]]"
+                             selected-item="{{selectedMember}}"
+                             result-formatter="[[resultFormatter]]"
+                             query-results-filter="[[resultsFilter]]">
+      </nuxeo-user-suggestion>
+      <dom-repeat items="[[activity]]">
+        <template>
+          <div class="activity-entry">
+            <nuxeo-tag icon="[[_icon(item)]]">
+              <span class="preserve-white-space">[[item.displayLabel]]</span>
+            </nuxeo-tag>
+            <span>[[i18n('groupManagement.addedToGroup')]]</span>
+            <span class="remove" on-click="_toggleDeleteDialog">[[i18n('groupManagement.remove')]]</span>
+          </div>
+        </template>
+      </dom-repeat>
+    </div>
+
+    <!-- users -->
+    <nuxeo-card name="users" icon="nuxeo:group" heading="[[i18n('label.userGroupManagement.heading.users', groupName)]]">
+      <div class="table">
+        <div class="table-header">
+          <div class="flex-4">[[i18n('userGroupSearch.name')]]</div>
+          <div class="flex-2">[[i18n('userGroupSearch.identifier')]]</div>
+          <div class="flex-4">[[i18n('userGroupSearch.email')]]</div>
+          <div class="table-actions"></div>
+        </div>
+        <div class="table-rows">
+          <dom-repeat items="[[users.entries]]" as="item">
+            <template>
+              <div class="table-row" on-click="_manageUser">
+                <div class="flex-4">
+                  <dom-if if="[[_userHasName(item)]]">
+                    <template>
+                      <nuxeo-user-tag user="[[item]]"></nuxeo-user-tag>
+                    </template>
+                  </dom-if>
+                </div>
+                <div name="id" class="flex-2 preserve-white-space">[[item.id]]</div>
+                <div class="flex-4">[[item.properties.email]]</div>
+                <div class="table-actions">
+                  <paper-icon-button icon="nuxeo:clear" noink
+                                     title="[[i18n('groupManagement.removeFrom', groupname)]]"
+                                     on-click="_toggleDeleteDialog">
+
+                  </paper-icon-button>
+                </div>
+              </div>
+            </template>
+          </dom-repeat>
+          <dom-if if=[[_empty(users.entries)]]>
+            <template>
+              <div class="table-row">
+                <div class="emptyResult">[[i18n('userGroupSearch.empty.users')]]</div>
+              </div>
+            </template>
+          </dom-if>
+        </div>
+      </div>
+      <nuxeo-pagination-controls page="{{usersCurrentPage}}" number-of-pages="[[users.numberOfPages]]"></nuxeo-pagination-controls>
+    </nuxeo-card>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'cookbook-group-management',
+      behaviors: [Nuxeo.I18nBehavior, Nuxeo.FiltersBehavior],
+      properties: {
+        groupName: String,
+
+        groupPath: {
+          type: String,
+          observer: '_groupPathChanged'
+        },
+
+        group: {
+          type: Object
+        },
+
+        selectedMember: {
+          type: Object,
+          observer: '_memberSelected'
+        },
+
+        activity: {
+          type: Array,
+          value: []
+        },
+
+        users: Object,
+
+        usersCurrentPage: Number,
+
+        userToUpdate: Object,
+      },
+
+      _groupPathChanged: function() {
+        if (this.groupPath) {
+          this.$.group.get();
+        }
+      },
+
+      _memberSelected() {
+        if (this.selectedMember) {
+          const member = this.selectedMember;
+          const users = this.group.memberUsers || [];
+          users.push(member.id);
+          member['entity-type'] = 'user';
+          this.group.memberUsers = users;
+
+          this.push('activity', member);
+
+          var op = this.$.updateUsersToGroup;
+          op.params = {
+            'group': this.groupName,
+            'members' : this.group.memberUsers,
+          };
+         if (this.$.nxcon.client.user){
+          op.execute().then(function() {
+            this._fetchUsers();
+            this._toast(this.i18n('groupManagement.addedUserToGroup', member.id, this.groupName));
+          }.bind(this));}
+        }
+        this.selectedMember = null;
+      },
+
+      _fetchUsers() {
+        if (this.group) {
+          // if there's only one entry left in the current page and we delete it, we should go to prev page
+          if (this._fromDelete && this.memberUsers.currentPageSize === 1) {
+            this._fromDelete = false;
+            this.usersCurrentPage--;
+            return;
+          }
+          const params = {
+            q: this.usersFilter,
+            currentPageIndex: this.usersCurrentPage - 1,
+          };
+          this.$.users.params = params;
+        }
+      },
+
+      _toggleDeleteDialog(e) {
+        this._removedMember = e.model.item;
+        this._removedMember.id = e.model.item.id;
+        this.$.rmFromGroupDialog.toggle();
+      },
+
+      _removeMember() {
+        const member = this._removedMember;
+        var users = this.group.memberUsers || [];
+        
+        users = users.filter(function(item) {
+    			return item !== member.id
+        })
+        
+        member['entity-type'] = 'user';
+        this.group.memberUsers = users;
+
+        this.push('activity', member);
+
+        var op = this.$.updateUsersToGroup;
+        op.params = {
+            'group': this.groupName,
+            'members' : this.group.memberUsers,
+          };
+         if (this.$.nxcon.client.user){
+          op.execute().then(function() {
+          this._fetchUsers();
+          this._removeRecent(this._removedMember.id);
+          this._toast(this.i18n('groupManagement.removedUserFromGroup', member.id, this.groupName));
+        }.bind(this));}
+      },
+
+      _removeRecent(user) {
+        // remove from 'recent', if it exists
+        for (let i = 0; i < this.activity.length; i++) {
+          if (this.activity[i].id === user) {
+            this.splice('activity', i, 1);
+            return;
+          }
+        }
+      },
+
+      _empty(entries) {
+        return entries && entries.length === 0;
+      },
+
+      _userHasName(user) {
+        return user.properties.firstName || user.properties.lastName;
+      },
+
+      _toast(msg) {
+        this.$.toast.text = msg;
+        this.$.toast.open();
+      },
+
+      /**
+       * Resets the form fields to empty values.
+       */
+      resetFields: function() {
+        this.userToUpdate = {};
+      },
+
+
+    });
+  </script>
+</dom-module>
