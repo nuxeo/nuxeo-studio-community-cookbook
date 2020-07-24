@@ -56,7 +56,7 @@ Create the two automation scripting:
     <cookbook-user-management-drawer user="[[user]]" name="groups-admin-menu"></cookbook-user-management-drawer>
   </template>
 </nuxeo-slot-content>
-<!-- Contribution of element 'terumo-user-management' for slot 'PAGES' -->
+<!-- Contribution of element 'cookbook-user-management' for slot 'PAGES' -->
 <nuxeo-slot-content name="userManagementPage" slot="PAGES">
   <template>
     <cookbook-user-management user="[[user]]" name="cookbook-user-management"></cookbook-user-management>
