@@ -32,6 +32,12 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <th>Category</th>
   </tr>
   <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/nuxeo-date-time-picker"><img src="modules/nuxeo/nuxeo-date-time-picker1.png/user-group-management2.png" width="120px"/></a></td>
+    <td>Date Time Picker</td>
+    <td>Nuxeo</td>
+    <td>Layouts</td>
+  </tr>
+  <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/user-group-management"><img src="modules/nuxeo/user-group-management/user-group-management.png" width="120px"/></a></td>
     <td>Local Group Administrators</td>
     <td>Nuxeo</td>
@@ -54,12 +60,6 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <td>Send emails from Nuxeo Web UI</td>
     <td>Nuxeo</td>
     <td>Mail, Layouts, Automation, Templates</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/currency"><img src="modules/nuxeo/currency/currency2.jpg" width="120px"/></a></td>
-    <td>Display a field with Currency format</td>
-    <td>Nuxeo</td>
-    <td>Layout</td>
   </tr>
 </table>
 
@@ -93,6 +93,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 Module | Description | Contributor
 --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/nuxeo-date-time-picker"><img src="modules/nuxeo/nuxeo-date-time-picker/nuxeo-date-time-picker2.png" width="120px"/></a> | Date Time Picker | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/geodistance-search-and-google-map"><img src="modules/nuxeo/geodistance-search-and-google-map/geodistance.png" width="120px"/></a> | Geodistance Search + Google Map | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/currency"><img src="modules/nuxeo/currency/currency2.jpg" width="120px"/></a> | Display a field with Currency format | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/cascading-fields"><img src="modules/nuxeo/cascading-fields/cascading.png" width="120px"/></a> | Cascading Fields in Document Layouts | Nuxeo
