@@ -24,7 +24,24 @@ On any `Date` field, use:
 </nuxeo-custom-date-time-picker>
 ```
 
-The main element attributes are:
+The fill list of options are:
+
+```html
+<nuxeo-custom-date-time-picker
+  role="widget"
+  default-time="17:30:00.000"
+  error-message="Please enter a valid date and time"
+  id="expired"
+  label="Expiry Date"
+  name="expired"
+  required
+  show-millis
+  show-seconds
+  value="{{document.properties.dc:expired}}"
+  >
+</nuxeo-custom-date-time-picker>
+```
+with: 
 - `default-time` ("00:00:00.000" by default)
 - `error-message`
 - `show-millis` (false by default)
