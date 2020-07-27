@@ -17,11 +17,11 @@ This modules provides a visual element to select both the date and time:
 On any `Date` field, use:
 
 ```html
-<nuxeo-custom-date-time picker
+<nuxeo-custom-date-time-picker
   role="widget"
   label="Expire date"
   value="{{document.properties.dc:expired}}">
-</nuxeo-custom-date-time>
+</nuxeo-custom-date-time-picker>
 ```
 
 The main element attributes are:

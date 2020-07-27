@@ -1,0 +1,244 @@
+<!--
+@license
+(C) Copyright Nuxeo Corp. (http://nuxeo.com/)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<!--
+`nuxeo-custom-date-time-picker`
+@group Nuxeo UI
+@element nuxeo-custom-date-time-picker
+-->
+<link rel="import" href="nuxeo-custom-time-picker.html">
+
+<dom-module id="nuxeo-custom-date-time-picker">
+
+  <template>
+
+    <style include="nuxeo-styles">
+      :host {
+        @apply(--layout-vertical);
+        position: relative;
+      }
+      :host([hidden]) {
+        display: none;
+      }
+      :host([required]) label::after {
+        display: inline-block;
+        content: '*';
+        margin-left: 4px;
+        color: var(--paper-input-container-invalid-color, red);
+      }
+      :host([invalid]) label {
+        color: var(--paper-input-container-invalid-color, red);
+      }
+      label {
+        @apply --nuxeo-label;
+      }
+      nuxeo-date-picker([required]) label::after {
+        content: '' !important;
+      }
+      .datetime {
+        @apply(--layout-horizontal);
+      }
+      .error {
+        color: var(--lumo-error-text-color);
+        font-size: var(--lumo-font-size-xs);
+        line-height: var(--lumo-line-height-xs);
+        margin-left: calc(var(--lumo-border-radius) / 4);
+        max-height: 5em;
+        transition: 0.4s max-height;
+        will-change: max-height;
+      }
+    </style>
+
+    <label>[[label]]</label>
+
+    <div class="datetime">
+      <nuxeo-date-picker default-time="{{defaultTime}}"
+                         disabled$="[[disabled]]"
+                         id="[[id]]-date"
+                         invalid="[[invalid]]"
+                         max="[[max]]"
+                         min="[[min]]"
+                         name="date"
+                         value="{{_date}}"
+                         >
+      </nuxeo-date-picker>
+
+      <nuxeo-custom-time-picker disabled$="[[_isDisabledTime(disabled, _date)]]"
+                                id="[[id]]-time"
+                                name="time"
+                                show-millis="{{showMillis}}"
+                                show-seconds="{{showSeconds}}"
+                                value="{{_time}}"
+                                >
+      </nuxeo-custom-time-picker>
+    </div>
+
+    <div class="error" hidden$="[[!_isError(invalid, errorMessage)]]">
+      [[errorMessage]]
+    </div>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-custom-date-time-picker',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+      defaultTime: {
+        type: String,
+        value: "00:00:00.000",
+        observer: '_defaultTimeChanged'
+      },
+      disabled: {
+        type: Boolean,
+        value: false
+      },
+      errorMessage: {
+        type: String
+      },
+      id: {
+        type: String
+      },
+      invalid: {
+        type: Boolean,
+        value: false,
+        notify: true,
+        reflectToAttribute: true
+      },
+      label: {
+        type: String
+      },
+      max: {
+        type: String
+      },
+      min: {
+        type: String
+      },
+      required: {
+        type: Boolean,
+        value: false
+      },
+      showMillis: {
+        type: Boolean,
+        value: false
+      },
+      showSeconds: {
+        type: Boolean,
+        value: false
+      },
+      value: {
+        type: Date,
+        notify: true,
+        observer: '_valueChanged'
+      },
+      _date: {
+        type: String,
+        observer: '_dateChanged'
+      },
+      _observe: {
+        type: Boolean,
+        value: true
+      },
+      _time: {
+        type: String,
+        observer: '_timeChanged'
+      }
+    },
+
+    validate: function() {
+      this.set('invalid', this.required && !this._date);
+      return !this.invalid;
+    },
+
+    _dateChanged: function(date, old) {
+      if (this._observe) {
+        if (!date) {
+          this.set('_time', this.defaultTime);
+        }
+        this._valueUpdate();
+      }
+    },
+
+    _defaultTimeChanged: function(time, old) {
+      if (!this.value) {
+        this.set('_time', time);
+      }
+    },
+
+    _isDisabledTime: function(disabled, date) {
+      return disabled || !date;
+    },
+
+    _isError: function(invalid, errorMessage) {
+      return invalid && errorMessage;
+    },
+
+    _timeChanged: function(time, old) {
+      if (this._observe) {
+        this._valueUpdate();
+      }
+    },
+
+    _valueChanged: function(value, old) {
+      var d = null;
+      var t = this.defaultTime;
+      if (this._observe) {
+        if (value) {
+          d = new Date(value);
+          var H = d.getHours();
+          var m = d.getMinutes();
+          var s = d.getSeconds();
+          var l = d.getMilliseconds();
+          t = H.toString().padStart(2, '0') + ':' +
+              m.toString().padStart(2, '0') + ':' +
+              s.toString().padStart(2, '0') + '.' +
+              l.toString().padStart(3, '0');
+        }
+        this.set("_date", d);
+        this.set('_time', t);
+      }
+    },
+    _valueUpdate: function() {
+      var d = null;
+      var v = null;
+      if (this._date) {
+        d = new Date(this._date);
+        if (this._time) {
+          let Y = d.getFullYear();
+          let M = d.getMonth();
+          let D = d.getDate();
+          // Create ISO date prefix
+          let iso = Y + '-' +
+                    (M + 1).toString().padStart(2, '0') + '-' +
+                    D.toString().padStart(2, '0');
+          // Append ISO local time suffix
+          iso += 'T' + this._time + 'Z';
+          d = new Date(iso);
+          // Apply local timezone offset
+          d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
+        }
+        v = d.toISOString();
+        this.set('invalid', false);
+      }
+      this.set('_observe', false);
+      this.set("value", v);
+      this.set('_observe', true);
+    }
+  });
+  </script>
+
+</dom-module>

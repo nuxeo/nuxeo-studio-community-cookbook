@@ -1,0 +1,471 @@
+<!--
+@license
+(C) Copyright Nuxeo Corp. (http://nuxeo.com/)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<!--
+`nuxeo-custom-time-picker`
+@group Nuxeo UI
+@element nuxeo-custom-time-picker
+-->
+<dom-module id="nuxeo-custom-time-picker">
+
+  <template>
+
+    <style include="nuxeo-styles">
+      :host {
+        @apply(--layout-horizontal);
+        align-items: center;
+        background-color: var(--nuxeo-page-background) !important;
+        border: 1px solid var(--nuxeo-border) !important;
+        border-radius: var(--lumo-border-radius);
+        font-family: var(--lumo-font-family);
+        font-size: var(--lumo-font-size-m) !important;
+        font-weight: 500;
+        margin-bottom: calc(var(--lumo-space-xs) + 8px);
+        margin-left: 1em;
+        margin-right: 1em;
+        margin-top: var(--lumo-space-xs);
+      }
+      :host:hover {
+        background: var(--paper-dialog_-_background, var(--paper-dialog-background-color, var(--primary-background-color)))
+      }
+      iron-input {
+        height: 100%;
+        padding: 0px;
+      }
+      iron-input > input {
+        background-color: inherit;
+        border-width: 0px;
+        color: var(--lumo-body-text-color);
+        cursor: text;
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        outline-width: 0px;
+        padding: 0px 0px 0px 0px;
+        text-align: center;
+        width: 3em;
+        height: 100%;
+      }
+      iron-input > input:disabled {
+        color: var(--lumo-disabled-text-color);
+      }
+      iron-input > input:focus {
+        text-decoration: underline;
+      }
+      nuxeo-dialog {
+        font-family: inherit;
+        height: 20em; /* 10 lines */
+        margin: 0px;
+        max-height: 400px;
+        min-width: 10em;
+        overflow: auto;
+      }
+      paper-button {
+        background-color: inherit;
+        border-width: 0px;
+        color: var(--lumo-body-text-color);
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        height: 100%;
+        margin: 0px 5px 0px 0px;
+        min-width: 2em;
+        padding: 1px 0px 0px 0px;
+        width: 2em;
+      }
+      paper-button[disabled] {
+        background-color: inherit;
+        color: var(--lumo-disabled-text-color);
+        font-family: inherit;
+        font-weight: inherit;
+      }
+      paper-button:focus {
+        text-decoration: underline;
+      }
+      paper-icon-button {
+        height: 20px;
+        margin: 1px 2px 0px 8px;
+        padding: 0px 0px 0px 0px;
+        width: 18px;
+      }
+      paper-icon-button[disabled] {
+        color: var(--lumo-disabled-text-color);
+      }
+      paper-item {
+        display: block;
+        font-family: inherit;
+        min-height: 2em;
+        padding: 0em 2em 0em 0em;
+        text-align: right;
+      }
+      paper-listbox {
+        font-family: inherit;
+        padding: 0px 0px 0px 0px;
+      }
+      /* Chrome, Safari, Edge, Opera */
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      /* Firefox */
+      input[type=number] {
+        -moz-appearance: textfield;
+      }
+      .delimiter {
+        color: var(--lumo-body-text-color);
+      }
+      .delimiter[disabled] {
+        color: var(--lumo-disabled-text-color);
+      }
+      .hour {
+        padding-right: 0.2em;
+        text-align: right;
+        width: 1.5em;
+      }
+      .milli {
+        width: 2em;
+      }
+      .minute {
+        width: 1.5em;
+      }
+      .second {
+        width: 1.5em;
+      }
+    }
+
+    </style>
+
+    <paper-icon-button disabled$="[[disabled]]"
+                       icon="icons:query-builder"
+                       id="picker"
+                       noink=""
+                       on-tap="_pickerOpen"
+                       >
+    </paper-icon-button>
+
+    <nuxeo-dialog id="dialog"
+                  class="dialog"
+                  dynamic-align="true"
+                  horizontal-align="left"
+                  horizontal-offset="0"
+                  no-overlap="true"
+                  scroll-action="lock"
+                  vertical-align="top"
+                  vertical-offset="0"
+                  with-backdrop=""
+                  >
+      <paper-listbox attr-for-selected="name"
+                     autofocus
+                     id="picker-listbox"
+                     on-selected-item-changed="_pickerSelect"
+                     selected="[[_pickerSelected(_hour, _minute, _ampm)]]"
+                     >
+        <template is="dom-repeat" items="[[_getRange(0, 23, 1)]]" as="hour">
+          <template is="dom-repeat" items="[[_getRange(0, 45, 15)]]" as="minute">
+            <paper-item id="pick-[[hour]]-[[minute]]-00-000"
+                        name="pick-[[hour]]-[[minute]]-00-000"
+                        >[[_getLabel(hour, minute)]]
+            </paper-item>
+          </template>
+        </template>
+      </paper-listbox>
+    </nuxeo-dialog>
+
+    <iron-input bind-value="{{_hour}}">
+      <input class="hour"
+             disabled$="[[disabled]]"
+             inputmode="numeric"
+             max="12"
+             min="1"
+             name="hour"
+             required
+             step="1"
+             type="number"
+             value="{{_hour}}"
+             >
+    </iron-input>
+
+    <span class="delimiter" disabled$="[[disabled]]">:</span>
+
+    <iron-input bind-value="{{_minute}}">
+      <input class="minute"
+             disabled$="[[disabled]]"
+             inputmode="numeric"
+             max="59"
+             min="0"
+             name="minute"
+             required
+             step="1"
+             type="number"
+             value="{{_minute}}"
+             >
+    </iron-input>
+
+    <template is="dom-if" if="[[showSeconds]]">
+      <span class="delimiter" disabled$="[[disabled]]">:</span>
+      <iron-input bind-value="{{_second}}">
+        <input class="second"
+               disabled$="[[disabled]]"
+               inputmode="numeric"
+               max="59"
+               min="0"
+               name="second"
+               required
+               step="1"
+               type="number"
+               value="{{_second}}"
+               >
+      </iron-input>
+
+      <template is="dom-if" if="[[showMillis]]">
+        <span class="delimiter" disabled$="[[disabled]]">.</span>
+        <iron-input bind-value="{{_milli}}">
+          <input class="milli"
+                 disabled$="[[disabled]]"
+                 inputmode="numeric"
+                 max="999"
+                 min="0"
+                 name="milli"
+                 required
+                 step="1"
+                 type="number"
+                 value="{{_milli}}"
+                 >
+        </iron-input>
+      </template>
+
+    </template>
+
+    <paper-button disabled$="[[disabled]]"
+                  noink
+                  on-click="_ampmToggle"
+                  >[[_ampmLabel(_ampm)]]</paper-button>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-custom-time-picker',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+      disabled: {
+        type: Boolean,
+        value: false
+      },
+      showMillis: {
+        type: Boolean,
+        value: false
+      },
+      showSeconds: {
+        type: Boolean,
+        value: false
+      },
+      value: {
+        type: String,
+        notify: true,
+        observer: '_valueChanged'
+      },
+      _ampm: {
+        type: String,
+        value: 'am',
+        observer: '_ampmChanged'
+      },
+      _hour: {
+        type: Number,
+        observer: '_hourChanged'
+      },
+      _milli: {
+        type: Number,
+        observer: '_milliChanged'
+      },
+      _minute: {
+        type: Number,
+        observer: '_minuteChanged'
+      },
+      _observe: {
+        type: Boolean,
+        value: true
+      },
+      _second: {
+        type: Number,
+        observer: '_secondChanged'
+      }
+    },
+
+    _ampmChanged: function(ampm, old) {
+      if (ampm && this._observe) {
+        this._valueUpdate();
+      }
+    },
+    _ampmLabel: function(ampm) {
+      return this.i18n(`label.time.picker.ampm.${ampm}`);
+    },
+    _ampmToggle: function(e) {
+      let am = (this._ampm === 'am');
+      this.set('_ampm', (am ? 'pm' : 'am'))
+    },
+
+    _getLabel: function(hour, minute) {
+      let ampm = hour > 11 ? 'pm' : 'am';
+      let h = hour % 12 || 12; // Map 0-23 -> 12,1-11(AM), 12,1-11(PM)
+      let m = minute || 0;
+      let label = h.toString().padStart(2, ' ') + ':' +
+                  m.toString().padStart(2, '0') + ' ' +
+                  this._ampmLabel(ampm);
+      return label;
+    },
+
+    _getRange: function(min, max, step) {
+      var range = [];
+      var value;
+      for (value = min; value <= max; value += step) {
+        range.push(value);
+      }
+      return range;
+    },
+
+    _hourChanged: function(hour, old) {
+      let v = parseInt(hour) || 12;
+      v = parseInt(v.toString().slice(0,2));
+      if (v > 12) {
+        v = parseInt(v.toString().slice(0,1));
+      }
+      this.set('_hour', v);
+      if (this._observe) {
+        this._valueUpdate();
+      }
+    },
+
+    _milliChanged: function(milli, old) {
+      let v = parseInt(milli) || 0;
+      v = parseInt(v.toString().slice(0,3));
+      let value = v.toString().padStart(3, '0');
+      this.set('_milli', value);
+      if (this._observe) {
+        this._valueUpdate();
+      }
+    },
+
+    _minuteChanged: function(minute, old) {
+      let v = parseInt(minute) || 0;
+      v = parseInt(v.toString().slice(0,2));
+      if (v > 59) {
+        v = parseInt(v.toString().slice(0,1));
+      }
+      let value = v.toString().padStart(2, '0');
+      this.set('_minute', value);
+      if (this._observe) {
+        this._valueUpdate();
+      }
+    },
+
+    _pickerOpen: function(e) {
+      let dialog  = this.$$('#dialog');
+      let listbox = this.$$('#picker-listbox');
+      dialog.positionTarget = this;
+      dialog.open();
+      let item = listbox.selectedItem;
+      if (item) {
+        item.focus({preventScroll:false});
+      }
+    },
+    _pickerSelect: function(e) {
+      let item = e.detail.value;
+      if (item && item.id) {
+        let items = item.id.split('-');
+        let H = parseInt(items[1]) || 0; // 24hr, 0-23
+        let m = parseInt(items[2]) || 0;
+        let s = parseInt(items[3]) || 0;
+        let l = parseInt(items[4]) || 0;
+        let h = H % 12 || 12; // Map 0-23 -> 12,1-11(AM), 12,1-11(PM)
+        let ampm = (H > 11 ? 'pm' : 'am');
+        this.set("_observe", false);
+        this.set("_hour",   h);
+        this.set("_minute", m.toString().padStart(2, '0'));
+        this.set("_second", s.toString().padStart(2, '0'));
+        this.set("_milli",  l.toString().padStart(3, '0'));
+        this.set("_ampm", ampm);
+        this._valueUpdate();
+        this.$$('#dialog').close();
+      }
+    },
+    _pickerSelected: function(hour, minute, ampm) {
+      let h = parseInt(hour);
+      let m = parseInt(minute);
+      let H = (ampm === 'am') ? h % 12 : h % 12 + 12; // Map 12AM,1-11AM, 12,1-11PM -> 0-23
+      return "pick-" + H + "-" + m + "-00-000";
+    },
+
+    _secondChanged: function(second, old) {
+      let v = parseInt(second) || 0;
+      v = parseInt(v.toString().slice(0,2));
+      if (v > 59) {
+        v = parseInt(v.toString().slice(0,1));
+      }
+      let value = v.toString().padStart(2, '0');
+      this.set('_second', value);
+      if (this._observe) {
+        this._valueUpdate();
+      }
+    },
+
+    _valueChanged: function(value, old) {
+      if (value && this._observe) {
+        v = this._valueParse(value);
+        let H = v.hour; // 24hr, 0-23
+        let m = v.minute;
+        let s = v.second;
+        let l = v.milli;
+        let h = H % 12 || 12; // Map 0-23 -> 12,1-11(AM), 12,1-11(PM)
+        let ampm = (H > 11 ? 'pm' : 'am');
+        this.set("_observe", false);
+        this.set("_hour",   h);
+        this.set("_minute", m);
+        this.set("_second", s);
+        this.set("_milli",  l);
+        this.set("_ampm", ampm);
+        this.set("_observe", true);
+      }
+    },
+    _valueParse: function(value) {
+      var v = {};
+      let items = value.split(":");
+      v.hour   = parseInt(items[0]);
+      v.minute = parseInt(items[1]);
+      v.second = parseInt(items[2]);
+      v.milli  = (parseFloat(items[2]) * 1000) - (v.second * 1000);
+      return v;
+    },
+    _valueUpdate: function() {
+      let h = parseInt(this._hour)   || 0; // 12hr, 1-12
+      let m = parseInt(this._minute) || 0;
+      let s = parseInt(this._second) || 0;
+      let l = parseInt(this._milli)  || 0;
+      let H = (this._ampm === 'am') ? h % 12 : h % 12 + 12; // Map 12AM,1-11AM, 12,1-11PM -> 0-23
+      let v = H.toString().padStart(2, '0') + ':' +
+              m.toString().padStart(2, '0') + ':' +
+              s.toString().padStart(2, '0') + '.' +
+              l.toString().padStart(3, '0');
+      this.set('_observe', false);
+      this.set("value", v);
+      this.set('_observe', true);
+    }
+  });
+  </script>
+
+</dom-module>

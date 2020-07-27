@@ -32,7 +32,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <th>Category</th>
   </tr>
   <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/nuxeo-date-time-picker"><img src="modules/nuxeo/nuxeo-date-time-picker1.png/user-group-management2.png" width="120px"/></a></td>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/nuxeo-date-time-picker"><img src="modules/nuxeo/nuxeo-date-time-picker/nuxeo-date-time-picker2.png" width="120px"/></a></td>
     <td>Date Time Picker</td>
     <td>Nuxeo</td>
     <td>Layouts</td>
