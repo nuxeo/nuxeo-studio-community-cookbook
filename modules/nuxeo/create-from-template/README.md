@@ -21,15 +21,10 @@ This module allows you to automaticcaly create the file content from a template 
 ### Studio Modeler
 
 - Add a property to store the ID (like `templateID` of type `String`) of the document template which should be used. You can use an external schema an attach it to your document type (to make it reusable across several document types), or directly create it on the document type schema screen.
-- Create Automation Chain called `AC_SearchTemplates` with the following content:
-
-```
-- Repository.Query:
-    language: NXQL
-    query: "SELECT * FROM Document WHERE ecm:mixinType != 'HiddenInNavigation'AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:primaryType = 'TemplateSource'"
-    sortOrder: ASC
-```
-
+- Create a custom page provider to list the templates which should appear in your suggestion element.
+  - `pp_template_list`
+  - Query filter : `ecm:mixinType != 'HiddenInNavigation'AND ecm:isVersion = 0 AND ecm:isTrashed = 0 AND ecm:primaryType = 'TemplateSource'`
+  - :warning: You need to end the **Query Filter** by `AND ecm:fulltext = '?*'` and **uncheck** in the Advanced Configuration the checkbox of **Quote parameters**.
 - Create an automation script : `AS_CreateFromTemplate` and adapt Line 10 to the property storing the document template id.
 - Create an Event handler to fire `AS_CreateFromTemplate` for your custom document type on the `Document created event`.
 
