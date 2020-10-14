@@ -68,20 +68,6 @@ properties: {
 },
 ```
 
-- Create a function for a selected entry of the Formatter.
-
-```
-/**
-         * Formatter for a selected entry.
-        */
-        watermarkResultFormatter: {
-          type: Function,
-          value: function() {
-            return this._watermarkResultFormatter.bind(this);
-          }
-        },
-```
-
 - Create the Formatter logic and UI:
 
 ```
