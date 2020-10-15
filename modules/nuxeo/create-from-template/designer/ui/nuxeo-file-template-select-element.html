@@ -6,60 +6,89 @@
 <dom-module id="nuxeo-file-template-select-element">
   <template>
 
-    <!-- Update the value -->
-    <nuxeo-document-suggestion role="widget" id="docTemplateSugg" label="[[i18n('label.filetemplate.select')]]" name="TemplateId" value="{{document.properties.ftemp:templateID}}" min-chars="0" result-formatter="[[ResultFormatter]]" operation="AC_SearchTemplates" required>
-    </nuxeo-document-suggestion>
+    <nuxeo-document-suggestion
+                    role="widget"
+                    enrichers="thumbnail"
+                    id="docSuggTemplate"
+                    label="[[i18n('label.filetemplate.select')]]"
+                    name="templateDocID"
+                    value="{{document.properties.ftemp:templateID}}"
+                    page-provider="pp_template_list" 
+                    min-chars="0"
+                    result-formatter="[[thumbnailFormatter]]"
+                    required="true">
+   </nuxeo-document-suggestion>
 
   </template>
 
   <script>
   Polymer({
     is: 'nuxeo-file-template-select-element',
-    behaviors: [Nuxeo.LayoutBehavior],
+    behaviors: [Nuxeo.LayoutBehavior, Nuxeo.Select2Behavior],
     properties: {
       /**
          * @doctype File
          */
-      document: Object,
-      ResultFormatter: {
+      document: {
+          type: Object
+      },
+
+      thumbnailFormatter: {
         type: Function,
         value: function() {
-          return this._ResultFormatter.bind(this);
+          return this._thumbnailFormatter.bind(this);
         }
       },
     },
 
-    _ResultFormatter: function(doc) {
+    _thumbnailFormatter: function(doc) {
 
-      if (!doc.properties) {
-        return "Bad result format";
+      if (doc && doc.properties && doc.contextParameters && doc.contextParameters.thumbnail) {
+
+        // These values are used in the second row
+        var lable1 = "Type";
+        var value1 = doc.type;
+
+        var lable2 = "State";
+        var value2 = doc.state;
+
+        var lable3 = "Version";
+        var value3 = doc.properties["uid:major_version"] + "." + doc.properties["uid:minor_version"];
+
+        var markup = "";
+
+        markup += "<table width='100%'><tbody>";
+        markup += "<tr>";
+        // Thumbnail
+        markup += "<td width='100px' style='text-align: center'>";
+        markup += "<img src='" + this._getThumbnailUrl(doc) + "' style='max-width: 100px; max-height=25px;' >"; 
+        markup += "</td>";
+        // Details
+        markup += "<td>";
+        // First Row
+        markup += "<div style='margin-left:15px'><span style='font-weight: bold; font-size: large'>";
+        markup += doc.title + "</span>";
+        // Second Row
+        markup += "<br /> <span style='font-weight: bold;'>" + lable1 + ":</span> " + value1;
+        markup += " <span style='font-weight: bold;margin-left:15px;'>" + lable2 + ":</span> " + value2;
+        markup += " <span style='font-weight: bold;margin-left:15px;'>" + lable3 + ":</span> " + value3;
+        // Third Row
+        markup += "<br /> <span style='font-weight: bold;'>Path:</span> " + doc.path;
+        markup += "</div>";
+        markup += "</td>";
+        markup += "</tr>";
+        markup += "</tbody></table>";
+
+        return markup;
       }
-
-
-      let markup = "";
-
-      markup += "<table width='100%' style=\"background-color:#F2F2F2;\"><tbody>";
-      markup += "<tr>";
-      markup += "<td width='100px' style='text-align: center'>";
-      markup += "<img src='" + this._getThumbnailUrl(doc) + "' style='max-width: 100px; max-height=25px;' >";
-      markup += "</td>";
-      markup += "<td>";
-      markup += "<div style='margin-left:15px'><span style='font-weight: bold;color:black'>"
-      markup += doc.title +"</span>";
-      markup += "</div>";
-      markup += "<div style='margin-left:15px'><span style='color:black'>"
-      markup += doc.properties["dc:description"] +"</span>";
-      markup += "</div>";
-      markup += "</td>";
-      markup += "</tr>"
-      markup += "</tbody></table>";
-
-      return markup;
     },
-    _getThumbnailUrl: function(doc) {
-      return "/nuxeo/api/v1/id/" + doc.uid + "/@rendition/thumbnail";
-    }
+      
+    _getThumbnailUrl: function(doc) { 
+        return "/nuxeo/api/v1/id/" + doc.uid + "/@rendition/thumbnail"; 
+      }
+   
+
   });
   </script>
-
+  
 </dom-module>
