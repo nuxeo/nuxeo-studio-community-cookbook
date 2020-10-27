@@ -91,13 +91,6 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 ### Layouts
 
-<tr>
-  <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/copy-move"><img src="modules/nuxeo/copy-move/copy-move.png" width="120px"/></a></td>
-  <td>Copy or move documents without the clipboard</td>
-  <td>Nuxeo</td>
-  <td>Layouts</td>
-</tr>
-
 Module | Description | Contributor
 --- | --- | ---
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/copy-move"><img src="modules/nuxeo/copy-move/copy-move.png" width="120px"/></a> | Copy or move documents without the clipboard | Nuxeo

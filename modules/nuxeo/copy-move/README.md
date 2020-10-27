@@ -1,6 +1,6 @@
 # New Copy / Move Document Actions
 
-![copy-move.png](copy-move.png.png)
+![copy-move.png](copy-move.png)
 
 ## Prerequisites
 
