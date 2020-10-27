@@ -34,6 +34,11 @@
                     min-chars="0"
                     required="true">
    </nuxeo-document-suggestion>
+        <paper-checkbox checked="{{_navigate}}"
+                id="navigate"
+                noink
+                >Move to the new parent folder?
+				</paper-checkbox>
       </div>
       <div class="buttons">
         <paper-button dialog-dismiss="">Cancel</paper-button>
@@ -65,6 +70,10 @@
        type: Object,
        value: {}
      },
+        _navigate: {
+        type: Boolean,
+        value: true
+      },
 
         icon: {
           type: String,
@@ -80,7 +89,9 @@
         
       this.params.targetfolder = this.targetfolder;
       this.$.AS_Move.execute().then(function(result) {
-				window.location = window.location.origin+window.location.pathname+"/#!/doc/"+this.targetfolder;
+        if (this._navigate) {
+				this.navigateTo('browse', result.path);
+          }
       }.bind(this))
         .catch(function(error) {
         alert("Error:\n" + error);
