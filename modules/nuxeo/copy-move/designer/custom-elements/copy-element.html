@@ -1,0 +1,99 @@
+<!--
+`copy-element`
+@group Nuxeo UI
+@element copy-element
+-->
+<dom-module id="copy-element">
+  <template>
+    <style include="nuxeo-action-button-styles nuxeo-styles">
+      .content {
+        @apply --layout-vertical;
+      }
+    </style>
+
+    <nuxeo-operation id="AS_Copy" op="javascript.AS_Copy" input="[[document]]" params="[[params]]">   
+    </nuxeo-operation>
+    <paper-toast id="toast"></paper-toast>
+    
+    <div class="action" on-tap="_toggleDialog">
+      <paper-icon-button id="bt" icon="[[icon]]"></paper-icon-button>
+      <span class="label" hidden$="[[!showLabel]]">[[label]]</span>
+    </div>
+    <paper-tooltip for="bt">[[label]]</paper-tooltip>
+
+    <nuxeo-dialog id="dialog" on-iron-overlay-closed="_dialogClosed" with-backdrop>
+      <div class="content">
+        <h2>Copy Document</h2>
+        <nuxeo-document-suggestion
+                    role="widget"
+                    enrichers="thumbnail"
+                    id="copyElement"
+                    label="Target folders:"
+                    name="copyElement"
+                    value="{{targetfolders}}"
+                    page-provider="PP_Target_Folder" 
+                    min-chars="0"
+                    required="true"
+                    multiple="true">
+   </nuxeo-document-suggestion>
+      </div>
+      <div class="buttons">
+        <paper-button dialog-dismiss="">Cancel</paper-button>
+        <paper-button dialog-confirm="" class="primary" on-tap="_doCopy">Copy</paper-button>
+      </div>
+    </nuxeo-dialog>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'copy-element',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+        
+        document: Object,
+
+        label: {
+          type: String,
+          value: 'Copy'
+        },
+
+        showLabel: {
+          type: Boolean,
+          value: false,
+        },
+        
+        params: {
+       type: Object,
+       value: {}
+     },
+
+        icon: {
+          type: String,
+          value: 'iconset_name:icon_name'
+        }
+      },
+
+      _toast: function(text) {
+      this.$.toast.hide();
+      this.$.toast.text = text;
+      this.$.toast.open();
+    },
+
+      _toggleDialog: function() {
+        this.$.dialog.toggle();
+      },
+
+      _doCopy: function() {
+        
+      this.params.targetfolders = this.targetfolders;
+      this.$.AS_Copy.execute().then(function(result) {
+        this._toast("Document copied");
+      }.bind(this))
+        .catch(function(error) {
+        alert("Error:\n" + error);
+      }.bind(this))
+      } 
+    });
+  </script>
+</dom-module>

@@ -32,6 +32,12 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <th>Category</th>
   </tr>
   <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/copy-move"><img src="modules/nuxeo/copy-move/copy-move.png" width="120px"/></a></td>
+    <td>Copy or move documents without the clipboard</td>
+    <td>Nuxeo</td>
+    <td>Layouts</td>
+  </tr>
+  <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/nuxeo-date-time-picker"><img src="modules/nuxeo/nuxeo-date-time-picker/nuxeo-date-time-picker2.png" width="120px"/></a></td>
     <td>Date Time Picker</td>
     <td>Nuxeo</td>
@@ -54,12 +60,6 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <td>Geodistance Search + Google Map</td>
     <td>Nuxeo</td>
     <td>Layouts, Search, Automation</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/send-email-from-webui"><img src="modules/nuxeo/send-email-from-webui/mail2.png" width="120px"/></a></td>
-    <td>Send emails from Nuxeo Web UI</td>
-    <td>Nuxeo</td>
-    <td>Mail, Layouts, Automation, Templates</td>
   </tr>
 </table>
 
@@ -91,8 +91,16 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 ### Layouts
 
+<tr>
+  <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/copy-move"><img src="modules/nuxeo/copy-move/copy-move.png" width="120px"/></a></td>
+  <td>Copy or move documents without the clipboard</td>
+  <td>Nuxeo</td>
+  <td>Layouts</td>
+</tr>
+
 Module | Description | Contributor
 --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/copy-move"><img src="modules/nuxeo/copy-move/copy-move.png" width="120px"/></a> | Copy or move documents without the clipboard | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/nuxeo-date-time-picker"><img src="modules/nuxeo/nuxeo-date-time-picker/nuxeo-date-time-picker2.png" width="120px"/></a> | Date Time Picker | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/geodistance-search-and-google-map"><img src="modules/nuxeo/geodistance-search-and-google-map/geodistance.png" width="120px"/></a> | Geodistance Search + Google Map | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/currency"><img src="modules/nuxeo/currency/currency2.jpg" width="120px"/></a> | Display a field with Currency format | Nuxeo
