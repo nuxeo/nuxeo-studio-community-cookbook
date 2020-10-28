@@ -11,7 +11,7 @@ Improved email templates for Nuxeo Studio.
 
 ## Usage
 
-Use this mail templates for any notification triggered by the `Document.Mail` automation operation or workflow task notifications.
+Use these mail templates for any notification triggered by the `Document.Mail` automation operation or workflow task notifications.
 
 ## Configuration
 
