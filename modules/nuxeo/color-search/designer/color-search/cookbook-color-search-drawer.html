@@ -1,0 +1,44 @@
+
+<!--
+`cookbook-color-search-drawer`
+@group Nuxeo UI
+@element cookbook-color-search-drawer
+-->
+<dom-module id="cookbook-color-search-drawer">
+    <template>
+        <style include="nuxeo-styles">
+          .content {
+            @apply --layout-vertical;
+          }
+          
+          .list-item {
+            cursor: pointer;
+            padding: 1em;
+            border-bottom: 1px solid var(--nuxeo-border);
+          }
+
+          
+      </style>     
+      
+      <div class="header">Color Analysis</div>
+      
+      	<div class="content">
+            	<div class="list-item"><a href="#!/cookbook-color-search">Similar Color Search</a></div>
+      	</div>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'cookbook-color-search-drawer',
+            behaviors: [Nuxeo.I18nBehavior],
+            properties: {
+
+              visible: {
+          					type: Boolean,
+          					observer: '_visibleChanged'
+        				}
+      			}
+         });
+    </script>
+</dom-module>

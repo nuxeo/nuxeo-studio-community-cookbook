@@ -1,0 +1,15 @@
+
+
+<extension target="org.nuxeo.vision.core.service" point="configuration">
+    <configuration>
+        <defaultProviderName>${org.nuxeo.vision.default.provider:=}</defaultProviderName>
+        <pictureMapperChainName>javascript.AS_NuxeoVision_Config</pictureMapperChainName>
+    </configuration>
+</extension>
+
+
+<extension point="doctype" target="org.nuxeo.ecm.core.schema.TypeService">
+  <facet name="ColorFacet">
+    <schema name="color_extraction" />
+  </facet>
+</extension>

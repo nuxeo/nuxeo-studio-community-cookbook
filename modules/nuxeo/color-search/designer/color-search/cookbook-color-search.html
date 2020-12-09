@@ -1,0 +1,234 @@
+
+
+<!--
+`cookbook-color-search`
+@group Nuxeo UI
+@element cookbook-color-search
+-->
+<dom-module id="cookbook-color-search">
+  <template>
+
+    <style include="nuxeo-styles iron-flex iron-flex-alignment">
+      nuxeo-input{
+        padding-right: 20px;
+      }
+      .results {
+        @apply --layout-vertical;
+        @apply --layout-flex;
+        min-height: var(--nuxeo-document-content-min-height, calc(100vh - 216px - var(--nuxeo-app-top)));
+        margin-bottom: var(--nuxeo-document-content-margin-bottom, 0);
+      }
+    </style>
+
+    <nuxeo-page>
+      <div class="header" slot="header">
+        <span class="title">Similar Color Search</span>
+      </div>
+      
+      <div class="content">
+        <nuxeo-card heading="Color Search Criteria" icon="icons:search" collapsible opened>
+        <div class="layout horizontal flex" style="padding-bottom: 10px;">
+          <nuxeo-input role="widget" value="{{color}}" required label="Color picker" type="color"></nuxeo-input>
+          <nuxeo-input role="widget" value="{{color}}" required label="Color HEX Code" type="text"></nuxeo-input>
+          <nuxeo-input role="widget" value="{{distance}}" required min="0" max="50" step="1" label="Distance" type="number" name="distance"></nuxeo-input>
+          <nuxeo-input value="{{score}}" required="" min="10" max="100" label="Score" type="number" step="1" role="widget">	</nuxeo-input>
+				</div>
+        
+      </nuxeo-card>
+        
+      <nuxeo-card heading="Generated Nuxeo Query (NXQL)" icon="icons:info-outline" collapsible>
+        <nuxeo-textarea  role="widget" value="{{color_query}}" rows="2" readonly disabled></nuxeo-textarea>
+      </nuxeo-card>
+        
+       <nuxeo-page-provider auto
+                             provider="nxql_search"
+                             sort='{"dc:modified": "desc"}'
+                             enrichers="thumbnail, permissions"
+                             schemas="dublincore,common,uid,color_extraction"
+                             headers='{ "X-NXfetch.document": "properties", "X-NXtranslate.directoryEntry": "label" }'
+                             params="[[colorParams]]"
+                             page-size="40"
+                             id="nxProvider">
+        </nuxeo-page-provider>
+        
+            <nuxeo-results id="results"
+                   name="[[document.uid]]"
+                   nx-provider="[[nxProvider]]"
+                   selected-items="{{selectedItems}}"
+                   document="[[document]]"
+                   display-quick-filters
+                   role="widget"
+                   hideContentViewActions>
+
+       <nuxeo-data-grid name="grid" icon="nuxeo:view-thumbnails"
+                       class="results"
+                       selection-enabled
+                       draggable$="[[_hasWritePermission(document)]]" drop-target-filter="[[_dropTargetFilter]]">
+        <template>
+          <nuxeo-document-grid-thumbnail class="grid-box"
+                                         tabindex$="{{tabIndex}}"
+                                         selected$="{{selected}}"
+                                         index="[[index]]"
+                                         doc="[[item]]" on-navigate="_navigate"
+                                         selected-items="[[selectedItems]]">
+          </nuxeo-document-grid-thumbnail>
+        </template>
+      </nuxeo-data-grid>
+              
+              <nuxeo-data-table name="table" icon="nuxeo:view-list"
+                        class="results"
+                        settings-enabled
+                        selection-enabled
+                        on-row-clicked="_navigate"
+                        draggable$="[[_hasWritePermission(document)]]" drop-target-filter="[[_dropTargetFilter]]">
+        <nuxeo-data-table-column name="Asset" field="dc:title">
+          <template>
+            <nuxeo-document-thumbnail document="[[item]]"></nuxeo-document-thumbnail><a class="ellipsis" href$="[[urlFor('browse', item.path)]]" on-click="_navigate">[[item.title]]</a>
+
+          </template>
+        </nuxeo-data-table-column>
+              </nuxeo-data-table>
+        
+
+              
+              
+              
+        </nuxeo-results>
+
+		 </div>
+    </nuxeo-page>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'cookbook-color-search',
+
+      behaviors: [Nuxeo.I18nBehavior,Nuxeo.LayoutBehavior,Nuxeo.DocumentContentBehavior],
+
+      properties: {
+        nxProvider: Object,
+        document: Object,
+        color: {
+         	type: String,
+         	observer: "_documentChanged"
+        },
+        distance: {
+         	type: Number,
+         	observer: "_documentChanged"
+        },
+        score: {
+         	type: Number,
+         	observer: "_documentChanged"
+        },
+        color_query: {
+          type: String,
+          value: "Select * From Picture" 
+        },
+        colorParams: {
+          type: Object,
+          value: {queryParams: this.color_query}
+        }
+      },
+      
+      ready: function() {
+        // Set default values
+        this.colorParams = {queryParams: "Select * From Picture"};
+        this.color = "#32a946"
+        this.distance = 10;
+        this.score = 10;
+				this._documentChanged;
+      },
+      
+      _documentChanged: function() {
+      if (this.color && this.distance && this.score){
+        var red = this.color.substring(1,3);
+        var red_integer = parseInt(parseInt(red,16),10);  
+        var green = this.color.substring(3,5);
+        var green_integer = parseInt(parseInt(green,16),10); 
+        var blue = this.color.substring(5,7);
+        var blue_integer = parseInt(parseInt(blue,16),10); 
+        // https://css-tricks.com/converting-color-spaces-in-javascript/#rgb-to-hsl
+      	// Make r, g, and b fractions of 1
+      	red_integer /= 255;
+      	green_integer /= 255;
+      	blue_integer /= 255;
+      	// Find greatest and smallest channel values
+        var cmin = Math.min(red_integer,green_integer,blue_integer);
+        var cmax = Math.max(red_integer,green_integer,blue_integer);
+        var delta = cmax - cmin;
+        var h = 0;
+        var s = 0;
+        var l = 0;
+        // Calculate hue
+        // No difference
+        if (delta === 0)
+          h = 0;
+        // Red is max
+        else if (cmax == red_integer)
+          h = ((green_integer - blue_integer) / delta) % 6;
+        // Green is max
+        else if (cmax == green_integer)
+          h = (blue_integer - red_integer) / delta + 2;
+        // Blue is max
+        else
+        h = (red_integer - green_integer) / delta + 4;
+        h = Math.round(h * 60);
+        // Make negative hues positive behind 360°
+        if (h < 0)
+        h += 360;
+        // Calculate lightness
+        l = (cmax + cmin) / 2;
+        // Calculate saturation
+        s = delta === 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+        // Multiply l and s by 100
+        s = +(s * 100).toFixed(0);
+        l = +(l * 100).toFixed(0);
+        console.log("h is: "+h+" and s: "+s+" and l is: "+l);        
+        // Let's build the color query
+        this.color_query = "SELECT * FROM Document WHERE ecm:mixinType != \"HiddenInNavigation\" AND ecm:isProxy = 0 AND ecm:isVersion = 0 AND ecm:isTrashed = 0";
+        this.color_query = this.color_query+" AND color_extraction:colors/*1/hsl_h > "+this.min(h,this.distance)+" AND color_extraction:colors/*1/hsl_h < "+this.max(h,this.distance,"h")+" AND color_extraction:colors/*1/hsl_s > "+this.min(s,this.distance)+" AND color_extraction:colors/*1/hsl_s < "+this.max(s,this.distance,"s")+" AND color_extraction:colors/*1/hsl_l > "+this.min(l,this.distance)+" AND color_extraction:colors/*1/hsl_l < "+this.max(h,this.distance,"l")+" AND color_extraction:colors/*1/score > "+this.score;
+        this.colorParams = {queryParams: this.color_query};
+        this.$.results._refreshAndFetch();
+      }
+    },
+      
+    min: function(color,dist){
+      var min_value = Number(color) - Number(dist);
+      if (min_value<0)
+      {
+        min_value=0;
+      }
+      return min_value;
+    },
+
+    max: function(color,dist,type){
+      var max_value = Number(color) + Number(dist);
+      if (type === "h")
+        {
+          if (max_value>360)
+          {
+            max_value=360;
+          }
+        }
+      else
+        {
+         if (max_value>100)
+          {
+            max_value=100;
+          } 
+        }
+      return max_value;
+    },
+    
+    getResult: function(h, s, l) {
+      return h+"-"+Math.floor(s)+"-"+l;
+    },
+   
+    _navigate: function(e) {
+      this.fire('navigate', { doc: (e.model || e.detail).item, index: (e.model || e.detail).index });
+    },
+     
+    });
+  </script>
+</dom-module>

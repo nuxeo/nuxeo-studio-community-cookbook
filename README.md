@@ -32,6 +32,12 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <th>Category</th>
   </tr>
   <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/color-search"><img src="modules/nuxeo/color-search/color.png" width="120px"/></a></td>
+    <td>Similar Color Search</td>
+    <td>Nuxeo</td>
+    <td>Search, AI, Layouts</td>
+  </tr>
+  <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/copy-move"><img src="modules/nuxeo/copy-move/copy-move.png" width="120px"/></a></td>
     <td>Copy or move documents without the clipboard</td>
     <td>Nuxeo</td>
@@ -93,6 +99,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 Module | Description | Contributor
 --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/color-search"><img src="modules/nuxeo/color-search/color.png" width="120px"/></a> | Similar Color Search | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/copy-move"><img src="modules/nuxeo/copy-move/copy-move.png" width="120px"/></a> | Copy or move documents without the clipboard | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/nuxeo-date-time-picker"><img src="modules/nuxeo/nuxeo-date-time-picker/nuxeo-date-time-picker2.png" width="120px"/></a> | Date Time Picker | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/geodistance-search-and-google-map"><img src="modules/nuxeo/geodistance-search-and-google-map/geodistance.png" width="120px"/></a> | Geodistance Search + Google Map | Nuxeo
@@ -123,6 +130,7 @@ Module | Description | Contributor
 
 Module | Description | Contributor
 --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/color-search"><img src="modules/nuxeo/color-search/color.png" width="120px"/></a> | Similar Color Search | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/google-vision-ocr"><img src="modules/nuxeo/google-vision-ocr/ocr.png" width="100px"/></a> | Extract text from an image-based PDF with Google Vision | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/sensitive-data"><img src="modules/nuxeo/sensitive-data/sensitive-data1.png" width="100px"/></a> | Display sensitive data details contained in a document | Nuxeo
 

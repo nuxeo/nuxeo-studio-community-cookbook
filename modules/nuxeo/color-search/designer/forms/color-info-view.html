@@ -1,0 +1,70 @@
+<!--
+`color-info-view`
+@group Nuxeo UI
+@element color-info-view
+-->
+<dom-module id="color-info-view">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+      .colorlist{
+        padding-bottom: 15px;
+      }
+    </style>
+
+    <div class="colorlist">
+    <nuxeo-data-table role="widget" items="{{document.properties.color_extraction:colors}}" name="colors">
+
+      
+      <nuxeo-data-table-column name="Red">
+        <template>
+          [[item.red]]
+        </template>
+      </nuxeo-data-table-column>
+      
+     <nuxeo-data-table-column name="Green">
+        <template>
+          [[item.green]]
+        </template>
+      </nuxeo-data-table-column>
+      
+      <nuxeo-data-table-column name="Blue">
+        <template>
+          [[item.blue]]
+        </template>
+      </nuxeo-data-table-column>
+
+
+      <nuxeo-data-table-column name="Hex Color Code">
+        <template>
+      <nuxeo-tag style="background-color:{{item.css}}">&nbsp;&nbsp;</nuxeo-tag>&nbsp;&nbsp;[[item.css]]
+      </template>
+      </nuxeo-data-table-column>
+      
+
+      <nuxeo-data-table-column name="Score">
+        <template>
+          [[item.score]]
+        </template>
+      </nuxeo-data-table-column>
+
+    </nuxeo-data-table>
+</div>
+  </template>
+
+  <script>
+  Polymer({
+    is: 'color-info-view',
+    behaviors: [Nuxeo.LayoutBehavior,Nuxeo.DocumentContentBehavior],
+    properties: {
+
+      document: {
+        type: Object
+      }
+    }
+
+  });
+  </script>
+</dom-module>
