@@ -1,0 +1,91 @@
+<!--
+`custom-view-edit`
+@group Nuxeo UI
+@element custom-view-edit
+-->
+<dom-module id="custom-view-edit">
+  <template>
+    <style include="nuxeo-styles">
+      nuxeo-document-blob{
+        padding-top: 5px;
+        padding-bottom: 20px;
+      }
+    </style>
+
+    <template is="dom-if" if="[[hasFacet(document, 'CustomView')]]">
+
+      <div style="margin-top: 20px;margin-bottom: 20px;background-color: #F2F2F2;">
+        <b>Custom Views</b>
+      </div>
+
+      <template is="dom-if" if="[[!_CustomThumbnailExists(document)]]">
+        <div role="widget">
+          <label>Custom thumbnail</label>
+          <nuxeo-dropzone value="{{document.properties.custom_view:thumbnail}}" update-document="true" name="file" accept=".jpeg,.png,.jpg"></nuxeo-dropzone>
+        </div>
+      </template>
+
+      <template is="dom-if" if="[[!_CustomPreviewExists(document)]]">
+        <label>Custom preview</label>
+        <nuxeo-dropzone value="{{document.properties.custom_view:preview}}" update-document="true" name="file" accept=".jpeg,.png,.jpg"></nuxeo-dropzone>
+
+      </template>  
+
+      <template is="dom-if" if="[[_CustomThumbnailExists(document)]]">
+
+        <div role="widget">
+
+          <label>Update the current custom thumbnail for this file version</label>
+          <template is="dom-if" if="[[hasFacet(document, 'Picture')]]">
+            <nuxeo-document-blob document="{{document}}" xpath="picture:views/1/content"></nuxeo-document-blob>
+          </template>
+          <template is="dom-if" if="[[hasFacet(document, 'Video')]]">
+            <nuxeo-document-blob document="{{document}}" xpath="picture:views/0/content"></nuxeo-document-blob>
+          </template>
+          <template is="dom-if" if="[[hasFacet(document, 'File')]]">
+            <nuxeo-document-blob document="{{document}}" xpath="thumb:thumbnail"></nuxeo-document-blob>
+          </template>
+          <label>Update the refence custom thumbnail for all document version</label>
+          <nuxeo-document-blob document="{{document}}" xpath="custom_view:thumbnail"></nuxeo-document-blob>
+
+        </div>
+
+      </template>
+
+    </template>
+
+
+
+    </template>
+
+  <script>
+  Polymer({
+    is: 'custom-view-edit',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      document: {
+        type: Object
+      }
+    },
+    _CustomThumbnailExists(doc) {
+      if (doc.properties['custom_view:thumbnail']){
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    },
+    _CustomPreviewExists(doc) {
+      if (doc.properties['custom_view:preview']){
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+  });
+  </script>
+</dom-module>

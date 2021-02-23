@@ -1,0 +1,55 @@
+<!--
+`custom-preview-view`
+@group Nuxeo UI
+@element custom-preview-view
+-->
+<dom-module id="custom-preview-view">
+  <template>
+    <style include="nuxeo-styles">
+      nuxeo-document-blob {
+        padding-top: 15px;
+      }
+    </style>
+
+    <template is="dom-if" if="[[hasFacet(document, 'CustomView')]]">
+      <template is="dom-if" if="[[_CustomPreviewExists(document)]]">
+        <nuxeo-card opened heading="Custom preview">
+            <nuxeo-document-preview document="[[document]]" xpath="custom_view:preview"></nuxeo-document-preview>
+            <nuxeo-document-blob document="{{document}}" xpath="file:content"></nuxeo-document-blob>
+        </nuxeo-card>
+      </template>
+      <template is="dom-if" if="[[!_CustomPreviewExists(document)]]">
+
+        <nuxeo-document-viewer role="widget" document="[[document]]"></nuxeo-document-viewer>
+
+      </template>
+    </template>
+
+    <template is="dom-if" if="[[!hasFacet(document, 'CustomView')]]">
+      <nuxeo-document-viewer role="widget" document="[[document]]"></nuxeo-document-viewer>
+    </template>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'custom-preview-view',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      document: {
+        type: Object
+      }
+    },
+    _CustomPreviewExists(doc) {
+      if (doc.properties['custom_view:preview']){
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+  });
+  </script>
+</dom-module>

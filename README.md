@@ -32,6 +32,12 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <th>Category</th>
   </tr>
   <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/custom-views"><img src="modules/nuxeo/custom-views/cookbook-custom-views2.png" width="120px"/></a></td>
+    <td>Custom Preview and Thumbnail</td>
+    <td>Nuxeo</td>
+    <td>Layouts</td>
+  </tr>
+  <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/color-search"><img src="modules/nuxeo/color-search/color.png" width="120px"/></a></td>
     <td>Similar Color Search</td>
     <td>Nuxeo</td>
@@ -60,12 +66,6 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <td>Create from template</td>
     <td>Nuxeo</td>
     <td>Templates</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/geodistance-search-and-google-map"><img src="modules/nuxeo/geodistance-search-and-google-map/geodistance.png" width="120px"/></a></td>
-    <td>Geodistance Search + Google Map</td>
-    <td>Nuxeo</td>
-    <td>Layouts, Search, Automation</td>
   </tr>
 </table>
 
@@ -99,6 +99,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 Module | Description | Contributor
 --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/custom-views"><img src="modules/nuxeo/custom-views/cookbook-custom-views2.png" width="120px"/></a> | Custom Preview and Thumbnail | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/color-search"><img src="modules/nuxeo/color-search/color.png" width="120px"/></a> | Similar Color Search | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/copy-move"><img src="modules/nuxeo/copy-move/copy-move.png" width="120px"/></a> | Copy or move documents without the clipboard | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/nuxeo-date-time-picker"><img src="modules/nuxeo/nuxeo-date-time-picker/nuxeo-date-time-picker2.png" width="120px"/></a> | Date Time Picker | Nuxeo
