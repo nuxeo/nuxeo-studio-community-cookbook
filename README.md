@@ -2,7 +2,7 @@
 
 # Nuxeo Studio Community Cookbook
 
-This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio projects. It provides a list of features and visual elements ready to be copy-pasted. The modules are for **LTS 2019**:
+This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio projects. It provides a list of features and visual elements ready to be copy-pasted. The modules are for **LTS 2019 and LTS 2021**:
 
 - They can be unrelated to the UI (to provide new backend features, such as utilities to handle multimedia files, specific conversions, email templates etc.).
 - They can provide UI elements for Nuxeo Web UI, or any frontend application.
@@ -30,6 +30,12 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <th>Description</th>
     <th>Author</th>
     <th>Category</th>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/interactive-pdf-search"><img src="modules/nuxeo/interactive-pdf-search/search-pdf-metadata.png" width="120px"/></a></td>
+    <td>Interactive PDF Search</td>
+    <td>Nuxeo</td>
+    <td>Search</td>
   </tr>
   <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/custom-views"><img src="modules/nuxeo/custom-views/cookbook-custom-views2.png" width="120px"/></a></td>
@@ -99,6 +105,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 Module | Description | Contributor
 --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/interactive-pdf-search"><img src="modules/nuxeo/interactive-pdf-search/search-pdf-metadata.png" width="120px"/></a> | Interactive PDF Search | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/custom-views"><img src="modules/nuxeo/custom-views/cookbook-custom-views2.png" width="120px"/></a> | Custom Preview and Thumbnail | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/color-search"><img src="modules/nuxeo/color-search/color.png" width="120px"/></a> | Similar Color Search | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/copy-move"><img src="modules/nuxeo/copy-move/copy-move.png" width="120px"/></a> | Copy or move documents without the clipboard | Nuxeo
