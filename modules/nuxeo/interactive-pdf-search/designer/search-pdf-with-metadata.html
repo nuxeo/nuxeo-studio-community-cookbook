@@ -1,0 +1,57 @@
+<!--
+`search-metadata`
+@group Nuxeo UI
+@element search-metadata
+-->
+<dom-module id="search-pdf-with-metadata">
+  <template>
+    <style include="nuxeo-action-button-styles">
+    </style>
+
+    <span class="action" on-tap="_run">
+      <paper-icon-button id="bt" icon="[[icon]]"></paper-icon-button>
+      <span class="label" hidden$="[[!showLabel]]">[[label]]</span>
+    </span>
+    <paper-tooltip for="bt">[[label]]</paper-tooltip>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'search-pdf-with-metadata',
+      properties: {
+
+        label: {
+          type: String,
+          value: 'Search document for value'
+        },
+        
+        xpath: {
+          type: String
+        },
+
+        showLabel: {
+          type: Boolean,
+          value: false,
+        },
+
+        icon: {
+          type: String,
+          value: 'nuxeo:search'
+        }
+      },
+
+      _run: function() {
+        if (this.xpath) {
+          this.dispatchEvent(
+            new CustomEvent('search-pdf-viewer', {
+              bubbles: true,
+              composed: true,
+              detail: { xpath: this.xpath },
+            }),
+          );
+        }
+      }
+    });
+  </script>
+</dom-module>

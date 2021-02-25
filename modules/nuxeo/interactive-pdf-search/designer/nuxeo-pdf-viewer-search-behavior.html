@@ -1,0 +1,86 @@
+<script>
+    var Nuxeo = Nuxeo || {};
+    (function () {
+
+        /**
+         * @polymerBehavior Nuxeo.PDFViewerSearchBehavior
+         */
+        Nuxeo.PDFViewerSearchBehavior = {
+
+            ready: function () {
+                // Create bound delegate for listener callbacks
+                this._boundSearchMetadata = this._searchFileMetadata.bind(this);
+            },
+            attached: function () {
+                // Listen to user interactive event from sibling element(s)
+                window.addEventListener('search-pdf-viewer', this._boundSearchMetadata);
+            },
+            detached: function () {
+                // Clean up used listener handle & reference
+                window.removeEventListener('search-pdf-viewer', this._boundSearchMetadata);
+                this.pdfView = null;
+            },
+
+            _pdfSearchDocumentChanged: function (doc) {
+                // Clear on document update
+                this.pdfView = null;
+            },
+
+            _getPdfView: function () {
+                // Return cached value, cleaned up in `detached` function
+                if (this.pdfView) {
+                    return this.pdfView;
+                }
+                // Reach down to find view wrapper
+                let docPreview = this.$.viewer.shadowRoot.querySelector("nuxeo-document-preview");
+                if (docPreview) {
+                    let preview = docPreview.shadowRoot.getElementById("preview");
+                    if (preview) {
+                        let isPdf = preview.querySelector("nuxeo-pdf-viewer");
+                        if (isPdf) {
+                            let frameEle = isPdf.shadowRoot.querySelector("iframe");
+                            if (frameEle) {
+                                // Need the content window to access PDF object 
+                                this.pdfView = frameEle.contentWindow;
+                            }
+                        }
+                    }
+                }
+                return this.pdfView;
+            },
+
+            _searchFileMetadata: function (evt) {
+                if (evt.detail.xpath) {
+                    let query = this.document.properties[evt.detail.xpath];
+                    // Skip blank values
+                    if (!query || /^\s*$/.test(query)) {
+                        return;
+                    }
+                    // Look up target viewer
+                    let view = this._getPdfView();
+                    if (!view) {
+                        console.error("No PDF viewport");
+                        return;
+                    }
+                    // Issue find command
+                    let pdf = view.PDFViewerApplication;
+                    pdf.findController.executeCommand("find", {
+                        query: query,
+                        phraseSearch: query,
+                        caseSensitive: false,
+                        entireWord: false,
+                        highlightAll: true,
+                        findPrevious: false,
+                    });
+                    // Open find bar to navigate multiple matches
+                    if (pdf.findBar.opened === false) {
+                        pdf.findBar.toggle();
+                    }
+                    // Update input value
+                    view.document.getElementById('findInput').value = query;
+                }
+            }
+
+        };
+    })();
+</script>
