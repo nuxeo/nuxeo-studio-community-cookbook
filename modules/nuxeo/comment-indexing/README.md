@@ -1,5 +1,7 @@
 # Comment Indexing
 
+:warning: **Only apply to LTS2019 as comments are indexed in full text by default in LTS 2021. More in https://jira.nuxeo.com/browse/NXP-26669**
+
 ![comments](comments.png)
 
 ## Description
