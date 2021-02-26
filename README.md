@@ -67,12 +67,6 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <td>Nuxeo</td>
     <td>Administration</td>
   </tr>
-  <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/create-from-template"><img src="modules/nuxeo/create-from-template/CreateFromTemplate.png" width="120px"/></a></td>
-    <td>Create from template</td>
-    <td>Nuxeo</td>
-    <td>Templates</td>
-  </tr>
 </table>
 
 
@@ -131,6 +125,7 @@ Module | Description | Contributor
 
 Module | Description | Contributor
 --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/color-search"><img src="modules/nuxeo/color-search/color.png" width="120px"/></a> | Similar Color Search | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/video-thumbnail"><img src="modules/nuxeo/video-thumbnail/video-thumbnail2.png" width="100px"/></a> | Sets the video poster and search thumbnail | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/video-conversions"><img src="modules/nuxeo/video-conversions/movie.png" width="100px"/></a> | Additional video conversions | Nuxeo
 
