@@ -1,0 +1,37 @@
+<!--
+`sfdc-edit`
+@group Nuxeo UI
+@element sfdc-edit
+-->
+<dom-module id="sfdc-edit">
+  <template>
+    <style>
+      *[role=widget] {
+        margin-bottom: 8px;
+      }
+    </style>
+
+    <nuxeo-input value="{{document.properties.sf:objectId}}" label="SFDC ID" type="text" name="objectId" role="widget"></nuxeo-input>
+
+    <nuxeo-input value="{{document.properties.sf:objectType}}" label="Type" type="text" name="objectType" role="widget"></nuxeo-input>
+
+    <nuxeo-input value="{{document.properties.sf:objectDescription}}" label="Description" type="text" name="objectDescription" role="widget"></nuxeo-input>
+
+    <nuxeo-input value="{{document.properties.sf:objectAmount}}" label="Amount" type="text" name="objectAmount" role="widget"></nuxeo-input>
+
+</template>
+
+  <script>
+    Polymer({
+      is: 'sfdc-edit',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        document: {
+          type: Object
+        }
+      }
+
+    });
+  </script>
+</dom-module>

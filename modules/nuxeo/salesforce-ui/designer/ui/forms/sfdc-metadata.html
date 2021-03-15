@@ -1,0 +1,58 @@
+<!--
+`sfdc-metadata`
+@group Nuxeo UI
+@element sfdc-metadata
+-->
+<dom-module id="sfdc-metadata">
+  <template>
+    <style include="iron-flex iron-flex-alignment nuxeo-styles">
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+
+    <div class="layout horizontal flex wrap">
+
+      <div role="widget" class="layout flex"><label>SFDC ID</label><div name="objectId">[[document.properties.sf:objectId]]</div></div>
+
+      <div role="widget" class="layout flex"><label>Type</label><div name="objectType">[[document.properties.sf:objectType]]</div></div>
+
+
+      <div role="widget" class="layout flex"><label>Description</label><div name="objectDescription">[[document.properties.sf:objectDescription]]</div></div>
+
+      <div role="widget" class="layout flex"><label>Amount</label><div name="objectAmount">[[_formatCurrency(document.properties.sf:objectAmount)]]</div></div>
+
+    </div>
+
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'sfdc-metadata',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      document: {
+        type: Object
+      }
+    },
+
+    _formatCurrency: function(value, region, style, currency) {
+      if (!region)
+        region = "en-US";
+      if (!style)
+        style = "currency";
+      if (!currency)
+        currency = "USD";
+
+      return Number(value).toLocaleString(region, {
+        "style": style,
+        "currency": currency
+      }).slice(0, -3)
+    }
+
+
+  });
+  </script>
+</dom-module>

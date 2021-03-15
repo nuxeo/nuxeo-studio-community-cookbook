@@ -1,10 +1,4 @@
-<!--
-Overridden to add SFDC metadata, given that the SFDC plug-in defaults
-to Workspace for document type.
--->
-
-<link rel="import" href="../../forms/sfdc-metadata.html">
-
+<link rel="import" href="../../forms/sfdc-edit.html">
 <!--
 @license
 (C) Copyright Nuxeo Corp. (http://nuxeo.com/)
@@ -21,38 +15,47 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-
 <!--
-`nuxeo-workspace-view-layout`
+`nuxeo-workspace-edit-layout`
 @group Nuxeo UI
-@element nuxeo-workspace-view-layout
+@element nuxeo-workspace-edit-layout
 -->
-<dom-module id="nuxeo-workspace-view-layout">
+<dom-module id="nuxeo-workspace-edit-layout">
+
   <template>
-    <style include="iron-flex iron-flex-alignment nuxeo-styles">
+    <style include="nuxeo-styles">
+      *[role=widget] {
+        margin-bottom: 8px;
+      }
+
+      .header{
+        margin-bottom: 0;
+        padding-left: 0;
+      }
     </style>
 
-    <template is="dom-if" if="[[document.properties.sf:objectId]]">
-      <nuxeo-card heading="SFDC Info">
-        <sfdc-metadata role="widget" document="[[document]]"></sfdc-metadata>
-      </nuxeo-card>
-    </template>
+    <nuxeo-input role="widget" label="[[i18n('title')]]" name="title" value="{{document.properties.dc:title}}" autofocus="" required="">
+    </nuxeo-input>
 
-    <nuxeo-document-content document="[[document]]"></nuxeo-document-content>
+    <nuxeo-textarea role="widget" label="[[i18n('label.description')]]" name="description" value="{{document.properties.dc:description}}">
+    </nuxeo-textarea>
+
+    <template is="dom-if" if="[[document.properties.sf:objectId]]">
+      <h3 class="header">SFDC Info</h3>
+      <sfdc-edit document="{{document}}" role="widget"></sfdc-edit>
+    </template>
 
   </template>
 
   <script>
   Polymer({
-    is: 'nuxeo-workspace-view-layout',
+    is: 'nuxeo-workspace-edit-layout',
     behaviors: [Nuxeo.LayoutBehavior],
     properties: {
       /**
          * @doctype Workspace
          */
-      document: {
-        type: Object
-      }
+      document: Object
     }
   });
   </script>
