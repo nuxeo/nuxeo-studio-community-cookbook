@@ -1,0 +1,99 @@
+<!--
+  Currently there is no way to define a `nuxeo-operation-button` in Studio that
+  supports navigating to the result of the operation. You can use this element
+  as a replacement. Make sure the operations returns a Document.
+-->
+<dom-module id="nuxeo-operation-button-with-navigation">
+  <template>
+    <style>
+    </style>
+
+    <nuxeo-operation-button icon="[[icon]]"
+                            tooltip="[[tooltip]]"
+                            operation="[[operation]]"
+                            input="[[input]]"
+                            params="[[params]]"
+                            notification="[[notification]]"
+                            pollInterval="[[pollInterval]]"
+                            errorLabel="[[errorLabel]]"
+                            on-operation-executed="_handleResponse">
+    </nuxeo-operation-button>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-operation-button-with-navigation',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        /* Icon name */
+        icon: String,
+
+        /* Tooltip label. If `undefined`, `label` will be used instead. */
+        tooltip: String,
+
+        /* The id of the operation, automation chain or script to call. */
+        operation: String,
+
+        /* Pass contextual information that will be forwarded to the operation,
+         * automation chain or script triggered as the input for the first
+         * operation. Possible options depend on the slot chosen.
+         * [Documentation](https://doc.nuxeo.com/nxdoc/web-ui-slots)
+         */
+        input: Object,
+
+        /* The parameters to send. */
+        params: {
+          type: Object,
+          value() {
+            return {};
+          },
+        },
+
+        /* The response from the server. */
+        /* WARNING: this value is never used https://jira.nuxeo.com/browse/ELEMENTS-1071 */
+        response: {
+          type: Object,
+          value: null,
+          notify: true,
+        },
+
+        /* The text or i18n key to display in the notification. */
+        notification: {
+          type: String,
+        },
+
+        /**
+         * Poll interval in ms.
+         */
+        pollInterval: {
+          type: Number,
+          value: 1000,
+        },
+
+        /**
+         * A custom label to be displayed if there is an error during the operation execution. If `undefined`, the
+         * original error message is shown. The label can receive a placeholder (i.e. `{0}`) to display the original
+         * error message.
+         */
+        errorLabel: {
+          type: String,
+        }
+
+      },
+
+      _handleResponse: function (event, detail) {
+        // Looks like a document, close enough...
+        if (detail && detail.response && detail.response.uid) {
+          this.fire('navigate', { doc: detail.response });
+        } else {
+          var message = "Couldn't handle response."
+          this.fire('notify', {
+            message: message
+          });
+        }
+      }
+    });
+  </script>
+</dom-module>
