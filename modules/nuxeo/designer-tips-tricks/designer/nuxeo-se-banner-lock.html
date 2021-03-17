@@ -1,0 +1,92 @@
+<!--
+`nuxeo-se-banner-lock`
+@group Nuxeo UI
+@element nuxeo-se-banner-lock
+-->
+<dom-module id="nuxeo-se-banner-lock">
+
+  <template>
+
+    <style include="nuxeo-styles">
+      [:host] {
+        @apply --nuxeo-card
+      }
+      *[role=widget] {
+        padding-left: 1em;
+      }
+
+      label {
+        @apply --nuxeo-label;
+      }
+
+      div.multiline {
+        white-space: pre-line;
+      }
+
+      div {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        -webkit-hyphens: auto;
+        -moz-hyphens: auto;
+        -ms-hyphens: auto;
+        -o-hyphens: auto;
+        hyphens: auto;
+      }
+
+      h3 {
+        margin-bottom: 0.25em;
+        margin-top: 0.25em;
+      }
+
+      nuxeo-card {
+        padding: 9px 0px 10px 3px;
+      }
+
+      nuxeo-user-tag {
+        margin-top: 6px;
+      }
+
+      .item {
+        @apply(--layout-horizontal);
+        align-items: center;
+      }
+      .item label {
+        @apply --nuxeo-label;
+        margin-left: 1em;
+        margin-right: 1em;
+      }
+    </style>
+
+    <template is="dom-if" if="[[_isLocked(document)]]">
+      <nuxeo-card>
+        <div role="widget" class="item">
+          <h3>[[i18n('label.system.isLocked')]]</h3>
+          <label>[[i18n('label.system.lockOwner.by')]]</label>
+          <nuxeo-user-tag user="[[document.lockOwner]]"></nuxeo-user-tag>
+          <label>[[i18n('label.system.lockCreated.at')]]</label>
+          <span>[[formatDate(document.lockCreated, _dateFormat)]]</span>
+        </div>
+      </nuxeo-card>
+    </template>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-se-banner-lock',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+      document: Object,
+      _dateFormat: {
+        type: String,
+        value: "LL, HH:mm:SS"
+      }
+    },
+    _isLocked: function(doc) {
+      return doc && doc.lockOwner ? true : false;
+    }
+  });
+  </script>
+
+</dom-module>

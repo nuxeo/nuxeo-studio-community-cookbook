@@ -15,6 +15,7 @@
 - [Update creation and edition screen size](#update-creation-and-edition-screen-size)
 - [Set height to nuxeo-data-table](#set-height-to-nuxeo-data-table)
 - [Update Nuxeo Favicon](#update-nuxeo-favicon)
+- [Display a banner with lock information](#display-a-banner-with-lock-information)
 
 ## Prerequisites
 
@@ -231,6 +232,6 @@ safari-pinned-tab.svg
   - Change: `href="<%=context%>/icons/favicon.ico"` to ` href="/nuxeo/ui/images/touch/favicon.ico"` 
 
 
-## Documentation Links
+### Display a banner with lock information
 
-- [Nuxeo Studio Designer](https://doc.nuxeo.com/studio/working-in-view-designer/)
+Reuse the `nuxeo-se-banner-lock.html` element.
