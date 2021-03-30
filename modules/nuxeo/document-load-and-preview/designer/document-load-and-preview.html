@@ -1,0 +1,82 @@
+<!--
+The OOTB `nuxeo-document-viewer` element will not fetch a document, given an ID,
+nor will it make sure the document has the correct enrichers to handle the
+document correctly. This makes it difficult to use as a generic viewer for
+documents. For example to show the preview of a linked document, rather than
+only the current document.
+
+This element is a replacement that just ensures we have the necessary info for
+the viewer to work. It also adds 3D support (assuming of course that you have
+`nuxeo-3d` installed).
+
+You can bind just a document uid, or a resolved document.
+-->
+
+<!--
+`document-load-and-preview`
+@group Nuxeo UI
+@element document-load-and-preview
+-->
+<dom-module id="document-load-and-preview">
+  <template>
+
+    <nuxeo-document id="documentFetcher"
+                    response="{{_previewDoc}}"
+                    schemas="*"
+                    enrichers="hasContent,firstAccessibleAncestor,permissions,breadcrumb,preview,favorites,subscribedNotifications,thumbnail,renditions,pendingTasks,runnableWorkflows,runningWorkflows,collections,audit,subtypes,tags,publications,aiModels,documentURL">
+    </nuxeo-document>
+
+    <template is="dom-if"
+              if="[[!hasFacet(_previewDoc,'ThreeD')]]">
+      <nuxeo-document-preview document="[[_previewDoc]]"
+                              xpath="[[xpath]]">
+      </nuxeo-document-preview>
+    </template>
+
+    <template is="dom-if"
+              if="[[hasFacet(_previewDoc,'ThreeD')]]">
+      <nuxeo-3d-preview document="{{_previewDoc}}"></nuxeo-3d-preview>
+    </template>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'document-load-and-preview',
+
+      behaviors: [Nuxeo.LayoutBehavior],
+
+      properties: {
+        document: {
+          type: Object,
+          observer: '_documentChanged'
+        },
+        xpath: {
+          type: String,
+          value: 'file:content',
+        },
+        _previewDoc: {
+          type: Object
+        }
+      },
+
+      _documentChanged: function () {
+        // Taken from https://www.regextester.com/99148
+        var uuidPattern = /[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}/;
+        if (this.document) {
+          if (this.document.uid) {
+            this.$.documentFetcher.docId = this.document.uid;
+            this.$.documentFetcher.execute();
+          } else if (this.document.match(uuidPattern)) {
+            this.$.documentFetcher.docId = this.document;
+            this.$.documentFetcher.execute();
+          } else {
+            this.fire('notify', { 'message': this.i18n('label.message.badBinding') });
+            console.error("Unsupported binding.")
+          }
+        }
+      }
+
+    });
+  </script>
+</dom-module>
