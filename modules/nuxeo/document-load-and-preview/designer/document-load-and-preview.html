@@ -61,9 +61,9 @@ You can bind just a document uid, or a resolved document.
       },
 
       _documentChanged: function () {
-        // Taken from https://www.regextester.com/99148
-        var uuidPattern = /[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}/;
         if (this.document) {
+          // Taken from https://www.regextester.com/99148
+          var uuidPattern = /[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}/;
           if (this.document.uid) {
             this.$.documentFetcher.docId = this.document.uid;
             this.$.documentFetcher.execute();
