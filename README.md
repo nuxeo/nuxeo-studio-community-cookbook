@@ -32,6 +32,12 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <th>Category</th>
   </tr>
   <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/document-load-and-preview"><img src="modules/nuxeo/document-load-and-preview/eye.png" width="120px"/></a></td>
+    <td>Document Load and Preview</td>
+    <td>Nuxeo</td>
+    <td>Layout</td>
+  </tr>
+  <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/interactive-pdf-search"><img src="modules/nuxeo/interactive-pdf-search/search-pdf-metadata.png" width="120px"/></a></td>
     <td>Interactive PDF Search</td>
     <td>Nuxeo</td>
@@ -99,6 +105,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 Module | Description | Contributor
 --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/document-load-and-preview"><img src="modules/nuxeo/document-load-and-preview/eye.png" width="120px"/></a> | Document Load and Preview | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/interactive-pdf-search"><img src="modules/nuxeo/interactive-pdf-search/search-pdf-metadata.png" width="120px"/></a> | Interactive PDF Search | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/custom-views"><img src="modules/nuxeo/custom-views/cookbook-custom-views2.png" width="120px"/></a> | Custom Preview and Thumbnail | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/color-search"><img src="modules/nuxeo/color-search/color.png" width="120px"/></a> | Similar Color Search | Nuxeo
