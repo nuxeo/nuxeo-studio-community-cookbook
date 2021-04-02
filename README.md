@@ -233,14 +233,6 @@ You have to follow the repository contribution [guidelines](toolkit-and-guidelin
   - If not, you won't be allowed to push directly to master. Your pull request will be then checked by the Nuxeo Team before being published.
 - Et voilà! :wink:
 
-## Support
-
-:warning: **These features are not part of the Nuxeo Production platform.**
-
-These solutions are provided for inspiration and we encourage customers to use them as code samples and learning resources.
-
-This is a moving project (no API maintenance, no deprecation process, etc.) If any of these solutions are found to be useful for the Nuxeo Platform in general, they will be integrated directly into platform, not maintained here.
-
 ## Nuxeo Labs
 
 You can access complete Nuxeo Marketplace addons on [Nuxeo Marketplace - Nuxeo Labs](https://connect.nuxeo.com/nuxeo/site/marketplace/category/nuxeo-labs) category (done for PoC and test purposes)
@@ -250,12 +242,26 @@ You can access complete Nuxeo Marketplace addons on [Nuxeo Marketplace - Nuxeo L
 - [Nuxeo Documentation](https://doc.nuxeo.com)
 - [Nuxeo University](https://university.nuxeo.com)
 
-## Licensing
+# Support
 
-[Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+**These features are not part of the Nuxeo Production platform.**
 
-## About Nuxeo
+These solutions are provided for inspiration and we encourage customers to use them as code samples and learning resources.
 
-[Nuxeo](www.nuxeo.com), developer of the leading Content Services Platform, is reinventing enterprise content management (ECM) and digital asset management (DAM). Nuxeo is fundamentally changing how people work with data and content to realize new value from digital information. Its cloud-native platform has been deployed by large enterprises, mid-sized businesses and government agencies worldwide. Customers like Verizon, Electronic Arts, ABN Amro, and the Department of Defense have used Nuxeo's technology to transform the way they do business. Founded in 2008, the company is based in New York with offices across the United States, Europe, and Asia.
+This is a moving project (no API maintenance, no deprecation process, etc.) If any of these solutions are found to be useful for the Nuxeo Platform in general, they will be integrated directly into platform, not maintained here.
 
-Learn more at www.nuxeo.com.
+# License
+
+[Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
+
+# About Nuxeo
+
+Nuxeo Platform is an open source Content Services platform, written in Java. Data can be stored in both SQL & NoSQL databases.
+
+The development of the Nuxeo Platform is mostly done by Nuxeo employees with an open development model.
+
+The source code, documentation, roadmap, issue tracker, testing, benchmarks are all public.
+
+Typically, Nuxeo users build different types of information management solutions for [document management](https://www.nuxeo.com/solutions/document-management/), [case management](https://www.nuxeo.com/solutions/case-management/), and [digital asset management](https://www.nuxeo.com/solutions/dam-digital-asset-management/), use cases. It uses schema-flexible metadata & content models that allows content to be repurposed to fulfill future use cases.
+
+More information is available at [www.nuxeo.com](https://www.nuxeo.com).
