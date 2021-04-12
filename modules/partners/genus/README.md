@@ -1,4 +1,4 @@
-<img src="genus-logo.png" align="right" />
+<img src="genus-logo.png" width="20%" align="right" />
 
 # Genus Technologies
 
