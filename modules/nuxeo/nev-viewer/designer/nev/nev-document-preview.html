@@ -1,0 +1,73 @@
+<dom-module id="nev-document-preview">
+    <template>
+        <style include="nuxeo-styles">
+      iframe {
+        width: 100%;
+        min-height: 84vh;
+        border: 0;
+      }
+    </style>
+
+        <nuxeo-operation id="aRenderOp"
+                         op="Document.ARenderGetPreviewerUrl"
+                         input="[[document.uid]]">
+        </nuxeo-operation>
+
+        <template is="dom-if" if="{{_renditionIsBeingCompute(aRenderUrl, responseStatus)}}">
+            <span>[[i18n('arender.blobNotAvailable')]]</span>
+        </template>
+        <iframe src="[[aRenderUrl]]" onload="this.contentWindow.focus()"></iframe>
+
+    </template>
+    <script>
+    Polymer({
+      is: 'nev-document-preview',
+      behaviors: [Nuxeo.I18nBehavior],
+      properties: {
+        document: {
+          type: Object
+        },
+        aRenderUrl: {
+          type: String,
+          value: ''
+        },
+        responseStatus: {
+          type: Number,
+          value: 0
+        },
+        visible: {
+          type: Boolean
+        },
+        hideNavigationSidebar: {
+          type: Boolean,
+          value: false
+        }
+      },
+
+      observers: [
+        '_observeDocument(document, visible)'
+      ],
+
+      _renditionIsBeingCompute: function() {
+        return this.aRenderUrl === '' && this.responseStatus === 404;
+      },
+
+      _observeDocument: function() {
+        this.aRenderUrl = '';
+        this.responseStatus = 0;
+        if (this.visible && this.document) {
+          this.$.aRenderOp.execute().then(function(res) {
+            let url = res.previewerUrl;
+            if (this.hideNavigationSidebar) {
+              url += "&documentnavigator.width=0";
+            }
+            this.set('aRenderUrl', url);
+          }.bind(this)).catch(function(err) {
+            console.error(err);
+            this.set('responseStatus', err.response.status);
+          }.bind(this));
+        }
+      }
+    });
+  </script>
+</dom-module>
