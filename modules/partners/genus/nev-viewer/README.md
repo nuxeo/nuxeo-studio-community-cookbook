@@ -9,21 +9,21 @@
 
 ## Description
 
-This contribution provides and easy way to user the NEV viewer as the default viewer for a configured list of mimetypes.  
+This contribution provides and easy way to user the NEV viewer as the default document preview for a configured list of mimetypes.  
 
 ## Usage
 
-After adding the `nev-document-viewer` element to the document view page, the Nuxeo Enhanced viewer will be shown instead of
-the OOTB Nuxeo Document Viewer for most document, audio, and video documents.
+After adding the `nev-document-viewer` element to the document view page, the Nuxeo Enhanced Viewer will be shown instead of
+the Out of the box (OOTB) Nuxeo Document Viewer for most document, audio, and video documents.
 
-The `nev-document-viewer` will fallback to the OOTB viewer if the blob's mimetype is not included in the list of specified mimetypes. This behavior can
-be modified to look at features of the document such as facets and document properties.
+The `nev-document-viewer` will fallback to the OOTB viewer if the blob's mimetype is not included in the list of specified 
+mimetypes. This behavior can be modified to look at features of the document such as facets and document properties.
 
 ## Installation
 
 ### Studio Modeler
 
-No configuration is required for Studio Modeler.
+No configuration is required in Studio Modeler.
 
 ### Studio Designer
 
@@ -38,6 +38,6 @@ to each document type's view element file (ex: `UI/document/picture/nuxeo-pictur
 
 ## Configuration
 
-The logic of when to show the Nuxeo Enhanced Viewer is configured in the `_checkNEVViewerMimetypes` method of the `nev-document-viewer` element.
+The logic of when to show the Nuxeo Enhanced Viewer is configured in the `_useNEVViewer` method of the `nev-document-viewer` element.
 This behavior can be easily modified to allow different logic to take place, such as only showing the viewer when a document 
 has a specific facet, or property. 

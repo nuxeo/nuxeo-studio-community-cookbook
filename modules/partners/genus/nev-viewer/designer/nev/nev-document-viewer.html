@@ -28,15 +28,12 @@
 
         <template is="dom-if" if="[[document.properties.file:content.data]]">
 
-            <!-- Following dom-if is Checking MimeTypes in the script _checkNEVViewerMimetypes
-            and if true loads the Arender Pro viewer. -->
-            <template is="dom-if" if="{{_checkNEVViewerMimetypes(document)}}">
+            <template is="dom-if" if="{{_useNEVViewer(document)}}">
                 <nev-document-preview hide-navigation-sidebar="true" document="[[document]]" visible="true"></nev-document-preview>
                 <nuxeo-document-blob document="[[document]]"></nuxeo-document-blob>
             </template>
 
-            <!-- If the script _checkNEVViewerMimetypes is false, the previewer module is loaded. -->
-            <template is="dom-if" if="{{!_checkNEVViewerMimetypes(document)}}">
+            <template is="dom-if" if="{{!_useNEVViewer(document)}}">
                 <nuxeo-document-preview document="[[document]]"></nuxeo-document-preview>
                 <nuxeo-document-blob document="[[document]]"></nuxeo-document-blob>
             </template>
@@ -63,9 +60,7 @@
         !this.isImmutable(doc) && doc.type !== 'Root' && !this.isTrashed(doc);
     },
 
-    // Mimetype list to validate if the Arender viewer or previewer loads the document
-    // Mimetypes defined will invoke the Arender viewer
-    _checkNEVViewerMimetypes: function(document){
+    _useNEVViewer: function(document){
       var mimeTypes = ["image/bmp", "image/gif", "image/jpeg", "image/jpg", "image/pjpeg", "image/png", "image/tif", "image/x-png",
       "application/pdf", "message/rfc822", "image/jp2", "text/plain", "text/xml", "text/richtext", "application/rtf", "image/x-ms-bmp",
       "application/acrobat", "application/x-rtf", "text/log", "text/x-log", "application/xml", "text/csv", "text/url", "application/csv",
