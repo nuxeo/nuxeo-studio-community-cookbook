@@ -6,7 +6,7 @@
 
 ### Nuxeo Studio Custom Elements
 
-- [Nuxeo Enhanced Viewer Document Preview](./nev-viewer/README.mg)
+- [Nuxeo Enhanced Viewer Document Preview](./nev-viewer/README.md)
 
 
 ## About Genus
