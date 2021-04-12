@@ -1,4 +1,4 @@
-<img src="genus-logo.png" align="right" />
+<img src="genus-logo.png" width="20%" align="right" />
 
 # Genus Technologies
 
@@ -6,7 +6,7 @@
 
 ### Nuxeo Studio Custom Elements
 
-[Nuxeo Enhanced Viewer Document Preview](./nev-viewer/README.mg)
+- [Nuxeo Enhanced Viewer Document Preview](./nev-viewer/README.mg)
 
 
 ## About Genus
