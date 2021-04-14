@@ -1,0 +1,87 @@
+<dom-module id="nev-document-viewer">
+
+    <template>
+
+        <style include="nuxeo-styles">
+      :host {
+        display: block;
+        @apply --paper-card;
+        padding: var(--paper-card_-_padding, 0px) !important; /* override role="widget" */
+      }
+
+      iron-image, nuxeo-document-preview, nuxeo-arender-page {
+        width: 100%;
+        height: calc(80vh - 100px);
+      }
+
+      nuxeo-document-blob, nuxeo-dropzone {
+        margin-top: 8px;
+      }
+    </style>
+
+        <template is="dom-if" if="[[!document.properties.file:content.data]]">
+            <iron-image position="center" sizing="contain" src="[[_thumbnail(document)]]"></iron-image>
+            <template is="dom-if" if="[[_hasWritePermission(document)]]">
+                <nuxeo-dropzone document="{{document}}" update-document=""></nuxeo-dropzone>
+            </template>
+        </template>
+
+        <template is="dom-if" if="[[document.properties.file:content.data]]">
+
+            <template is="dom-if" if="{{_useNEVViewer(document)}}">
+                <nev-document-preview hide-navigation-sidebar="true" document="[[document]]" visible="true"></nev-document-preview>
+                <nuxeo-document-blob document="[[document]]"></nuxeo-document-blob>
+            </template>
+
+            <template is="dom-if" if="{{!_useNEVViewer(document)}}">
+                <nuxeo-document-preview document="[[document]]"></nuxeo-document-preview>
+                <nuxeo-document-blob document="[[document]]"></nuxeo-document-blob>
+            </template>
+
+        </template>
+
+    </template>
+
+    <script>
+  Polymer({
+    is: 'nev-document-viewer',
+    behaviors: [Nuxeo.I18nBehavior, Nuxeo.FiltersBehavior],
+    properties: {
+      document: Object
+    },
+
+    _thumbnail: function(doc) {
+      return doc && doc.uid && doc.contextParameters && doc.contextParameters.thumbnail &&
+      doc.contextParameters.thumbnail.url ? doc.contextParameters.thumbnail.url : '';
+    },
+
+    _hasWritePermission: function (doc) {
+      return doc && this.hasPermission(doc, 'Write') &&
+        !this.isImmutable(doc) && doc.type !== 'Root' && !this.isTrashed(doc);
+    },
+
+    _useNEVViewer: function(document){
+      var mimeTypes = ["image/bmp", "image/gif", "image/jpeg", "image/jpg", "image/pjpeg", "image/png", "image/tif", "image/x-png",
+      "application/pdf", "message/rfc822", "image/jp2", "text/plain", "text/xml", "text/richtext", "application/rtf", "image/x-ms-bmp",
+      "application/acrobat", "application/x-rtf", "text/log", "text/x-log", "application/xml", "text/csv", "text/url", "application/csv",
+      "application/msexcel", "application/mspowerpoint", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.oasis.opendocument.graphics",
+      "application/vnd.wordperfect", "application/vnd.ms-powerpoint", "audio/mpeg", "application/vnd.ms-outlook", "audio/vnd.rn-realaudio-secure",
+      "audio/x-ms-wma", "application/vnd.openxmlformats-officedocument", "video/x-flv", "audio/aiff", "video/mp4v-es", "application/x-tika-msoffice",
+      "video/3gpp2", "video/x-ms-wmv", "video/x-m4v", "audio/x-gsm", "video/avi", "video/mp4", "video/3gpp", "audio/mid", "video/mpeg", "video/x-msvideo",
+      "application/vnd.rn-realmedia", "video/x-ms-asf", "audio/x-m4a", "video/x-ms-wmp", "application/vnd.visio", "audio/wav", "audio/mp4", "audio/vnd.rn-realmedia",
+      "video/mpg", "audio/x-wav", "video/x-ms-wm", "video/quicktime", "message/x-emlx", "application/x-tika-ooxml", "application/vnd.visio", "video/x-m4v",
+	  "application/x-mpegURL", "video/MP2T", "video/webm", "video/avchd-stream", "video/mts", "video/x-matroska", "video/mp2t", "application/vnd.oma.drm.rights+wbxml",
+      "application/x-project", "video/vnd.vivo", "video/vivo", "video/dvd"]
+      var arrayLength = mimeTypes.length;
+
+      for (i=0; i < arrayLength; i++){
+        if(document.properties["file:content"]["mime-type"].includes(mimeTypes[i])){
+          return true
+        }
+      }
+    }
+  });
+  </script>
+
+</dom-module>
