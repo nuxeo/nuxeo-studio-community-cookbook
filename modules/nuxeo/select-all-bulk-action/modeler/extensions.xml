@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component name="studio.extensions.jaldama-SANDBOX" version="1.0.0">
+  <require>org.nuxeo.runtime.started</require>
+  <extension target="org.nuxeo.ecm.core.schema.TypeService" point="schema">
+    <schema name="ACMESearch_pp" prefix="ACMESearch_pp" override="true" src="data/schemas/ACMESearch_pp.xsd"/>
+    
+  </extension>
+  <extension target="org.nuxeo.ecm.core.schema.TypeService" point="doctype">
+    <doctype name="ACMESearch_pp" extends="Document">
+      <facet name="ContentViewDisplay"/>
+      <facet name="SavedSearch"/>
+      <facet name="HiddenInNavigation"/>
+      <schema name="ACMESearch_pp"/>
+    </doctype>
+  </extension>
+  <extension target="org.nuxeo.ecm.platform.query.api.PageProviderService" point="providers">
+    <genericPageProvider class="org.nuxeo.elasticsearch.provider.ElasticSearchNxqlPageProvider" name="ACMESearch">
+      <trackUsage>true</trackUsage>
+      <property name="coreSession">#{documentManager}</property>
+      <whereClause>
+        <predicate parameter="dc:title" operator="=">
+          <field schema="ACMESearch_pp" name="dc_title"/>
+        </predicate>
+        <fixedPart>ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isTrashed = 0</fixedPart>
+      </whereClause>
+      <searchDocumentType>ACMESearch_pp</searchDocumentType>
+      <aggregates>
+      </aggregates>
+      <pageSize>10</pageSize>
+    </genericPageProvider>
+  </extension>
+  <extension target="org.nuxeo.ecm.platform.WebResources" point="resources">
+    <resource name="nuxeo-jaldama-SANDBOX-bundle.html" type="import" shrinkable="false">
+      <uri>/ui/nuxeo-jaldama-SANDBOX-bundle.html</uri>
+    </resource>
+  </extension>
+  <extension target="org.nuxeo.ecm.platform.WebResources" point="bundles">
+    <bundle name="web-ui">
+      <resources append="true">
+        <resource>nuxeo-jaldama-SANDBOX-bundle.html</resource>
+      </resources>
+    </bundle>
+  </extension>
+</component>

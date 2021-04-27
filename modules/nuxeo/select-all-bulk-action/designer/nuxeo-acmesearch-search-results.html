@@ -1,0 +1,130 @@
+<!--
+`nuxeo-acmesearch-search-results`
+@group Nuxeo UI
+@element nuxeo-acmesearch-search-results
+-->
+<dom-module id="nuxeo-acmesearch-search-results">
+  <template>
+    <style include="nuxeo-styles">
+      nuxeo-data-table,
+      nuxeo-data-grid,
+      nuxeo-data-list,
+      nuxeo-justified-grid {
+        display: block;
+        position: relative;
+        min-height: calc(100vh - 130px - var(--nuxeo-app-top));
+      }
+      nuxeo-justified-grid {
+        height: calc(100vh - 10em);
+      }
+    </style>
+    <nuxeo-operation-button id="bulkRunAction" operation="Bulk.RunAction" input="[[nxProvider]]" notification="All results in this search were sent to be exported to csv" event="document-updated"></nuxeo-operation-button>
+
+    <div class="action" on-tap="_toggleDialog">
+      <paper-icon-button id="bt" icon="icons:check"></paper-icon-button>
+    </div>
+
+    <nuxeo-page-provider id="nxProvider"
+                         provider="ACMESearch"
+                         page-size="40"
+                         params="[[params]]"
+                         schemas="dublincore,common,uid,file"
+                         headers='{ "X-NXfetch.document": "properties", "X-NXtranslate.directoryEntry": "label" }'
+                         fetch-aggregates>
+    </nuxeo-page-provider>
+
+    <nuxeo-dialog id="dialog" on-iron-overlay-closed="" with-backdrop>
+      <div class="content">
+        <h2>Export All Documents Returned From Search</h2>
+      </div>
+      <div class="buttons">
+        <paper-button dialog-dismiss="">Cancel</paper-button>
+        <paper-button dialog-confirm="" class="primary" on-tap="_doAction">Export to CSV</paper-button>
+      </div>
+    </nuxeo-dialog>
+    
+    <nuxeo-results id="acmeResults" name="acmesearch" nx-provider="[[nxProvider]]" selected-items="{{selectedItems}}" display-quick-filters display-sort sort-label="[[i18n('searchResults.sort.label')]]" sort-options="[[sortOptions]]">
+      <nuxeo-data-grid name="grid" icon="nuxeo:view-thumbnails" class="results" empty-label="[[i18n('searchResults.noResults')]]" selection-enabled>
+        <template>
+          <nuxeo-document-grid-thumbnail tabindex$="{{tabIndex}}" selected$="{{selected}}" doc="[[item]]" index="[[index]]" on-navigate="_navigate" selected-items="[[selectedItems]]">
+          </nuxeo-document-grid-thumbnail>
+        </template>
+      </nuxeo-data-grid>
+
+      <nuxeo-data-table class="results" settings-enabled empty-label="[[i18n('searchResults.noResults')]]" selection-enabled on-row-clicked="_navigate" icon="nuxeo:view-list" name="table">
+
+        <nuxeo-data-table-column name="Title" field="dc:title" sort-by="dc:title" flex="100">
+          <template>
+            <nuxeo-document-thumbnail document="[[item]]"></nuxeo-document-thumbnail>
+            <a class="ellipsis" href$="[[urlFor('browse', item.path)]]" on-click="_navigate">[[item.title]]</a>
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Modified" field="dc:modified" sort-by="dc:modified" flex="50">
+          <template>
+            [[formatDate(item.properties.dc:modified)]]
+          </template>
+        </nuxeo-data-table-column>
+
+        <nuxeo-data-table-column name="Last Contributor" field="dc:lastContributor" sort-by="dc:lastContributor" flex="50">
+          <template>
+            <nuxeo-user-tag user="[[item.properties.dc:lastContributor]]"></nuxeo-user-tag>
+          </template>
+        </nuxeo-data-table-column>
+      </nuxeo-data-table>
+
+    </nuxeo-results>
+  </template>
+  <script>
+  Polymer({
+    is: 'nuxeo-acmesearch-search-results',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+      nxProvider: Object,
+      sortOptions: {
+        type: Array,
+        value: []
+      },
+      documents: {
+        type: Array,
+        value: []
+      }
+    },
+
+    attached: function() {
+      this.sortOptions = [
+        {field: 'dc:title', label: this.i18n('searchResults.sort.field.title'), order: 'asc'},
+        {field: 'dc:created', label: this.i18n('searchResults.sort.field.created'), order: 'asc', selected: true},
+        {field: 'dc:modified', label: this.i18n('searchResults.sort.field.modified'), order: 'desc'},
+        {field: 'dc:lastContributor', label: this.i18n('searchResults.sort.field.lastContributor'), order: 'asc'},
+        {field: 'state', label: this.i18n('searchResults.sort.field.state'), order: 'asc'},
+        {field: 'dc:nature', label: this.i18n('searchResults.sort.field.nature'), order: 'asc'},
+        {field: 'dc:coverage', label: this.i18n('searchResults.sort.field.coverage'), order: 'asc'}
+      ];
+    },
+
+    _navigate: function(e) {
+      this.fire('navigate', { doc: (e.model || e.detail).item, index: (e.model || e.detail).index });
+    },
+
+    _doAction: function() {
+      var ppParams = document.querySelector("nuxeo-app").root.querySelector("#drawerPanel").querySelector("div[slot=drawer]").querySelector("#drawer-pages").querySelector("nuxeo-search-form[name=mynewsearch]").params;
+      
+      ppParams = JSON.stringify(ppParams);
+
+      this.$.bulkRunAction.params = {
+        action: 'csvExport', 
+        providerName: 'ACMESearch',
+        namedParameters: ppParams
+      };
+
+      this.$.bulkRunAction._execute();
+    },
+
+    _toggleDialog: function() {
+      this.documents = this.$.acmeResults.items;
+      this.$.dialog.toggle();
+    }
+  });
+  </script>
+</dom-module>
