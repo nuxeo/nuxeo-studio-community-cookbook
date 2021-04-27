@@ -24,8 +24,6 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 ### Latest Modules
 
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/select-all-bulk-action"><img src="modules/nuxeo/select-all-bulk-action/export-bulk.png" width="150px"/></a> | Select All Documents and Send to Bulk Action from Search | Nuxeo
-
 <table style="width:100%">
   <tr style="font-weight:bold">
     <th>Module</th>
