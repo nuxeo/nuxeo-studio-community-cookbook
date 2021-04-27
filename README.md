@@ -24,12 +24,20 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 ### Latest Modules
 
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/select-all-bulk-action"><img src="modules/nuxeo/select-all-bulk-action/export-bulk.png" width="150px"/></a> | Select All Documents and Send to Bulk Action from Search | Nuxeo
+
 <table style="width:100%">
   <tr style="font-weight:bold">
     <th>Module</th>
     <th>Description</th>
     <th>Author</th>
     <th>Category</th>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/select-all-bulk-action"><img src="modules/nuxeo/select-all-bulk-action/export-bulk.png" width="120px"/></a></td>
+    <td>Select All Documents and Send to Bulk Action from Search</td>
+    <td>Nuxeo</td>
+    <td>Layout</td>
   </tr>
   <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/partners/genus/nev-viewer"><img src="modules/partners/genus/nev-viewer/screenshot.png" width="120px"/></a></td>
@@ -105,6 +113,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 Module | Description | Contributor
 --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/select-all-bulk-action"><img src="modules/nuxeo/select-all-bulk-action/export-bulk.png" width="150px"/></a> | Select All Documents and Send to Bulk Action from Search | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/partners/genus/nev-viewer"><img src="modules/partners/genus/nev-viewer/screenshot.png" width="120px"/></a> | Nuxeo Enhanced Viewer Document Preview | Genus
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/document-load-and-preview"><img src="modules/nuxeo/document-load-and-preview/eye.png" width="120px"/></a> | Document Load and Preview | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/interactive-pdf-search"><img src="modules/nuxeo/interactive-pdf-search/search-pdf-metadata.png" width="120px"/></a> | Interactive PDF Search | Nuxeo
@@ -129,7 +138,6 @@ Module | Description | Contributor
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/barcode-widget"><img src="modules/nuxeo/barcode-widget/barcode-widget.png" width="150px"/></a> | Display text using barcode font | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/geodistance-search-and-google-map"><img src="modules/nuxeo/geodistance-search-and-google-map/geodistance.png" width="150px"/></a> | Geodistance Search + Google Map | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/document-load-and-preview"><img src="modules/nuxeo/eml-previewer/eml-previewer.png" width="150px"/></a> | Preview related documents | Nuxeo
-<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/select-all-bulk-action"><img src="modules/nuxeo/select-all-bulk-action/export-bulk.png" width="150px"/></a> | Select All Documents and Send to Bulk Action from Search | Nuxeo
 
 ### DAM
 
