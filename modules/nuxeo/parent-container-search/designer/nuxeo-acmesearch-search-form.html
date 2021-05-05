@@ -1,0 +1,44 @@
+<!--
+`nuxeo-acmesearch-search-form`
+@group Nuxeo UI
+@element nuxeo-acmesearch-search-form
+-->
+<dom-module id="nuxeo-acmesearch-search-form">
+  <template>
+    <style>
+      *[role=widget] {
+        padding: 5px;
+      }
+    </style>
+
+    <div role="widget">
+      <nuxeo-document-suggestion role="widget" label="Parent ID Suggestion" value="{{params.system_parentId}}" placeholder="" min-chars="0" page-provider="ContainerDocPP"></nuxeo-document-suggestion>
+    </div>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'nuxeo-acmesearch-search-form',
+    behaviors: [Nuxeo.LayoutBehavior],
+    properties: {
+
+      /**
+         * @search ACMESearch
+         */
+      params: {
+        type: Object,
+        value: {},
+        notify: true,
+      },
+
+      aggregations: {
+        type: Object,
+        value: {},
+        notify: true,
+      },
+
+    }
+  });
+  </script>
+</dom-module>

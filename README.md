@@ -32,6 +32,12 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <th>Category</th>
   </tr>
   <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/parent-container-search"><img src="modules/nuxeo/parent-container-search/parent-container.png" width="120px"/></a></td>
+    <td>Search for Documents via their Parent Containers</td>
+    <td>Nuxeo</td>
+    <td>Layout</td>
+  </tr>
+  <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/select-all-bulk-action"><img src="modules/nuxeo/select-all-bulk-action/export-bulk.png" width="120px"/></a></td>
     <td>Select All Documents and Send to Bulk Action from Search</td>
     <td>Nuxeo</td>
