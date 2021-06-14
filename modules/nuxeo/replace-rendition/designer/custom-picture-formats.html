@@ -1,0 +1,66 @@
+<!--
+  `custom-picture-formats`
+  @group Nuxeo UI
+  @element custom-picture-formats
+-->
+<dom-module id="custom-picture-formats">
+  <template>
+    <style include="iron-flex">
+      iron-icon {
+        @apply --nuxeo-action;
+        color: var(--nuxeo-secondary-color, #0066ff);
+      }
+
+      iron-icon:hover {
+        @apply --nuxeo-action-hover;
+      }
+    </style>
+
+    <h3>[[label]]</h3>
+    <div>
+      <template is="dom-repeat" items="[[_getAdditionalFormats(document)]]" as="item">
+        <div class="layout horizontal center">
+          <label class="flex">[[item.name]]</label>
+          <span class="flex">[[item.dimensions]]</span>
+          <span class="flex">[[item.size]]</span>
+          <span class="flex">[[item.format]]</span>
+          <a id="download-[[index]]" href="[[item.data]]">
+            <iron-icon icon="nuxeo:download"></iron-icon>
+            <nuxeo-tooltip for="download-[[index]]">[[i18n('pictureViewLayout.download.tooltip')]]</nuxeo-tooltip>
+          </a>
+          <custom-rendition-update-blob-action document="{{document}}" index="[[index]]"></custom-rendition-update-blob-action>
+        </div>
+      </template>
+    </div>
+
+  </template>
+</dom-module>
+
+<script>
+Polymer({
+  is: 'custom-picture-formats',
+  behaviors: [Nuxeo.LayoutBehavior],
+  properties: {
+    label: String,
+    document: Object,
+    additionalFormats: {
+      type: Object,
+      computed: '_getAdditionalFormats(document)'
+    }
+  },
+
+  _getAdditionalFormats: function(document) {
+    return (document && document.properties['picture:views']) ? document.properties['picture:views']
+      .map(function(view) {
+      return {
+        name: view.description,
+        dimensions: view.info.width + ' x ' + view.info.height,
+        size: this.formatSize(view.content.length),
+        format: view.info.format,
+        data: view.content.data
+      };
+    }.bind(this)) : [];
+  }
+
+});
+</script>
