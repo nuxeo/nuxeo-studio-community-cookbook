@@ -1,0 +1,69 @@
+<!--
+    `custom-rendition-update-blob-action`
+    @group Nuxeo UI
+    @element custom-rendition-update-blob-action
+-->
+<dom-module id="custom-rendition-update-blob-action">
+    <template>
+      <style nuxeo-styles nuxeo-action-button-styles>
+        iron-icon {
+          @apply --nuxeo-action;
+          color: var(--nuxeo-secondary-color, #0066ff);
+        }
+
+        iron-icon:hover {
+          @apply --nuxeo-action-hover;
+        }
+      </style>
+
+      <nuxeo-operation id="updateRendition" op="Document.UpdateAssetRendition" input="[[document]]" params="[[params]]"></nuxeo-operation>
+
+      <template is="dom-if" if="[[_hasWritePermission(document)]]">
+        <a id="update-[[index]]" on-tap="_toggleUpdateDialog">
+          <iron-icon icon="nuxeo:replace"></iron-icon>
+          <nuxeo-tooltip>[[i18n('label.asset.rendition.update')]]</nuxeo-tooltip>
+        </a>
+      </template>
+
+      <nuxeo-dialog id="updateDialog" with-backdrop no-auto-focus>
+        <h2>[[i18n('updateRendition.dialog.heading')]]</h2>
+        <paper-dialog-scrollable>
+          <nuxeo-document-blob document="{{document}}" xpath="[[_renditionPath()]]"></nuxeo-document-blob>
+        </paper-dialog-scrollable>
+        <div class="buttons">
+          <paper-button dialog-dismiss on-click="">
+            [[i18n('label.dialog.cancel')]]
+          </paper-button>
+        </div>
+      </nuxeo-dialog>
+
+    </template>
+
+    <script>
+    Polymer({
+      is: 'custom-rendition-update-blob-action',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+        index: Number,
+        document:  Object,
+        params: {
+          type: Object,
+          value: {}
+        }
+      },
+
+      _toggleUpdateDialog: function() {
+        this.$.updateDialog.toggle();
+      },
+
+      _renditionPath: function() {
+        return this.document.facets.includes("Video") ? "vid:transcodedVideos/" + this.index + "/content" : "picture:views/" + this.index + "/content";
+      },
+
+      _hasWritePermission: function() {
+        return this.document && this.hasPermission(this.document, 'Write');
+      }
+
+    });
+    </script>
+  </dom-module>
