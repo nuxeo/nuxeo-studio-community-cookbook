@@ -29,7 +29,7 @@ The contribution is composed of the following element:
 - Add the `File` facet to the document schemas
 - Update the `nuxeo-[document_type]-view-layout` and replace as you need: 
     - `nuxeo-picture-formats` with `custom-picture-formats.html`, if you want to add the ability to replace `Picture` renditions
-    - `nuxeo-video-conversions` with `custom-cideo-conversions.html`, if you want to add the ability to replace `Video` renditions
+    - `nuxeo-video-conversions` with `custom-video-conversions.html`, if you want to add the ability to replace `Video` renditions
 - Update `_acceptedBlob` function in `custom-replace-blob-button` to add/remove filter on `mime-type` or `file extension`
 - Update `_upload` function in `custom-dropzone` to add/remove filter on `mime-type` or `file extension` (according to `custom-replace-blob-button`) and to update the error message (if needed)
 
