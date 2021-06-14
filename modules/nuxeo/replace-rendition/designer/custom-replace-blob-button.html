@@ -166,7 +166,7 @@
       },
 
       _acceptedBlob: function(xpath) {
-        if (xpath != "file:content" && this.document.type == "Asset") {
+        if (xpath != "file:content") {
           if (this.document.facets.includes("Video")) {
             return "video/*";
           }

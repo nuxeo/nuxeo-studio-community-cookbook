@@ -1,4 +1,4 @@
-<dom-module id="custom-dropzone" assetpath="custom-dropzone/">
+<dom-module id="custom-dropzone" assetpath="nuxeo-dropzone/">
   <template>
     <style include="nuxeo-styles">
       :host {
@@ -430,7 +430,7 @@
         this.invalid = false;
 
         if (files && files.length > 0) {
-          if (this.xpath != "file:content" && this.document.type == "Asset") {
+          if (this.xpath != "file:content") {
             if (this.document.facets.includes("Video")) {
               if (files[0].type.includes("video")) {
                 this.uploadFiles(files);

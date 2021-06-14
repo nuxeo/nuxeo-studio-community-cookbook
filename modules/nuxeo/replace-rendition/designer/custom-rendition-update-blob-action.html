@@ -16,8 +16,6 @@
         }
       </style>
 
-      <nuxeo-operation id="updateRendition" op="Document.UpdateAssetRendition" input="[[document]]" params="[[params]]"></nuxeo-operation>
-
       <template is="dom-if" if="[[_hasWritePermission(document)]]">
         <a id="update-[[index]]" on-tap="_toggleUpdateDialog">
           <iron-icon icon="nuxeo:replace"></iron-icon>
