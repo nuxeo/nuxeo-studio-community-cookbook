@@ -1,5 +1,10 @@
 # Replace Rendition (Picture and Video)
 
+![replace-rendition-1.png](replace-rendition-1.png)
+![replace-rendition-2.png](replace-rendition-2.png)
+![replace-rendition-3.png](replace-rendition-3.png)
+![replace-rendition-4.png](replace-rendition-4.png)
+
 ## Prerequisites
 
 - Nuxeo Web UI

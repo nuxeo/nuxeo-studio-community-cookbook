@@ -142,6 +142,7 @@ Module | Description | Contributor
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/barcode-widget"><img src="modules/nuxeo/barcode-widget/barcode-widget.png" width="150px"/></a> | Display text using barcode font | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/geodistance-search-and-google-map"><img src="modules/nuxeo/geodistance-search-and-google-map/geodistance.png" width="150px"/></a> | Geodistance Search + Google Map | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/document-load-and-preview"><img src="modules/nuxeo/eml-previewer/eml-previewer.png" width="150px"/></a> | Preview related documents | Nuxeo
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/replace-rendition"><img src="modules/nuxeo/replace-rendition/replace-rendition-1.png" width="150px"/></a> | Replace Picture and Video Renditions | Nuxeo
 
 ### DAM
 
