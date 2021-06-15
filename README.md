@@ -31,6 +31,12 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <th>Author</th>
     <th>Category</th>
   </tr>
+    <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/replace-rendition"><img src="modules/nuxeo/replace-rendition/replace-rendition-1.png" width="120px"/></a></td>
+    <td>Replace Renditions</td>
+    <td>Nuxeo</td>
+    <td>Layout</td>
+  </tr>
   <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/parent-container-search"><img src="modules/nuxeo/parent-container-search/parent-container.png" width="120px"/></a></td>
     <td>Search for Documents via their Parent Containers</td>
@@ -115,8 +121,16 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 ### Layouts
 
+    <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/replace-rendition"><img src="modules/nuxeo/replace-rendition/replace-rendition-1.png" width="120px"/></a></td>
+    <td>Replace Renditions</td>
+    <td>Nuxeo</td>
+    <td>Layout</td>
+  </tr>
+
 Module | Description | Contributor
 --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/replace-rendition"><img src="modules/nuxeo/replace-rendition/replace-rendition-1.png" width="150px"/></a> | Replace Renditions | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/select-all-bulk-action"><img src="modules/nuxeo/select-all-bulk-action/export-bulk.png" width="150px"/></a> | Select All Documents and Send to Bulk Action from Search | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/partners/genus/nev-viewer"><img src="modules/partners/genus/nev-viewer/screenshot.png" width="120px"/></a> | Nuxeo Enhanced Viewer Document Preview | Genus
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/document-load-and-preview"><img src="modules/nuxeo/document-load-and-preview/eye.png" width="120px"/></a> | Document Load and Preview | Nuxeo
