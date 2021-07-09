@@ -35,7 +35,7 @@ Add the following XML contribution in Studio > Modeler > Advanced Settings > XML
 
 ## Usage
 
-Use the `Blob.RunConverter` command to do the conversion. For example:
+Use the [`Blob.RunConverter`](https://explorer.nuxeo.com/nuxeo/site/distribution/latest/viewOperation/Blob.RunConverter) command to do the conversion. For example:
 
     myPDF = Blob.RunConverter(
       myHTML, {
