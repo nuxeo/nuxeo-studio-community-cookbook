@@ -10,6 +10,8 @@ By default Nuxeo uses `any2pdf` for converting HTML BLOBs into PDF. Depending on
 
 You must of course install [wkhtmltopdf](https://wkhtmltopdf.org/). Follow the steps for your host operating system. Mac users can use [Homebrew](https://brew.sh/) (`brew install wkhtmltopdf`).
 
+Note for Nuxeo Cloud Customers: The wkhtmltopdf package can be made available in your Nuxeo Cloud Instance. Please be sure to coordinate with Nuxeo Cloud and Nuxeo Professional Services Team as needed for testing and deployment/use of this additional package.
+
 Add the following XML contribution in Studio > Modeler > Advanced Settings > XML Extensions:
 
     <!-- Define new command -->
