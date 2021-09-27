@@ -43,13 +43,6 @@
 */
 function run(input, params) {
   
-  var blob2 = javascript.utils_createBlobFromBase64(
-    null, {
-      mime: "image/png",
-      fileName: "some_image.jpg",
-      base64string: "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAA....morebase64"
-    });
-  
   var blob, base64string, mimeType, fileName,
       mimeTypeService, decodedBytes, extensions;
   
