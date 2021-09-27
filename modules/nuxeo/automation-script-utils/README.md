@@ -14,6 +14,7 @@ Look at the script you need and copy/paste it in your Studio project. The commen
 
 - Make sure to set the `input`  and the `output` of your script as expected in the comments.
 - Don't forget to explicitly declare the parameter(s). They also are described in the comments.
+- Also, some of these scripts use "Java in JS", which requires to white list the Java API that is used inside JS. When this occurs, the header will contain the XML to add (create a new XML extension in Studio, copy/paste the XMl declaration)
 
 <table width="100%">
   <tr style="font-weight:bold">
@@ -44,6 +45,10 @@ Look at the script you need and copy/paste it in your Studio project. The commen
     <td><a href="modeler/utils_UnlockDocument.js">utils_UnlockDocument</a></td>
     <td>Unlock the input doc if it was not already unlocked (avoid a NuxeoException)</td>
   </tr>
+  <tr>
+    <td><a href="modeler/utils_createBlobFromBase64.js"> utils_createBlobFromBase64 </a></td>
+    <td>Creates a Blob from a base64 encoded string. Please see the header for more details.</td>
+  </tr>
 </table>
 
 ## Installation
@@ -56,3 +61,4 @@ Create the automation script(s) and copy the content from the original(s). You c
 
 - [Automation Platform Services](https://doc.nuxeo.com/nxdoc/automation/)
 - [Automation Scripting](https://doc.nuxeo.com/studio/automation-scripting/)
+ 
