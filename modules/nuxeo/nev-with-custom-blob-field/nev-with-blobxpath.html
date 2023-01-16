@@ -1,0 +1,66 @@
+<!--
+	Examples:
+<nev-with-blobxpath document="[[document]]" blob-path="files:files/0/file"></nev-with-blobxpath>
+
+<nev-with-blobxpath document="[[document]]" blob-path="myschema:myblob"></nev-with-blobxpath>
+-->
+<dom-module id="nev-with-blobxpath">
+  <template>
+        <style include="nuxeo-styles">
+      iframe {
+        width: 100%;
+        min-height: 84vh;
+        border: 0;
+      }
+    </style>
+    <nuxeo-operation id="aRenderOp"
+                                 op="Document.ARenderGetPreviewerUrl"
+                                 input="[[document.uid]]"></nuxeo-operation>
+    <iframe src="[[aRenderUrl]]" onload="this.contentWindow.focus()"></iframe>
+
+  </template>
+
+  <script>
+ Polymer({
+      is: 'nev-with-blobxpath',
+
+
+      properties: {
+            document: {
+              type: Object,
+            },
+            blobPath: {
+              type: String,
+              value: "file:content"
+            },
+            aRenderUrl: {
+              type: String,
+              value: '',
+            },
+          },
+          observers: ['_observeDocument(document)'],
+
+          _observeDocument() {
+console.log("blobpath: " + this.blobPath);
+            this.aRenderUrl = '';
+            if (this.document) {
+              this.$.aRenderOp.params = {
+                "blobXPath": this.blobPath
+              };
+              this.$.aRenderOp
+                .execute()
+                .then((res) => {
+console.log("res.previewerUrl: " + res.previewerUrl );
+                  this.set('aRenderUrl', res.previewerUrl);
+                })
+                .catch((err) => {
+                  console.error(err);
+                });
+            }
+          },
+
+  });
+
+  </script>
+
+</dom-module>

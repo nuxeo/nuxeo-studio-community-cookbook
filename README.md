@@ -31,7 +31,13 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <th>Author</th>
     <th>Category</th>
   </tr>
-    <tr>
+  <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/nev-with-custom-blob-field"><img src="modules/nuxeo/nev-with-custom-blob-field/nev-with-custom-blob-field.png" width="120px"/></a></td>
+    <td>Nuxeo Enhanced Viewer with Custom Field</td>
+    <td>Nuxeo</td>
+    <td>Layout</td>
+  </tr>
+  <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/replace-rendition"><img src="modules/nuxeo/replace-rendition/replace-rendition-1.png" width="120px"/></a></td>
     <td>Replace Renditions</td>
     <td>Nuxeo</td>
@@ -54,42 +60,6 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <td>Nuxeo Enhanced Viewer Document Preview</td>
     <td>Genus</td>
     <td>Layout</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/document-load-and-preview"><img src="modules/nuxeo/document-load-and-preview/eye.png" width="120px"/></a></td>
-    <td>Document Load and Preview</td>
-    <td>Nuxeo</td>
-    <td>Layout</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/interactive-pdf-search"><img src="modules/nuxeo/interactive-pdf-search/search-pdf-metadata.png" width="120px"/></a></td>
-    <td>Interactive PDF Search</td>
-    <td>Nuxeo</td>
-    <td>Search</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/custom-views"><img src="modules/nuxeo/custom-views/cookbook-custom-views2.png" width="120px"/></a></td>
-    <td>Custom Preview and Thumbnail</td>
-    <td>Nuxeo</td>
-    <td>Layouts</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/color-search"><img src="modules/nuxeo/color-search/color.png" width="120px"/></a></td>
-    <td>Similar Color Search</td>
-    <td>Nuxeo</td>
-    <td>Search, AI, Layouts</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/copy-move"><img src="modules/nuxeo/copy-move/copy-move.png" width="120px"/></a></td>
-    <td>Copy or move documents without the clipboard</td>
-    <td>Nuxeo</td>
-    <td>Layouts</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/nuxeo-date-time-picker"><img src="modules/nuxeo/nuxeo-date-time-picker/nuxeo-date-time-picker2.png" width="120px"/></a></td>
-    <td>Date Time Picker</td>
-    <td>Nuxeo</td>
-    <td>Layouts</td>
   </tr>
 </table>
 
@@ -123,6 +93,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 
 Module | Description | Contributor
 --- | --- | ---
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/nev-with-custom-blob-field"><img src="modules/nuxeo/nev-with-custom-blob-field/nev-with-custom-blob-field.png" width="150px"/></a> | Nuxeo Enhanced Viewer with Custom Field | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/replace-rendition"><img src="modules/nuxeo/replace-rendition/replace-rendition-1.png" width="150px"/></a> | Replace Renditions | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/select-all-bulk-action"><img src="modules/nuxeo/select-all-bulk-action/export-bulk.png" width="150px"/></a> | Select All Documents and Send to Bulk Action from Search | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/partners/genus/nev-viewer"><img src="modules/partners/genus/nev-viewer/screenshot.png" width="120px"/></a> | Nuxeo Enhanced Viewer Document Preview | Genus
