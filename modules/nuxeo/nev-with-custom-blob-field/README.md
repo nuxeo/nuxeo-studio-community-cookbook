@@ -1,6 +1,6 @@
 # nev-with-custom-blob-field
 
-![nuxeo-date-time-picker1.png](nuxeo-date-time-picker1.png)
+![nev-with-custom-blob-field.png](nev-with-custom-blob-field.png)
 
 ## Prerequisites
 
