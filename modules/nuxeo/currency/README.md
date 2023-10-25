@@ -1,32 +1,27 @@
-# Display a field with Currency format
+# Display Data with Currency Formatting
 
 ![currency.png](currency.png)
 
-## Prerequisites
+# Description
 
-- Property of type `Integer`
+Display data with currency format. Uses [Number.prototype.toLocaleString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString).
 
-## Description
+# Usage
 
-Display a field with currency format from an integer property. For more details, refers to the [Number.prototype.toLocaleString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString) documentation page.
+`[[_formatCurrency(value)]]`
 
-## Usage
+# Installation
 
-Use the following syntax : `[[_formatCurrency(document.properties.<my_schema>:<my_property>)]]`
+## Studio Designer
 
-## Installation
+- Add [currency-format-behavior.html](designer/currency-format-behavior.html) to your Studio project (tip: use the `elements` folder)
+- Import it into your custom bundle file (i.e. `<link rel="import" href="elements/currency-format-behavior.html">`)
+- Add the behavior to the element that contains the data you want to format (Example: `behaviors: [Nuxeo.LayoutBehavior,Nuxeo.CurrencyFormatBehavior],`)
 
-### Studio Designer
+Alternatively:
 
-- Import in your project `currency-format-behavior.html`.
-- Add it to your custom bundle file.
-- Import the behavior in the layout which contain field of type currency (Example: `behaviors: [Nuxeo.LayoutBehavior,Nuxeo.CurrencyFormatBehavior],`)
-- Use the `_formatCurrency` syntax  for your property.
+- Copy the `_formatCurrency()` function from [currency-format-behavior.html](designer/currency-format-behavior.html) and paste it as a method for your element
 
-## Configuration
-
-You can add more options and make the behavior more configurable  following the documentation.
-
-## Documentation Links
+# Documentation Links
 
 - [Web UI Layout Elements](https://doc.nuxeo.com/nxdoc/web-ui-layouts/)

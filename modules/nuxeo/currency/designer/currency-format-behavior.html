@@ -1,13 +1,15 @@
 <script>
   var Nuxeo = Nuxeo || {};
-  (function() {
+  (function () {
 
     /**
      * @polymerBehavior Nuxeo.CurrencyFormatBehavior
      */
     Nuxeo.CurrencyFormatBehavior = {
 
-      _formatCurrency: function(value, region, style, currency) {
+      _formatCurrency: function (value, region, style, currency) {
+        var formattedValue;
+
         if (!region)
           region = "en-US";
         if (!style)
@@ -15,10 +17,12 @@
         if (!currency)
           currency = "USD";
 
-        return Number(value).toLocaleString(region, {
+        formattedValue = Number(value).toLocaleString(region, {
           "style": style,
           "currency": currency
-        }).slice(0, -3)
+        });
+
+        return formattedValue;
       }
 
     };
