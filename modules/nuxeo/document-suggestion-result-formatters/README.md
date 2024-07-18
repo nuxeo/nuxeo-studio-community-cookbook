@@ -1,76 +1,25 @@
-# Custom Document Suggestion
+# Format the Results of a Document Suggestor
 
 ![suggest result formatters picture](suggestion-result-formatters.png)
 
-## Prerequisites
-
-- Nuxeo Web UI
-
 ## Description
 
-This module helps you build a custom display for your `nuxeo-document-suggestion` element, thanks to the `resultFormatter` element attribute.
+This module shows how to format the results of a `nuxeo-document-suggestion` element. It uses the `resultFormatter` attribute to do so. The custom formatter displays the thumbnail of the documents along with the document type, lifecycle state, version, and path.
+
+## Prerequisites
+
+* Nuxeo Web UI
+* A properly configured `nuxeo-document-suggestion` element
 
 ## Usage
 
-Customize the document suggestion in any web element and the user will have a rich suggestion instead of having document path suggestions.
+You need to create a Javascript function (example provided below), which performs the formatting, bind it to a property of your element, and bind that property to the `nuxeo-document-suggestion` element.
 
-## Installation
+### Formatter Function
 
-We will illustrate the installation through an example, with a Document property displaying the chosen image to apply for watermark on the current document.
+Add this function to your custom element.
 
-### Studio Modeler
-
-- Create a custom page provider to list the document which should appear in your suggestion element.
-  - `VideoUtils_Watermark_PageProvider`
-  - :warning: You need to end the **Query Filter** by `AND ecm:fulltext = '?*'` and **uncheck** in the Advanced Configuration the checkbox of **Quote parameters**.
-- Create a property of type `Document` in the schema definition if needed.
-  - No the case here in this example
-
-### Studio Designer
-
-- Switch to code on the layout / element which uses the property (converted in `nuxeo-document-suggestion`).
-- Edit the element according to your needs
-
-```
-<nuxeo-document-suggestion
-                    role="widget"
-                    enrichers="thumbnail" // Make sure your suggestor returns thumbnails
-                    id="docSuggWatermark"
-                    label="[[i18n('video.watermark.label.watermarkImage')]]"
-                    name="watermarkDocId"
-                    value="{{XXXX}}" // YOUR DOCUMENT PROPERTY (ex: document.properties["mycustomschema:watermark"])
-                    page-provider="VideoUtils_Watermark_PageProvider" // Link to the page provider we've defined before
-                    placeholder=""
-                    min-chars="0"
-                    result-formatter="[[thumbnailFormatter]]" // Formatter used to create the custom display (HTML)
-                    required="true">
-</nuxeo-document-suggestion>
-```
-
-- Update the default behaviors: The Select2Behavior is required to use escapeHTML().
-```
-Polymer({
-      is: 'video-watermark',
-      behaviors: [Nuxeo.LayoutBehavior, Nuxeo.Select2Behavior],
-```
-
-Bind the formatter to a property in your element:
-
-```
-properties: {
-
-  thumbnailFormatter: {
-    type: Function,
-    value: function() {
-      return this._thumbnailFormatter.bind(this);
-    }
-  }
-},
-```
-
-- Create the Formatter logic and UI:
-
-```
+```javascript
 _thumbnailFormatter: function(doc) {
 
   if (doc && doc.properties && doc.contextParameters && doc.contextParameters.thumbnail) {
@@ -114,9 +63,39 @@ _thumbnailFormatter: function(doc) {
 }
 ```
 
+### Formatter Binding
+
+Bind the above function to a property of your element:
+
+```javascript
+properties: {
+  //...
+  thumbnailFormatter: {
+    type: Function,
+    value: function() {
+      return this._thumbnailFormatter.bind(this);
+    }
+  }
+},
+```
+
+### Bind to Suggestor
+
+Finally bind the above property to your `nuxeo-document-suggestion` element:
+
+```html
+<nuxeo-document-suggestion result-formatter="[[thumbnailFormatter]]" ...
+```
+
+Note: for this example to work you must configure the `nuxeo-document-suggestion` element to use the `thumbnail` [enricher](https://doc.nuxeo.com/n/Q_j):
+
+```html
+<nuxeo-document-suggestion enrichers="thumbnail" ...
+```
 
 ## Documentation Links
 
+- [HOWTO: Filter Data in Suggestions](https://doc.nuxeo.com/nxdoc/how-to-filter-data-in-directory-suggestion/#going-further)
 - [HOWTO: Create and Reuse a Custom Element](https://doc.nuxeo.com/nxdoc/how-to-create-and-reuse-custom-element/)
 - [HOWTO: Customize Document Layouts](https://doc.nuxeo.com/nxdoc/web-ui-document-layouts/)
 - [Web UI Layout Elements](https://doc.nuxeo.com/nxdoc/web-ui-layouts/)
