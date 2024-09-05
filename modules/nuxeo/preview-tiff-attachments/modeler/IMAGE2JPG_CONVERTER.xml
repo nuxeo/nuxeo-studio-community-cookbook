@@ -1,0 +1,30 @@
+<extension target="org.nuxeo.ecm.platform.commandline.executor.service.CommandLineExecutorComponent"
+  point="command">
+
+  <!-- Simple converter based on file extension -->
+  <command name="simpleConverterToJpeg" enabled="true">
+    <commandLine>convert</commandLine>
+    <parameterString>#{sourceFilePath}[0] #{targetFilePath}.jpg</parameterString>
+    <winParameterString>#{sourceFilePath}[0] #{targetFilePath}.jpg</winParameterString>
+    <installationDirective>You need to install ImageMagick.</installationDirective>
+  </command>
+
+</extension>
+
+<extension point="converter"
+  target="org.nuxeo.ecm.core.convert.service.ConversionServiceImpl">
+
+  <!--
+  Simple converter based on file extension
+  We just use the default "converter" commanLine contribution of the platform
+  This converter can then be used with Blob.RunConverter (using the CommandLineConverter class)
+  -->
+  <converter class="org.nuxeo.ecm.platform.convert.plugins.CommandLineConverter"
+    name="simpleConverterToJpeg">
+    <sourceMimeType>image/*</sourceMimeType>
+    <destinationMimeType>image/jpeg</destinationMimeType>
+    <parameters>
+      <parameter name="CommandLineName">simpleConverterToJpeg</parameter>
+    </parameters>
+  </converter>
+</extension>
