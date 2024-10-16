@@ -77,6 +77,7 @@ function run(input, params) {
           var originLabel = "";
           var lastIndex = "";
           var inverseLabel = "";
+
           Console.log(numRelDocs + " related docs FOUND for predicate (id): " + predicate.id );
 
           for(k=0; k<numRelDocs; k++){
