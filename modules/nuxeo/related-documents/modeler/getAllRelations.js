@@ -74,6 +74,9 @@ function run(input, params) {
 
           relDocs = [];
           var numRelDocs = docs.length;
+          var originLabel = "";
+          var lastIndex = "";
+          var inverseLabel = "";
 
           Console.log(numRelDocs + " related docs FOUND for predicate (id): " + predicate.id );
 
@@ -86,7 +89,17 @@ function run(input, params) {
 
             relDoc.incoming = incoming;
             relDoc.relationId = predicate.id;
-            relDoc.relationLabel = predicate.label;
+            if(incoming) {
+              relDoc.relationLabel = predicate.label;
+            }
+            else {
+              // if outgoing : replace the last occurence of . by .inverse. to properly show the relation label
+              // exemple "label.relation.predicate.References" becomes "label.relation.predicate.inverse.References"
+              originLabel = predicate.label;
+              lastIndex = originLabel.lastIndexOf('.');
+              inverseLabel = originLabel.substring(0, lastIndex) + '.inverse.' + originLabel.substring(lastIndex + 1);
+              relDoc.relationLabel = inverseLabel;
+            }
             relDocs.push(relDoc);
           }
 
