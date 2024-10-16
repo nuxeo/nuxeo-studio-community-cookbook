@@ -89,16 +89,16 @@ function run(input, params) {
             relDoc.incoming = incoming;
             relDoc.relationId = predicate.id;
             if(incoming) {
-				   relDoc.relationLabel = predicate.label;
-			   }
-			   else {
-               // if outgoing : replace the last occurence of . by .inverse. to properly show the relation label
-               // exemple "label.relation.predicate.References" becomes "label.relation.predicate.inverse.References"
-				   originLabel = predicate.label;
-				   lastIndex = originLabel.lastIndexOf('.');
-				   inverseLabel = originLabel.substring(0, lastIndex) + '.inverse.' + originLabel.substring(lastIndex + 1);
-				   relDoc.relationLabel = inverseLabel;
-			   }
+              relDoc.relationLabel = predicate.label;
+            }
+            else {
+              // if outgoing : replace the last occurence of . by .inverse. to properly show the relation label
+              // exemple "label.relation.predicate.References" becomes "label.relation.predicate.inverse.References"
+              originLabel = predicate.label;
+              lastIndex = originLabel.lastIndexOf('.');
+              inverseLabel = originLabel.substring(0, lastIndex) + '.inverse.' + originLabel.substring(lastIndex + 1);
+              relDoc.relationLabel = inverseLabel;
+            }
             relDocs.push(relDoc);
           }
 
