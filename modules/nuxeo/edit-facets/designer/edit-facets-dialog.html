@@ -1,0 +1,163 @@
+<!--
+`edit-facets-dialog`
+@group Nuxeo UI
+@element edit-facets-dialog
+-->
+<dom-module id="edit-facets-dialog">
+  <template>
+
+    <style include="iron-flex nuxeo-styles">
+      /* Space between the drop down and the Add button */
+      .left {
+        margin-right: 10px;
+      }
+    </style>
+
+    <nuxeo-operation id="getFacetsOp"
+                     op="javascript.api_Util_GetAllFacets"
+                     on-response="_handleResponse">
+    </nuxeo-operation>
+
+    <!--------------------------------------------------------------------------
+    -- Button
+    --------------------------------------------------------------------------->
+    <div class="action"
+         on-tap="_toggleDialog">
+      <paper-icon-button id="bt"
+                         icon="icons:add-circle">
+      </paper-icon-button>
+    </div>
+    <paper-tooltip for="bt">Edit Facets</paper-tooltip>
+
+    <!--------------------------------------------------------------------------
+    -- Dialog
+    --------------------------------------------------------------------------->
+    <nuxeo-dialog id="dialog"
+                  with-backdrop>
+
+      <div class="content">
+        <label>Select Facet to change:</label>
+        <div class="layout horizontal center">
+          <nuxeo-selectivity class="layout flex left"
+                             min-chars="0"
+                             data="[[facets]]"
+                             value="{{value}}"
+                             id-function="[[idFunction]]">
+          </nuxeo-selectivity>
+          <nuxeo-operation-button-no-icon class="left"
+                                          label="Add"
+                                          tooltip="Add Facet"
+                                          operation="Document.AddFacet"
+                                          params="[[_params(value)]]"
+                                          input="[[document]]"
+                                          notification="Facet added."
+                                          event="document-updated">
+          </nuxeo-operation-button-no-icon>
+          <nuxeo-operation-button-no-icon label="Remove"
+                                          tooltip="Remove Facet"
+                                          operation="Document.RemoveFacet"
+                                          params="[[_params(value)]]"
+                                          input="[[document]]"
+                                          notification="Facet removed."
+                                          event="document-updated">
+          </nuxeo-operation-button-no-icon>
+        </div>
+
+      </div>
+      <div class="buttons">
+        <paper-button noink
+                      dialog-dismiss
+                      class="secondary"
+                      on-tap="_close">Close</paper-button>
+      </div>
+
+    </nuxeo-dialog>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'edit-facets-dialog',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+
+        document: {
+          type: Object
+        },
+
+        value: {
+          notify: true,
+          observer: '_valueChanged',
+        },
+
+        facets: {
+          type: Array
+        },
+
+        /**
+        * Function used to get the id from the choice object.
+        */
+        idFunction: {
+          type: Function,
+          value() {
+            return this._idFunction.bind(this);
+          },
+        }
+      },
+
+      observers: [
+        '_loadFacets(document)'
+      ],
+
+      _toggleDialog: function () {
+        this.$.dialog.toggle();
+      },
+
+      /**
+       * Callback executed when the user presses the "close" button.
+       *
+       * Note that the "close" button already have a "dialog-dismiss" property that makes the button close the dialog
+       * when clicked. If you don't need to perform additional actions, this method is not needed.
+       */
+      _close: function () {
+        // implement me
+      },
+
+      _idFunction: function (item) {
+        if (typeof item === 'string') {
+          return item;
+        }
+      },
+
+      _loadFacets: function (document) {
+        // TODO: there's no reason to call this every time you load a document,
+        // but I don't know of a great way to only run it once...
+        var op = this.$.getFacetsOp;
+        op.execute();
+      },
+
+      _params: function (value) {
+        var params = {
+          "facet": value
+        };
+        return params;
+      },
+
+      _handleResponse: function (event, detail) {
+        /*
+        TODO could probably have better defensive code. The syntax of the response is:
+
+        {
+            "entity-type": "list",
+            "value": [
+              ...
+            ]
+        }
+        */
+        if (detail.response && detail.response.value) {
+          this.facets = detail.response.value;
+        }
+      }
+    });
+  </script>
+</dom-module>

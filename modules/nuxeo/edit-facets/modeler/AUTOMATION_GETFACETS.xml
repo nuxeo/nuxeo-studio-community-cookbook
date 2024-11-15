@@ -1,0 +1,7 @@
+<!-- Allow access to the SchemaManager class so that we can call "getFacets()" in Automation. -->
+<extension target="org.nuxeo.automation.scripting.internals.AutomationScriptingComponent" point="classFilter">
+  <classFilter>
+    <allow>org.nuxeo.runtime.api.Framework</allow>
+    <allow>org.nuxeo.ecm.core.schema.SchemaManager</allow>
+  </classFilter>
+</extension>
