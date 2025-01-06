@@ -27,3 +27,7 @@ The spinner is displayed on the right, near the button, therefore:
   * Set the `operation` attribute to the id of your operation
 
 All `nuxeo-operation-button` attributes are supported.
+
+## You Are Very Welcome To...
+
+Update the css code so as, for example, display the spinner on top of the button, things like that.
