@@ -1,0 +1,369 @@
+<!--
+`nuxeo-operation-button-with-spinner`
+-->
+<!--
+This is a copy of nuxeo-operation-button, adding a spinner on its right while the operation runs.
+
+++++++++++++++++++++
+WARNING
+++++++++++++++++++++
+The button must be visible in the toolbar, not hidden in the hamburger menu.
+++++++++++++++++++++
+-->
+<dom-module id="nuxeo-operation-button-with-spinner">
+  <template>
+    <style include="nuxeo-action-button-styles nuxeo-styles">
+    </style>
+    
+    <nuxeo-operation id="op"
+                     op="[[operation]]"
+                     input="[[input]]"
+                     params="[[params]]"
+                     sync-indexing$="[[syncIndexing]]"
+                     async$="[[async]]"
+                     poll-interval="[[pollInterval]]"
+                     on-poll-start="_onPollStart"
+                     on-poll-update="_onPollUpdate"
+                     on-poll-error="_onPollError">
+    </nuxeo-operation>
+
+    <paper-icon-button id="runButton" on-tap="_run" icon="[[icon]]"></paper-icon-button>
+    <paper-tooltip>[[i18n(label)]]</paper-tooltip>
+    <paper-spinner id="spinner" style="display: none;z-index:1000;background-color:white"></paper-spinner>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-operation-button-with-spinner',
+      behaviors: [
+        Nuxeo.LayoutBehavior,
+        Nuxeo.NotifyBehavior,
+        Nuxeo.I18nBehavior
+      ],
+      properties: {
+        /* Label (shown inside menu dropdowns and on tooltips) */
+        label: String,
+
+        /* Icon name, can be anything taken from the [material icons](https://material.io/icons/), e.g. "chat", "description". */
+        icon: String,
+
+        /* The id of the operation, automation chain or script to call. */
+        operation: String,
+
+        /* Pass contextual information that will be forwarded to the operation,
+         * automation chain or script triggered as the input for the first
+         * operation. Possible options depend on the slot chosen.
+         * [Documentation](https://doc.nuxeo.com/nxdoc/web-ui-slots)
+         */
+        input: Object,
+
+        /**
+         * If true, documents changed by the operation call will be reindexed synchronously server side.
+         */
+        syncIndexing: Boolean,
+
+        /* The parameters to send. */
+        params: {
+          type: Object,
+          value() {
+            return {};
+          }
+        },
+
+        /* The response from the server. */
+        response: {
+          type: Object,
+          value: null,
+          notify: true
+        },
+
+        /* The text or i18n key to display in the notification. */
+        notification: {
+          type: String
+        },
+
+        /* Trigger download of Blob response. */
+        download: {
+          type: Boolean,
+          value: false
+        },
+
+        /* The event type to fire on completion. */
+        event: {
+          type: String,
+          value: 'operation-executed'
+        },
+
+        /* The detail of the event fired on completion.  */
+        detail: {
+          type: String
+        },
+
+        /**
+         * If true, execute the operation asynchronously.
+         */
+        async: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * Poll interval in ms.
+         */
+        pollInterval: {
+          type: Number,
+          value: 1000
+        },
+
+        /**
+         * A custom label to be displayed if there is an error during the operation execution. If `undefined`, the
+         * original error message is shown. The label can receive a placeholder (i.e. `{0}`) to display the original
+         * error message.
+         */
+        errorLabel: {
+          type: String
+        }
+      },
+
+      _run: function() {
+        let op = this.$.op;
+
+        this._showSpinner();
+        op.execute()
+          .then(function(response) {
+			     // Bug fix, actually use the param.
+            this.response = response;
+            if (this.notification) {
+              this.notify({ message: this.i18n(this.notification) });
+            }
+            let detail = { response };
+            if (this.detail) {
+              // if the supplied params are a string, parse them as JSON
+              detail = typeof this.detail === 'string' ? JSON.parse(this.detail) : this.detail;
+            }
+            this.dispatchEvent(
+              new CustomEvent(this.event, {
+                composed: true,
+                bubbles: true,
+                detail
+              })
+            );
+
+            if (this._hasBulkStatus(response)) {
+              const { commandId, errorCount, total } = response;
+              if (this._isAborted(response)) {
+                this.notify({
+                  message: this.i18n('operationButton.bulk.poll.aborted', this.i18n(this.label)),
+                  dismissible: true,
+                  duration: 0,
+                  commandId
+                });
+              } else {
+                this.notify({
+                  message:
+                    errorCount > 0
+                      ? this.i18n('operationButton.bulk.poll.completed.error', this.i18n(this.label), errorCount)
+                      : this.i18n('operationButton.bulk.poll.completed.success', this.i18n(this.label), total),
+                  dismissible: true,
+                  duration: 0,
+                  commandId,
+                  errorDetails:
+                    errorCount > 0
+                      ? this.i18n(
+                        'bulk.errorDetails.message',
+                        this.operation,
+                        response.username,
+                        response.submitted,
+                        response.completed,
+                        response.processed,
+                        total,
+                        errorCount,
+                        response.errorMessage,
+                        commandId
+                      )
+                      : ''
+                });
+              }
+              return response;
+            }
+
+            if (this.download) {
+              this._download(response);
+            }
+
+          }.bind(this))
+          .catch(function(error) {
+            if (this._hasBulkStatus(error)) {
+              const { commandId, errorCount, total } = error;
+              this.notify({
+                message:
+                  errorCount > 0
+                    ? this.i18n('operationButton.bulk.poll.completed.error', this.i18n(this.label), errorCount)
+                    : this.i18n('operationButton.bulk.poll.completed.success', this.i18n(this.label), total),
+                dismissible: true,
+                duration: 0,
+                commandId,
+                errorDetails:
+                  errorCount > 0
+                    ? this.i18n(
+                      'bulk.errorDetails.message',
+                      this.operation,
+                      error.username,
+                      error.submitted,
+                      error.completed,
+                      error.processed,
+                      total,
+                      errorCount,
+                      error.errorMessage,
+                      commandId
+                    )
+                    : ''
+              });
+            } else {
+              this.notify({ message: this.errorLabel ? this.i18n(this.errorLabel, error) : error });
+            }
+
+            if (error.status !== 404) {
+              throw error;
+            }
+          }.bind(this))
+          .finally(function() {
+            this._hideSpinner();
+          }.bind(this));
+
+      },
+
+      // ======================================================== Specific Spinner
+      _showSpinner: function() {
+        let button = this.shadowRoot.getElementById("runButton");
+		  	let rect = button.getBoundingClientRect();
+
+        let spinner = this.shadowRoot.getElementById("spinner");
+        spinner.style.top = `${rect.top + 2}px`;
+        spinner.style.left = `${rect.left - 6}px`;
+        spinner.style.position= "absolute";
+        spinner.style.display= "block";
+
+        this.$.spinner.active = true;
+      },
+
+      _hideSpinner: function() {
+        let spinner = this.shadowRoot.getElementById("spinner");
+        spinner.style.display= "none";
+
+        this.$.spinner.active = false;
+      },
+
+      // ======================================================== nuxeo-operation-button code
+      // https://jira.nuxeo.com/browse/ELEMENTS-370
+      _download: function (response) {
+        const contentDisposition = response.headers && response.headers.get('Content-Disposition');
+        if (contentDisposition) {
+          const filenameMatches = contentDisposition
+            .match(/filename[^;=\n]*=([^;\n]*''([^;\n]*)|[^;\n]*)/)
+            .filter((match) => !!match);
+          const filename = decodeURI(filenameMatches[filenameMatches.length - 1]);
+          if (this.async) {
+            this._triggerDownload(filename, response.url);
+            return;
+          }
+          response.blob().then((blob) => {
+            const url = URL.createObjectURL(blob);
+            this._triggerDownload(filename, url);
+            URL.revokeObjectURL(url);
+          });
+        } else {
+          this._triggerDownload('', response.url);
+        }
+      },
+
+      _triggerDownload: function (filename, url) {
+        const a = document.createElement('a');
+        a.style = 'display: none';
+        a.download = filename;
+        a.href = url;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      },
+
+
+      _isPageProviderDisplayBehavior: function (input) {
+        return (
+          input &&
+          input.behaviors &&
+          Nuxeo.PageProviderDisplayBehavior &&
+          Nuxeo.PageProviderDisplayBehavior.every((p) => input.behaviors.includes(p))
+        );
+      },
+
+      _isSelectAllActive: function (input) {
+        return this._isPageProviderDisplayBehavior(input) && input.selectAllActive;
+      },
+
+      _isRunning: function (status) {
+        const state = this._hasBulkStatus(status) ? (status.value && status.value.state) || status.state : status;
+        return state === 'RUNNING';
+      },
+
+      _isAborted: function (status) {
+        return this._hasBulkStatus(status)
+          ? ((status.value && status.value.state) || status.state) === 'ABORTED'
+          : !this._isRunning(status);
+      },
+
+      _hasBulkStatus: function (status) {
+        return status && status['entity-type'] === 'bulkStatus';
+      },
+
+      _onPollStart: function (e) {
+        if (!e.detail || !e.detail.commandId) {
+          return;
+        }
+        const { commandId } = e.detail;
+        const detail = {
+          message: this.i18n('operationButton.bulk.poll.scheduled', this.i18n(this.label)),
+          abort: function () {
+            this.$.op._abort(commandId);
+          }.bind(this),
+          dismissible: true,
+          duration: 0,
+          commandId
+        };
+        this.notify(detail);
+      },
+
+      _onPollUpdate: function (e) {
+        if (!e.detail || !e.detail.commandId) {
+          return;
+        }
+        const status = e.detail;
+        const { commandId, processed, total } = status;
+        const detail = {
+          message: this._isRunning(status)
+            ? this.i18n('operationButton.bulk.poll.running', this.i18n(this.label), processed, total)
+            : this.i18n('operationButton.bulk.poll.scheduled', this.i18n(this.label)),
+          abort: function () {
+            this.$.op._abort(commandId);
+          }.bind(this),
+          dismissible: true,
+          duration: 0,
+          commandId
+        };
+        this.notify(detail);
+      },
+
+      _onPollError: function (e) {
+        const error = e.detail;
+        this.notify({
+          message: this.i18n('operationButton.bulk.poll.error', this.i18n(this.label)),
+          dismissible: true,
+          duration: 0,
+          error
+        });
+      }
+
+    });
+  </script>
+</dom-module>
