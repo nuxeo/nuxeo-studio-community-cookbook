@@ -4,7 +4,7 @@
 
 ## Prerequisites
 
-- Nuxeo Web UI installed
+- Nuxeo Web UI
 
 ## Description
 
