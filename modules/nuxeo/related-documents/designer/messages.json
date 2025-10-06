@@ -8,18 +8,5 @@
   "label.relation.outgoing": "Outgoing",
   "label.relation.incoming": "Incoming",
   "label.relation.pickDocument": "Pick a Document",
-
-  "label.dublincore.lastModified": "Last Modification",
-
-	"label.relation.predicate.inverse.References": "References",
-	"label.relation.predicate.inverse.IsBasedOn": "Is Based On",
-	"label.relation.predicate.inverse.Replaces": "Replaces",
-	"label.relation.predicate.inverse.Requires": "Requires",
-	"label.relation.predicate.inverse.ConformsTo": "Conforms To",
-
-	"label.relation.predicate.References": "References",
-	"label.relation.predicate.IsBasedOn": "Is Based On",
-	"label.relation.predicate.Replaces": "Replaces",
-	"label.relation.predicate.Requires": "Requires",
-	"label.relation.predicate.ConformsTo": "Conforms To"
+  "label.dublincore.lastModified": "Last Modification"
 }
