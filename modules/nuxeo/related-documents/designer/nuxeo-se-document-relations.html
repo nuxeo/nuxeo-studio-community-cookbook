@@ -25,7 +25,6 @@
       }
     </style>
 
-
     <nuxeo-connection id="nxcon"></nuxeo-connection>
 
     <nuxeo-operation id="opGetAllRelations"
@@ -39,13 +38,15 @@
 
     <div class="container">
 
-      <iron-icon id="addRelationIcon" icon="icons:add-circle-outline" class="left-box" on-tap="_toggleDialog"></iron-icon>
+      <iron-icon id="addRelationIcon" icon="icons:add-circle-outline" class="left-box"
+                 on-tap="_toggleDialog"></iron-icon>
 
-      <nuxeo-data-table id="relationsTable" items="[[_relations]]" empty-label="[[i18n('label.relation.noRelatedDocuments')]]">
+      <nuxeo-data-table id="relationsTable" items="[[_relations]]"
+                        empty-label="[[i18n('label.relation.noRelatedDocuments')]]">
         <nuxeo-data-table-column name="Icon" flex="2" width="50px">
           <template>
             <a href="[[_getDocURL(item.path)]]">
-              <iron-icon src="[[_thumbnail(item)]]"/>
+              <iron-icon src="[[_thumbnail(item)]]" />
             </a>
           </template>
         </nuxeo-data-table-column>
@@ -60,7 +61,7 @@
           <template>[[_getUserFriendlyDate(item.lastModified)]]</template>
         </nuxeo-data-table-column>
 
-        <nuxeo-data-table-column name="[[i18n('label.relation.type')]]" flex="10" >
+        <nuxeo-data-table-column name="[[i18n('label.relation.type')]]" flex="10">
           <template>
             [[i18n(item.relationLabel)]]
           </template>
@@ -69,10 +70,10 @@
         <nuxeo-data-table-column name="[[i18n('label.relation.direction')]]" flex="2" width="50px">
           <template>
             <template is="dom-if" if="[[item.incoming]]">
-	            <iron-icon id="[[item.uid]]" icon="icons:arrow-back"></iron-icon>
+              <iron-icon id="[[item.uid]]" icon="icons:arrow-back"></iron-icon>
             </template>
             <template is="dom-if" if="[[!item.incoming]]">
-	            <iron-icon id="[[item.uid]]" icon="icons:arrow-forward"></iron-icon>
+              <iron-icon id="[[item.uid]]" icon="icons:arrow-forward"></iron-icon>
             </template>
           </template>
         </nuxeo-data-table-column>
@@ -117,32 +118,32 @@
         },
       },
 
-      _documentChanged: function (doc){
-        if (doc){
+      _documentChanged: function (doc) {
+        if (doc) {
           var op = this.$.opGetAllRelations;
-          op.execute().then(function(result) {
+          op.execute().then(function (result) {
             console.log(result);
-					}.bind(this))
-          .catch(function(error) {
-            alert("Error:\n" + error);
-          }.bind(this));
+          }.bind(this))
+            .catch(function (error) {
+              alert("Error:\n" + error);
+            }.bind(this));
         }
       },
 
-      ready: function(){
+      ready: function () {
         this.$.dialog.addEventListener('relation-added', event => this._handleRelationsChanged(event));
 
 
 
-        this.addEventListener('dom-change', function(event){
+        this.addEventListener('dom-change', function (event) {
 
           var removeRelButtons = Polymer.dom(this.root).querySelectorAll('nuxeo-se-remove-relation-button');
           console.log(removeRelButtons);
 
-          if(removeRelButtons != null && removeRelButtons != undefined && removeRelButtons.length > 0){
-            var i=0;
+          if (removeRelButtons != null && removeRelButtons != undefined && removeRelButtons.length > 0) {
+            var i = 0;
             var numRelations = removeRelButtons.length;
-            for(i=0; i < numRelations; i++){
+            for (i = 0; i < numRelations; i++) {
               console.log("Relation event listener added for relation: " + i);
               removeRelButtons[i].addEventListener('relation-removed', event => this._handleRelationsChanged(event));
             }
@@ -150,7 +151,7 @@
         });
       },
 
-			_thumbnail: function (doc) {
+      _thumbnail: function (doc) {
         if (doc && doc.uid) {
           var baseUrl = this.$.nxcon.url;
           return baseUrl + '/api/v1/id/' + doc.uid + '/@rendition/thumbnail';
@@ -158,40 +159,40 @@
       },
 
       /**
-	    * Convert UTC date to mm/dd/yyyy
-  	  * SEE: https://stackoverflow.com/questions/13874480/converting-utc-date-to-mm-dd-yyyy
-    	*/
-      _getUserFriendlyDate: function(utcDate){
-        var d2='Not set';
+      * Convert UTC date to mm/dd/yyyy
+      * SEE: https://stackoverflow.com/questions/13874480/converting-utc-date-to-mm-dd-yyyy
+      */
+      _getUserFriendlyDate: function (utcDate) {
+        var d2 = 'Not set';
 
-        if(undefined !== utcDate && utcDate !== null){
-          d2 = utcDate.substring(8,10) +
+        if (undefined !== utcDate && utcDate !== null) {
+          d2 = utcDate.substring(8, 10) +
             '/' +
-            utcDate.substring(5,7) +
+            utcDate.substring(5, 7) +
             '/' +
-            utcDate.substring(0,4);
+            utcDate.substring(0, 4);
         }
 
 
         return d2;
       },
 
-      _getDocURL: function(path){
+      _getDocURL: function (path) {
         return "/nuxeo/ui/#!/browse" + path;
       },
 
-      _toggleDialog: function() {
+      _toggleDialog: function () {
         this.$.dialog.toggle();
       },
 
-      _handleRelationsRecovered: function(e){
+      _handleRelationsRecovered: function (e) {
         console.log("_handleRelationsRecovered: ");
         console.log(e.detail.response);
 
         this.set('_relations', e.detail.response.value);
       },
 
-      _handleRelationsChanged: function(e){
+      _handleRelationsChanged: function (e) {
         console.log("_handleRelationsChanged: ");
         console.log(e.detail);
 
