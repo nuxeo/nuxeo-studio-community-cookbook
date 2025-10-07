@@ -1,27 +1,11 @@
 <!--
-@license
-(C) Copyright Nuxeo Corp. (http://nuxeo.com/)
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
--->
-<!--
 `nuxeo-se-add-relation-dialog`
 @group Nuxeo UI
 @element nuxeo-se-add-relation-dialog
 -->
 <dom-module id="nuxeo-se-add-relation-dialog">
   <template>
-    <style>
-      *[role=widget] {
-        padding: 5px;
-      }
+    <style include="nuxeo-styles">
     </style>
 
     <nuxeo-operation id="opCreateRelation"
@@ -35,8 +19,8 @@ limitations under the License.
       Dialog: Add relation
     -->
     <nuxeo-dialog id="dialog" with-backdrop>
-
       <h2>[[i18n('label.relation.addRelation')]]</h2>
+
 
       <div role="widget">
         <nuxeo-document-suggestion label="[[i18n('label.relation.pickDocument')]]"
@@ -54,7 +38,9 @@ limitations under the License.
         </paper-radio-group>
       </div>
 
-      <nuxeo-directory-suggestion directory-name="[[_getPredicatesDirectory(direction)]]"
+
+      <nuxeo-directory-suggestion role="widget"
+                                  directory-name="[[_getPredicatesDirectory(direction)]]"
                                   label="[[i18n('label.relation.type')]]"
                                   min-chars="0"
                                   required="true"
@@ -62,9 +48,8 @@ limitations under the License.
       </nuxeo-directory-suggestion>
 
       <div class="buttons">
-        <paper-button dialog-dismiss>[[i18n('command.cancel')]]</paper-button>
-        <paper-button id="addRelationButton"
-                      class="primary"
+        <paper-button class="secondary" dialog-dismiss>[[i18n('command.cancel')]]</paper-button>
+        <paper-button id="addRelationButton" class="primary"
                       on-tap="_addRelation">[[i18n('command.create')]]</paper-button>
       </div>
     </nuxeo-dialog>
@@ -84,8 +69,7 @@ limitations under the License.
         },
 
         path: {
-          type: String,
-          value: '/'
+          type: String
         },
 
         direction: {
