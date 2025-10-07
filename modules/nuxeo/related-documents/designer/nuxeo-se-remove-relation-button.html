@@ -77,7 +77,7 @@ limitations under the License.
         '_relation(fromDocId, toDocId, incoming)'
       ],
 
-      _relation: function(from, to, incoming) {
+      _relation: function (from, to, incoming) {
         if (incoming) {
           this._fromDocId = to;
           this._toDocId = from;
@@ -87,16 +87,16 @@ limitations under the License.
         }
       },
 
-      _removeRelation: function(e){
+      _removeRelation: function (e) {
         console.log("_removeRelation: ");
 
         this.$.opDeleteRelation.execute();
       },
 
-      _handleRelationRemoved: function(event){
+      _handleRelationRemoved: function (event) {
         console.log("_handleRelationRemoved fire event 'relation-removed'");
 
-        this.dispatchEvent(new CustomEvent('relation-removed', {detail: {document: event.detail.response}}));
+        this.dispatchEvent(new CustomEvent('relation-removed', { detail: { document: event.detail.response } }));
       }
     });
   </script>

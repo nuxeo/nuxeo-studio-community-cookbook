@@ -32,17 +32,17 @@ limitations under the License.
     </nuxeo-operation>
 
     <!--
-			Dialog: Add relation
-		-->
+      Dialog: Add relation
+    -->
     <nuxeo-dialog id="dialog" with-backdrop>
-      <h2>[[i18n('label.relation.addRelation')]]</h2>
 
+      <h2>[[i18n('label.relation.addRelation')]]</h2>
 
       <div role="widget">
         <nuxeo-document-suggestion label="[[i18n('label.relation.pickDocument')]]"
                                    value="{{path}}"
                                    min-chars="0"
-                                   selected-item="{{toDoc}}" >
+                                   selected-item="{{toDoc}}">
         </nuxeo-document-suggestion>
       </div>
 
@@ -54,7 +54,6 @@ limitations under the License.
         </paper-radio-group>
       </div>
 
-
       <nuxeo-directory-suggestion directory-name="[[_getPredicatesDirectory(direction)]]"
                                   label="[[i18n('label.relation.type')]]"
                                   min-chars="0"
@@ -64,7 +63,9 @@ limitations under the License.
 
       <div class="buttons">
         <paper-button dialog-dismiss>[[i18n('command.cancel')]]</paper-button>
-        <paper-button id="addRelationButton" class="primary" on-tap="_addRelation">[[i18n('command.create')]]</paper-button>
+        <paper-button id="addRelationButton"
+                      class="primary"
+                      on-tap="_addRelation">[[i18n('command.create')]]</paper-button>
       </div>
     </nuxeo-dialog>
 
@@ -94,16 +95,16 @@ limitations under the License.
         }
       },
 
-      toggle: function() {
+      toggle: function () {
         this.$.dialog.toggle();
       },
 
-      _getPredicatesDirectory: function(direct){
-        console.log('_getPredicatesDirectory(' + direct +')');
+      _getPredicatesDirectory: function (direct) {
+        console.log('_getPredicatesDirectory(' + direct + ')');
         return (direct == 'incoming') ? 'inverse_predicates' : 'predicates';
       },
 
-      _getDirectionAsBool: function(direct){
+      _getDirectionAsBool: function (direct) {
         // SEE: http://explorer.nuxeo.com/nuxeo/site/distribution/Nuxeo%20DM-8.1/viewOperation/Document.AddRelation
         //
         // The 'outgoing' flag indicates the direction of the relation -
@@ -112,20 +113,20 @@ limitations under the License.
         return (direct == 'incoming') ? false : true;
       },
 
-      _resetSelectedPredicate: function(){
+      _resetSelectedPredicate: function () {
         this.set("predicate", "");
       },
 
-      _addRelation: function(){
-        console.log("Creating relation ("+ this.predicate+") with doc: " + this.path);
+      _addRelation: function () {
+        console.log("Creating relation (" + this.predicate + ") with doc: " + this.path);
 
         this.$.opCreateRelation.execute();
       },
 
-      _handleRelationCreated: function(e){
+      _handleRelationCreated: function (e) {
         console.log("Relation successfully created");
 
-        this.dispatchEvent(new CustomEvent('relation-added', {detail: {document: e.detail.response}}));
+        this.dispatchEvent(new CustomEvent('relation-added', { detail: { document: e.detail.response } }));
 
         this.toggle();
       }

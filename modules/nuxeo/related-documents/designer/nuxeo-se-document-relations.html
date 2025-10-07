@@ -38,11 +38,15 @@
 
     <div class="container">
 
-      <iron-icon id="addRelationIcon" icon="icons:add-circle-outline" class="left-box"
+      <iron-icon id="addRelationIcon"
+                 icon="icons:add-circle-outline"
+                 class="left-box"
                  on-tap="_toggleDialog"></iron-icon>
 
-      <nuxeo-data-table id="relationsTable" items="[[_relations]]"
+      <nuxeo-data-table id="relationsTable"
+                        items="[[_relations]]"
                         empty-label="[[i18n('label.relation.noRelatedDocuments')]]">
+
         <nuxeo-data-table-column name="Icon" flex="2" width="50px">
           <template>
             <a href="[[_getDocURL(item.path)]]">
@@ -88,14 +92,15 @@
             </nuxeo-se-remove-relation-button>
           </template>
         </nuxeo-data-table-column>
+
       </nuxeo-data-table>
 
     </div>
 
 
     <!--
-			Dialog: Add relation
-		-->
+      Dialog: Add relation
+    -->
     <nuxeo-se-add-relation-dialog id="dialog" document="[[document]]"></nuxeo-se-add-relation-dialog>
 
   </template>
