@@ -18,7 +18,7 @@
     <!--
       Dialog: Add relation
     -->
-    <nuxeo-dialog id="dialog" with-backdrop>
+    <nuxeo-dialog id="dialog" on-iron-overlay-closed="_dialogClosed" with-backdrop>
       <h2>[[i18n('label.relation.addRelation')]]</h2>
 
 
@@ -68,7 +68,15 @@
           type: Object
         },
 
+        toDoc: {
+          type: Object
+        },
+
         path: {
+          type: String
+        },
+
+        predicate: {
           type: String
         },
 
@@ -81,6 +89,13 @@
 
       toggle: function () {
         this.$.dialog.toggle();
+      },
+
+      _dialogClosed: function () {
+        this.path = null;
+        this.toDoc = null;
+        this.predicate = null;
+        this.direction = 'incoming';
       },
 
       _getPredicatesDirectory: function (direct) {
