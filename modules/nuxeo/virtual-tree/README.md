@@ -4,7 +4,9 @@ The `virtual-tree` element allows for building a virtual navigation with a tree 
 
 <img src="README-Images/overview.png" alt="Virtual Tree" width="800">
 
-The element calls an operation server side that returns the expected configuration for the tree, allowing to display different virtual tree views, with based on different fields. You can also just change the `virtual-tree` and hard code the value if you wish, of course.
+The element calls operations server side
+* One returns the unique values to display in the tree view, depending one the line selected
+* One returns the expected configuration for the tree. This allows for displaying different virtual tree views, based on different fields. You can also just change the `virtual-tree` and hard code the value if you wish, of course.
 
 The expected JSON has 2 required properties:
 
@@ -48,57 +50,29 @@ For example, in a tree view displaying Products > Countries > Cities, you would 
 
 ### Studio Modeler
 
-* Create a Page Provider to be used by the result layout in Designer
+#### 1. Create a Page Provider to be used by the result layout in Designer
   * The Page provider _must_ use predicates for each level of the virtual tree
   * Take note of their names (used in the JSON configuration)
   * The default search should correspond to the initial loading when the user has not yet selected anything. So with our examples of Products > Countries > Cities, your PageProvider would be (initial `product:type IS NOT NULL` allows for the displaying all documents with a product when at first load):
 
 <img src="README-Images/PageProvider.png" alt="Page provider" width="600">
 
+#### 2. Create an operation that returns the configuration
+See the [javascript.ProductCountriesCitiesConfig](Example/javascript.ProductCountriesCitiesConfig.js) example.
 
-
-* Create an operation that returns the configuration. For example a JS automation named `ProductCountriesCitiesConfig`.
-
-Input is `void`, output is `blob`. With previous example you wopuld have:
-
-```javascript
-function run(input, params) {
-  
-  var config = {
-    "resultLayout": "products-virtual-tree-results", // Must have been preloaded in the bundle
-    "levels": [
-      {
-        "field": "product:type",
-        "label": "Product",
-        "ppParameter": "product_type"
-      }, {
-        "field": "company:country",
-        "label": "Country",
-        "ppParameter": "company_country"
-      }, {
-        "field": "company:city",
-        "label": "City",
-        "ppParameter":
-        "company_city"
-      }
-    ]
-  };
-  
-  return org.nuxeo.ecm.core.api.Blobs.createJSONBlob(JSON.stringify(config));
-}
-```
-
+#### 3. Create an operation that returns unique values depending on the tree level and the element selected.
+See the [javascript.getUniqueValues](Example/javascript.getUniqueValues.js) example.
 
 
 ### Studio Designer
 
-1. Import the `virtual-tree`
-  * open it and modify the `nuxeo-operation` in order to call your operation
-2. Create a result layout
-  * 💡: Generate a view layout for a folderish. Use the table editor to easily drag and drop your fields
-  * Then, copy the content (think about renaming the element ID) in your new result layout
-3. Modify the result layout:
-  * (Look at the example at Example Result Layout/products-virtual-tree-results.html)
+#### 1. Import the `virtual-tree`
+  * open it and modify the two `nuxeo-operation` in order to call your operations
+
+#### 2. Create a result layout. See the  [products-virtual-tree-results](Example/products-virtual-tree-results.html) example.
+  * 💡: Generate a view layout for a folderish. Use the table editor to easily drag and drop your fields <br>Then, copy the content (think about renaming the element ID) in your new result layout
+
+#### 3. Modify the result layout:
   * Change the name of the provider used. In our example: `<nuxeo-page-provider ... provider="ProductsVirtualTreePageProvider" ...`
   * Add the schemas you need for display in the results. In our example: `<nuxeo-page-provider ... schemas="dublincore,common,uid,file,product,company" ...`
   * Add the `params` properties, with a listener that triggers the search.
@@ -109,13 +83,13 @@ function run(input, params) {
 > [!WARNING]
 > In this screenshot, `results` in `this.$.results` is the ID of the `nuxeo-results`. Obviously, if you are using another way to display data, adapt accordingly.
 
-4. Preload the result layout
+#### 4. Preload the result layout
   * This is required, so it can be dynamically injected in the element
   * Create a custom bundle and just import the layout. For example:
 
 `<link rel="import" href="nuxeo-virtual-tree/products-virtual-tree-results.html">`.
 
-#### Displaying the Virtual Tree
+#### 5. Displaying the Virtual Tree
 
 Here is an example deploying the tree in a tab, at Domain level:
 
@@ -145,10 +119,5 @@ Here is an example deploying the tree in a tab, at Domain level:
   * Use this element
   * Set up the filter accordingly
 
-
-
-## Known Limitation
-
-If displaying the results use a page provider and can, then display thousands, billions of documents, it is not the case for the values fetched for the tree.
-
-So, basically, there is room for improvement here :-)
+## License
+[Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)

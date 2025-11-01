@@ -104,8 +104,13 @@
     <!-- Fetch config (you can swap this to your own provider if needed) -->
     <nuxeo-operation
       id="getTreeConfigOp"
-      op="javascript.getTreeConfig_ProductsCountriesCities"
+      op="javascript.ProductCountriesCitiesConfig"
       response="{{treeConfig}}">
+    </nuxeo-operation>
+    
+    <nuxeo-operation
+      id="getUniqueValuesOp"
+      op="javascript.getUniqueValues">
     </nuxeo-operation>
 
     <nuxeo-card>
@@ -144,18 +149,18 @@
           </template>
 
           <template is="dom-if" if="[[treeConfig]]" restamp>
-            <!-- Small params debug/visibility bar (optional; keep if useful) -->
-             <!--
-            <div class="params-chipbar">
-              <template is="dom-repeat" items="[[treeConfig.levels]]" as="lvl" index-as="i">
-                <span class="chip">
-                  [[lvl.ppParameter]]:
-                  [[_displayParam(params, lvl.ppParameter)]]
-                </span>
-              </template>
-            </div>
-            -->
-
+            <!-- Small params debug/visibility bar. Set _debug to true and reload -->
+            <template is="dom-if" if="[[_debug]]" restamp>
+              <div class="params-chipbar">
+                <template is="dom-repeat" items="[[treeConfig.levels]]" as="lvl" index-as="i">
+                  <span class="chip">
+                    [[lvl.ppParameter]]:
+                    [[_displayParam(params, lvl.ppParameter)]]
+                  </span>
+                </template>
+              </div>
+            </template>
+            
             <!-- Host where we stamp the dynamic layout element -->
             <div id="resultsHost"></div>
           </template>
@@ -172,6 +177,11 @@
         is: 'virtual-tree',
 
         properties: {
+          _debug: {
+            type: Boolean,
+            value: false
+          },
+
           treeConfig: {
             type: Object,
             observer: '_onConfigLoaded'
@@ -182,20 +192,20 @@
             value: function () { return []; }
           },
 
-          /** Currently selected node index (string path like "0-3-1") */
+          // Currently selected node index (string path like "0-3-1")
           selectedIndex: {
             type: String,
             value: null
           },
 
-          /** Param bag passed to the result layout (ppParameter → value|null) */
+          // Parameter bag passed to the result layout (ppParameter → value|null)
           params: {
             type: Object,
             value: function () { return {}; },
             observer: '_onParamsChanged'
           },
 
-          /** Reference to the stamped result layout element */
+          // Reference to the stamped result layout element
           _resultEl: {
             type: Object,
             value: null
@@ -229,13 +239,13 @@
           this.params = this._buildEmptyParams(config.levels);
 
           // Ensure the dynamic result layout is present and receives initial data
-          this._ensureResultLayout();
+          this._addResultLayout();
 
           // Build root of the virtual tree
           this._loadRootLevel();
         },
 
-        _ensureResultLayout: function () {
+        _addResultLayout: function () {
 
           // Use async to ensure the DOM elements exist after the conditional template renders
           this.async(() => {
@@ -286,41 +296,49 @@
         // Tree building & interaction
         // ==================================================
         _loadRootLevel: function () {
+          let firstLevel = this.treeConfig.levels[0];
+
+          let op = this.$.getUniqueValuesOp;
+
+          // First item is first level
+          let xpath = this.treeConfig.levels[0].field;
+          let whereClause = xpath + " IS NOT NULL " + this.NXQL_SUFFIX;
+
+          let params = {
+            xpath: xpath,
+            whereClause: whereClause
+          };
+
+          op.params = params;
+
           this.loading = true;
-          var firstLevel = this.treeConfig.levels[0];
-          var nxql = "SELECT * FROM Document WHERE " + firstLevel.field + " IS NOT NULL " + this.NXQL_SUFFIX;
 
-          this._nxqlQuery(nxql)
+          op.execute()
             .then(function (res) {
-              var entries = res.entries || [];
-
-              var valueMap = {};
-              entries.forEach(function (doc) {
-                var value = _readProp(doc.properties, firstLevel.field);
-                if (value && !valueMap[value]) {
-                  valueMap[value] = true;
-                }
-              });
-
-              var nodes = Object.keys(valueMap).sort().map(function (name, idx) {
-                return {
-                  name: name,
-                  level: 0,
-                  index: '0-' + idx,
-                  expanded: false,
-                  ariaExpanded: 'false',
-                  path: [{ field: firstLevel.field, value: name }],
-                  children: []
-                };
-              });
-
+              let nodes = [];
+              if(Array.isArray(res) && res.length > 0) {
+                nodes = res.sort().map(function (name, idx) {
+                  return {
+                    name: name,
+                    level: 0,
+                    index: '0-' + idx,
+                    expanded: false,
+                    ariaExpanded: 'false',
+                    path: [{ field: firstLevel.field, value: name }],
+                    children: []
+                  };
+                }.bind(this));
+              }
               this.treeNodes = this._flattenNodes(nodes);
-              this.loading = false;
+              
             }.bind(this))
-            .catch(function (error) {
-              console.error('Error loading root level:', error);
+            .catch(function(error) {
+              console.error('Error loading root level (op):', error);
+            }.bind(this))
+            .finally(function() {
               this.loading = false;
             }.bind(this));
+
         },
 
         _handleNodeClick: function (e) {
@@ -357,48 +375,52 @@
 
         _loadChildren: function (parentNode, levelDepth) {
           // levelDepth is current depth; next level is levels[levelDepth]
-          var nextLevel = this.treeConfig.levels[levelDepth];
+          let nextLevel = this.treeConfig.levels[levelDepth];
 
-          var whereClauses = parentNode.path.map(function (p) {
+          let op = this.$.getUniqueValuesOp;
+
+          let whereClauses = parentNode.path.map(function (p) {
             return p.field + " = '" + this._escapeNxql(p.value) + "'";
           }.bind(this));
           whereClauses.push(nextLevel.field + " IS NOT NULL");
 
-          var nxql = "SELECT * FROM Document WHERE " + whereClauses.join(" AND ") + this.NXQL_SUFFIX;
+          op.params = {
+            xpath: nextLevel.field,
+            whereClause: whereClauses.join(" AND ") + this.NXQL_SUFFIX
+          };
 
-          this._nxqlQuery(nxql)
+          this.loading = true;
+          op.execute()
             .then(function (res) {
-              var entries = res.entries || [];
+              let children = [];
+              if(Array.isArray(res) && res.length > 0) {
+                children = res.sort().map(function (name, idx) {
+                  let childPath = parentNode.path.slice();
+                  childPath.push({ field: nextLevel.field, value: name });
 
-              var valueMap = {};
-              entries.forEach(function (doc) {
-                var value = _readProp(doc.properties, nextLevel.field);
-                if (value && !valueMap[value]) {
-                  valueMap[value] = true;
-                }
-              });
-
-              var children = Object.keys(valueMap).sort().map(function (name, idx) {
-                var childPath = parentNode.path.slice();
-                childPath.push({ field: nextLevel.field, value: name });
-
-                return {
-                  name: name,
-                  level: levelDepth,
-                  index: parentNode.index + '-' + idx,
-                  expanded: false,
-                  ariaExpanded: 'false',
-                  path: childPath,
-                  children: []
-                };
-              });
+                  return {
+                    name: name,
+                    level: levelDepth,
+                    index: parentNode.index + '-' + idx,
+                    expanded: false,
+                    ariaExpanded: 'false',
+                    path: childPath,
+                    children: []
+                  };
+                }.bind(this));
+              }
 
               parentNode.children = children;
               this._refreshTreeView();
+              
             }.bind(this))
-            .catch(function (error) {
+            .catch(function(error) {
               console.error('Error loading children:', error);
+            }.bind(this))
+            .finally(function() {
+              this.loading = false;
             }.bind(this));
+
         },
 
         _flattenNodes: function (nodes, result) {
@@ -476,30 +498,9 @@
 
         _escapeNxql: function (str) {
           return String(str).replace(/'/g, "''");
-        },
-
-        // ==================================================
-        // NXQL fetch (simple GET to page provider endpoint)
-        // ==================================================
-        _nxqlQuery: function (nxql) {
-          var url = '/nuxeo/api/v1/search/execute?query=' + nxql + "&pageSize=100";
-          return fetch(url, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json',
-              'properties': '*'
-            }
-          }).then(function (r) { return r.json(); });
         }
+        
       });
-
-      // Safe nested property read: supports 'foo:bar' or 'dc:title'
-      function _readProp(obj, dotted) {
-        if (!obj || !dotted) return null;
-        // Nuxeo props use 'schema:field' form; keep as a single key on the map
-        return obj[dotted];
-      }
     })();
   </script>
 </dom-module>
