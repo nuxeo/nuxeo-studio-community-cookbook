@@ -119,5 +119,18 @@ Here is an example deploying the tree in a tab, at Domain level:
   * Use this element
   * Set up the filter accordingly
 
+## More Examples
+
+In the "Example" folder, you can find the **"products-virtual-tree-results-with-filter.html"** element. It adds - on top of the result table - a "Filter" collapsible element, that displays an input for adding a fulltext search to the result.
+
+This requires to just change your Page prvider, in modeler and to add a predicate for the System > fulltext field.
+
+And voilà:
+
+<img src="README-Images/overview-with-filter.png" alt="Virtual Tree" width="800">
+
+You could add as many search filter you need, just, don't forget to add the corresponding predicates to your page provider.)
+
+
 ## License
 [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
