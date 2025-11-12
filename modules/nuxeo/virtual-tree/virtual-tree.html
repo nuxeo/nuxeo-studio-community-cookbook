@@ -1,3 +1,5 @@
+<!-- virtual-tree
+-->
 <dom-module id="virtual-tree">
   <template>
     <style>
@@ -175,6 +177,7 @@
 
       Polymer({
         is: 'virtual-tree',
+        behaviors: [Polymer.IronResizableBehavior], // required to compyute visibility and avoid fetching values every time the user refreshes a page
 
         properties: {
           _debug: {
@@ -219,12 +222,33 @@
           NXQL_SUFFIX: {
             type: String,
             value: " AND ecm:isVersion = 0 AND ecm:isProxy = 0 AND ecm:isTrashed = 0 "
+          },
+
+          _visible: {
+            type: Boolean,
+            value: false,
+            observer: "_visibleChanged"
+          }
+        },
+
+        listeners: {
+          'iron-resize': '_computeVisible'
+        },
+
+        _computeVisible() {
+          this._visible = Boolean(this.offsetWidth || this.offsetHeight);
+        },
+
+        _visibleChanged: function(newValue, prevValue) {
+          if(newValue) {
+            this.$.getTreeConfigOp.execute();
           }
         },
 
         ready: function () {
+          // Don't put it here, or it is calculated everytime the user refreshes or force refresh
           // Load configuration (or set from outside by binding `tree-config`)
-          this.$.getTreeConfigOp.execute();
+          //this.$.getTreeConfigOp.execute();
         },
 
         // ==================================================
