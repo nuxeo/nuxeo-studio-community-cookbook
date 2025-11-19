@@ -1,0 +1,102 @@
+
+<link rel="import" href="nuxeo-carousel-display.html">
+<!--
+This carousel uses the advanced_document_content page provider (default provider for folderish documents).
+
+=> Usage only from a Folderish document:
+    <nuxeo-carousel-document-content name="carousel"
+                                     document="[[document]]">
+    </nuxeo-carousel-document-content>
+
+    You should not set schemas or enrichers here, as we want the provider to fetch only the minimum, since
+    displaying the preview of a doc fetches it (with all schemas and enrichers needed for the rendition).
+
+    Anyway: nuxeo-carousel-display, when calling the Page Provider, it resets headers, enrichers, etc. to the minimum
+
+    ====================
+    Page Size
+    ====================
+    You can change the default pageSize (40):
+    <nuxeo-carousel-document-content name="carousel"
+                                     document="[[document]]"
+                                     page-size="100">
+    </nuxeo-carousel-document-content>
+-->
+<dom-module id="nuxeo-carousel-document-content">
+  <template>
+    <style include="nuxeo-styles"></style>
+
+    <nuxeo-connection id="nxcon"></nuxeo-connection>
+
+    <!-- Enrichers are set in nuxeo-carousel-display, when fetching each document
+         at the time of the rendition -->
+    <nuxeo-page-provider id="nxProvider"
+                        provider="advanced_document_content"
+                        page-size="[[pageSize]]"
+                        params="{{_params}}"
+                        headers='{"X-NXfetch-document":"properties","X-NXtranslate-directoryEntry":"label"}'>
+    </nuxeo-page-provider>
+
+    <nuxeo-carousel-display
+        id="carouselDisplay"
+        nx-provider="[[_pageProvider]]"
+        params="[[_params]]">
+    </nuxeo-carousel-display>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-carousel-document-content',
+      behaviors: [Nuxeo.LayoutBehavior],
+
+      properties: {
+        document: {
+          type: Object,
+          observer: "_documentChanged"
+        },
+
+        pageSize: {
+          type: Number,
+          value: 40
+        },
+
+        // Do not set these values directly, they are set when document changes
+        _pageProvider: Object,
+        _params: Object,
+        _sort: Object
+
+      },
+
+      attached: function() {
+        // Tell nuxeo-carousel-display params and all are ready
+        this._pageProvider = this.$.nxProvider;
+      },
+
+      _documentChanged: function(newDoc, prevDoc) {
+        if (newDoc) {
+          if (!prevDoc || newDoc.uid !== prevDoc.uid) {
+            // Tell nuxeo-carousel-display that params and all are ready.
+            // These params are expected by advanced_document_content:
+            this._params = {
+              ecm_parentId: newDoc.uid,
+              ecm_trashed: newDoc.isTrashed
+            };
+            this._sort = this.hasFacet(newDoc, 'Orderable') ? { 'ecm:pos': 'ASC' } : {};
+            
+            // If not first call, ask the child to reset the search
+            // (typicaly user is changing the main document)
+            if(prevDoc) {
+              // Because the carousel is really running only when visible, we must
+              // check it is there.
+              if(this.$.carouselDisplay && this.$.carouselDisplay.parentDocumentChanged) {
+                this.$.carouselDisplay.parentDocumentChanged();
+              }
+            }
+          }
+        }
+      }
+
+    });
+  </script>
+</dom-module>

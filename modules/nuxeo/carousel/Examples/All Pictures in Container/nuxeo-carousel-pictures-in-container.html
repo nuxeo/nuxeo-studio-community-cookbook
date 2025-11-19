@@ -1,0 +1,78 @@
+
+<link rel="import" href="nuxeo-carousel-display.html">
+<!--
+
+-->
+<dom-module id="nuxeo-carousel-pictures-in-container">
+  <template>
+    <style include="nuxeo-styles"></style>
+
+    <nuxeo-connection id="nxcon"></nuxeo-connection>
+
+    <!-- Enrichers are set in nuxeo-carousel-display, when fetching each document
+         at the time of the rendition -->
+    <nuxeo-page-provider id="nxProvider"
+                        provider="AllPicturesInContainer"
+                        page-size="[[pageSize]]"
+                        params="{{_params}}"
+                        headers='{"X-NXfetch-document":"properties","X-NXtranslate-directoryEntry":"label"}'>
+    </nuxeo-page-provider>
+
+    <nuxeo-carousel-display
+        id="carouselDisplay"
+        nx-provider="[[_pageProvider]]"
+        params="[[_params]]">
+    </nuxeo-carousel-display>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-carousel-pictures-in-container',
+      behaviors: [Nuxeo.LayoutBehavior],
+
+      properties: {
+        document: {
+          type: Object,
+          observer: "_documentChanged"
+        },
+
+        pageSize: {
+          type: Number,
+          value: 40
+        },
+
+        // Do not set these values directly, they are set when document changes
+        _pageProvider: Object,
+        _params: Object,
+
+      },
+
+      attached: function() {
+        // Tell nuxeo-carousel-display params and all are ready
+        this._pageProvider = this.$.nxProvider;
+      },
+
+      _documentChanged: function(newDoc, prevDoc) {
+        if (newDoc) {
+          if (!prevDoc || newDoc.uid !== prevDoc.uid) {
+            // Tell nuxeo-carousel-display that params and all are ready.
+            // These params are expected by AllPicturesInContainer:
+            this._params = { ecm_ancestorId: newDoc.uid };
+            
+            // If not first call, ask the child to reset the search
+            // (typicaly user is changing the main document)
+            if(prevDoc) {
+              // Because the carousel is really running only when visible, we must
+              // check it is there.
+              if(this.$.carouselDisplay && this.$.carouselDisplay.parentDocumentChanged) {
+                this.$.carouselDisplay.parentDocumentChanged();
+              }
+            }
+          }
+        }
+      }
+
+    });
+  </script>
+</dom-module>

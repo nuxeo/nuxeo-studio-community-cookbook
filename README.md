@@ -32,6 +32,12 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
     <th>Category</th>
   </tr>
   <tr>
+    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/carousel"><img src="modules/nuxeo/carousel/README-Images/01-Carousel.png" width="120px"/></a></td>
+    <td>Carousel</td>
+    <td>Nuxeo</td>
+    <td>Layout</td>
+  </tr>
+  <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/virtual-tree"><img src="modules/nuxeo/virtual-tree/README-Images/overview.png" width="120px"/></a></td>
     <td>Virtual Navigation</td>
     <td>Nuxeo</td>
@@ -46,12 +52,6 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
   <tr>
     <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/replace-rendition"><img src="modules/nuxeo/replace-rendition/replace-rendition-1.png" width="120px"/></a></td>
     <td>Replace Renditions</td>
-    <td>Nuxeo</td>
-    <td>Layout</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/parent-container-search"><img src="modules/nuxeo/parent-container-search/parent-container.png" width="120px"/></a></td>
-    <td>Search for Documents via their Parent Containers</td>
     <td>Nuxeo</td>
     <td>Layout</td>
   </tr>
@@ -100,6 +100,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 Module | Description | Contributor
 --- | --- | ---
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/virtual-tree"><img src="modules/nuxeo/virtual-tree/README-Images/overview.png" width="120px"/></a> | Virtual Navigation | Nuxeo
+<a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/parent-container-search"><img src="modules/nuxeo/parent-container-search/parent-container.png" width="120px"/></a> | Search for Documents via their Parent Containers | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/nev-with-custom-blob-field"><img src="modules/nuxeo/nev-with-custom-blob-field/nev-with-custom-blob-field.png" width="150px"/></a> | Nuxeo Enhanced Viewer with Custom Field | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/replace-rendition"><img src="modules/nuxeo/replace-rendition/replace-rendition-1.png" width="150px"/></a> | Replace Renditions | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/select-all-bulk-action"><img src="modules/nuxeo/select-all-bulk-action/export-bulk.png" width="150px"/></a> | Select All Documents and Send to Bulk Action from Search | Nuxeo

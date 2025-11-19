@@ -1,0 +1,1048 @@
+<!--  nuxeo-carousel-display
+
+  Displays a carousel of documents, loaded from a PageProvider. With previous+next and Go To buttons.
+  The element can be used:
+    1)  Standalone, with its own nuxeo-page-provider (see nuxeo-carousel-document-content.html):
+            <nuxeo-carousel-display
+                id="carouselDisplay"
+                page-provider="myPageProvider"
+                params="[[params]]">
+            </nuxeo-carousel-display>
+
+        The element exposes the parentDocumentChanged(document) API, to be called _by the parent_
+        when the parent document changes. The parenet element may also have changed the params, based
+        on the new main document (see nuxeo-carousel-document-content for an example)
+
+    2)  Inside a nuxeo-results. Following nuxeo-results pattern, you just add
+        nuxeo-carousel-display with the required fields (class="results", a name and an icon),
+            <nuxeo-results . . .>
+
+              . . . data-grid, data-table, ...
+
+              <nuxeo-carousel-display
+                name="carousel"
+                icon="icons:view-carousel"
+                class="results"
+                page-provider="[[nxProvider]]">
+              </nuxeo-carousel-display>
+        You don't set params, this is done by the caller.
+      
+        ==============================
+        IMPORTANT
+        ==============================
+        The expression [[nxProvider]] is the *required* value to use in the context of
+        a nuxeo-results, do not change it.
+  
+  In all cases, you can also pass the schemas property. It is set by default to "*", so all schemas
+  are fetched. You can restrict that to only the schemas you need to display, for example:
+      <nuxeo-carousel-display
+        page-provider="myPageprovider"
+        schemas="dublincore,common,uid,file,product,company">
+      </nuxeo-carousel-display>
+
+  Also, the element fetches documents when it is time to render them (hence why you don't need to pass
+  enrichers, the element chooses them internally).
+
+
+    ========================================
+    IMPORTANT
+    ========================================
+    If you set schemas, make sure to fetch the schemas you want to display in the metadata layout
+    of your document(s).
+
+    In both cases, the parameters are loaded once. When the user clicks the next (or previous)
+    arrow and it requests to fetch next (or previous) page, it calls the provider with the same
+    parameters (and the prev/next page).
+
+    =====================
+    Other Info
+    =====================
+    - Navigation with arrow keys is done by giving the focus to the whole carousel container (then
+      handling keydown events).
+    - Translation keys are handled with default EN values. Keys are:
+      - carousel.button.goTo: "Go to…" (Button label)
+      - carousel.prompt.goTo:
+          - Default is "Go to position (1..<VALUE>):"
+          - If your label has "<VALUE>", it will be replaced by the total number of entries.
+      - carousel.converting: "Converting to PDF..." (Loading message)
+  -->
+<dom-module id="nuxeo-carousel-display">
+  <template>
+    <style include="nuxeo-styles">
+      :host {
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        --toolbar-height: 56px;
+        outline: none; /* Remove default browser focus outline */
+
+        /* viewport is always way bigger than the window. Looks like it's because of the toolbar
+           and other elements above (like the tabs).
+           So we have toolbar (56px)
+                      + document tabs height (46px)
+                      + page content margin (16px)
+                       => 62 */
+        height: calc(100vh - var(--toolbar-height) - 62px);
+      }
+
+      /* Layout part must not tkae the whole width */
+      :host([opened]) .metadataContainer {
+        flex: 0 0 30%;
+        max-width: 30%;
+      }
+
+      .toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: var(--toolbar-height);
+        padding: 0 12px;
+        box-sizing: border-box;
+        border-bottom: 1px solid var(--nuxeo-border, #e8e8e8);
+        background: var(--nuxeo-box);
+        margin-bottom: 5px;
+        flex: 0 0 auto;
+      }
+
+      .title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding-right: 12px;
+      }
+
+      .nav {
+        display: inline-flex;
+        gap: 4px;
+        align-items: center;
+      }
+
+      paper-icon-button.chevron {
+        --paper-icon-button: {
+          width: 48px;
+          height: 48px;
+        };
+      }
+
+      .body {
+        display: flex;
+        flex: 1 1 auto; /* All space below toolbar */
+        min-height: 0;  /* Required for scrolling */
+        box-sizing: border-box;
+      }
+
+      .viewerContainer,
+      .metadataContainer {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        min-height: 0;  /* Allows for scrolling  */
+        overflow: hidden;
+      }
+
+      .viewerContainer {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+
+      .viewer {
+        flex: 1 1 auto;
+        min-height: 0;
+        border-right: 1px solid var(--nuxeo-border, #e8e8e8);
+        padding: 8px;
+        box-sizing: border-box;
+        overflow: auto;
+      }
+
+      #metadataCard {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: auto;
+        border-right: 1px solid var(--nuxeo-border, #e0e0e0);
+      }
+
+      .empty {
+        padding: 24px;
+        color: var(--nuxeo-text-default, #8f8f8f);
+      }
+
+      .nuxeoPageBackground {
+        background-color: var(--nuxeo-page-background, #f5f5f5);
+      }
+
+      /* Loading overlay styles */
+      .loading-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.9);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 100;
+      }
+
+      .loading-message {
+        margin-top: 16px;
+        font-size: 14px;
+        color: var(--nuxeo-text-default, #666);
+        text-align: center;
+      }
+
+      paper-spinner {
+        --paper-spinner-layer-1-color: var(--nuxeo-primary-color, #0066cc);
+        --paper-spinner-layer-2-color: var(--nuxeo-primary-color, #0066cc);
+        --paper-spinner-layer-3-color: var(--nuxeo-primary-color, #0066cc);
+        --paper-spinner-layer-4-color: var(--nuxeo-primary-color, #0066cc);
+      }
+
+      .viewer {
+        position: relative; /* Required for absolute positioning of loading overlay */
+      }
+    </style>
+
+    <!-- So we have the base URL, including /nuxeo or whatever was configured, if changed -->
+    <nuxeo-connection id="nxcon"></nuxeo-connection>
+
+    <nuxeo-document
+      id="currentDocument"
+      enrichers="preview,breadcrumb,renditions,thumbnail,permissions"
+      schemas="[[schemas]]"
+      headers='{"fetch-document": "properties", "translate-directoryEntry": "label", "fetch-directoryEntry": "parent"}'>
+    </nuxeo-document>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="title" >
+        <a href$="[[_url(_currentdocument.uid)]]" target="_blank">[[_currentdocument.title]]</a>
+      </div>
+      <div class="nav">
+        <paper-icon-button icon="chevron-left"
+                            class="chevron"
+                            on-tap="_prev"
+                            disabled$="[[_isPrevDisabled(_entrieslength, _index, _loading)]]"
+          aria-label="Previous"></paper-icon-button>
+
+        <!-- Position indicator: “currentIndex / total” -->
+        <span aria-live="polite">[[_positionLabel(nxProvider, _index, _entrieslength)]]</span>
+
+        <paper-icon-button icon="chevron-right"
+                            class="chevron"
+                            on-tap="_next"
+                            disabled$="[[_isNextDisabled(_entrieslength, _index, _loading)]]"
+          aria-label="Next"></paper-icon-button>
+
+        <!-- Jump to Nth (uses simple prompt) -->
+        <paper-button id="goTo"
+                      class="secondary"
+                      style="vertical-align: middle;"
+                      on-tap="_promptJump"
+                      raised>[[_my_i18n('carousel.button.goTo', 'Go to…')]]</paper-button>
+      </div>
+    </div>
+    
+    <!-- Carousel -->
+    <template is="dom-if" if="[[_hasDocuments(_documents)]]" restamp>
+      <div class="body">
+        <!-- Viewer -->
+        <div class="viewerContainer">
+          <nuxeo-card class="viewer">
+            <!-- Loading indicator -->
+            <template is="dom-if" if="[[_previewLoading]]">
+              <div class="loading-overlay">
+                <paper-spinner active></paper-spinner>
+                <div class="loading-message">[[_my_i18n('carousel.viewer.loading', 'Loading/converting the document…')]]</div>
+              </div>
+            </template>
+            
+            <template is="dom-if" if="[[!_isANote]]" restamp>
+              <nuxeo-document-viewer id="viewer" 
+                                     role="widget" 
+                                     document="[[_currentdocument]]">
+              </nuxeo-document-viewer>
+            </template>
+            <!-- For a reason I fail to explain, note documents are not displayed with nuxeo-document-viewer -->
+            <template is="dom-if" if="[[_isANote]]" restamp>
+              <nuxeo-document-preview document="[[_currentdocument]]"></nuxeo-document-preview>
+            </template>
+          </nuxeo-card>
+        </div>
+        
+        <!-- Metadata -->
+        <div class="metadataContainer">
+          <nuxeo-card id="metadataCard" 
+                      icon="nuxeo:details"
+                      heading="[[i18n('documentPage.details.opened')]]"
+                      collapsible
+                      class="nuxeoPageBackground"
+                      on-tap="_collapseExpandMetadata">
+            <nuxeo-document-info document="[[_currentdocument]]"></nuxeo-document-info>
+            <div class="empty"></div>
+            <nuxeo-document-metadata document="[[_currentdocument]]"></nuxeo-document-metadata>
+          </nuxeo-card>
+        </div>
+      </div>
+    </template>
+
+    <template is="dom-if" if="[[!_hasDocuments(_documents)]]" restamp>
+      <div class="empty">[[i18n('searchResults.noResults')]]</div>
+    </template>
+  </template>
+
+  <script>
+    (function () {
+      'use strict';
+
+      Polymer({
+        is: 'nuxeo-carousel-display',
+        // IronResizableBehavior required to compute visibility and avoid fetching values
+        // every time the user refreshes a page, even when no carousel is visible.
+        behaviors: [Nuxeo.LayoutBehavior, Polymer.IronResizableBehavior],
+
+        properties: {
+          // ========================================
+          // Properties set by parent
+          // ========================================
+          // The name *must be* nxProvider in order to be recognized by nuxeo-results.
+          nxProvider: {
+            type: Object,
+            observer: "_pageProviderChanged"
+          },
+          schemas: {
+            type: String,
+            value: "*"
+          },
+          params: Object,
+
+          // ========================================
+          // "Private" properties
+          // ========================================
+          // This is a "documents" entity-type 
+          _documents: {
+            type: Object,
+            observer: '_documentsChanged'
+          },
+
+          // Current index within the curren entries.
+          _index: {
+            type: Number,
+            value: 0,
+            notify: true,
+            observer: '_indexChanged',
+          },
+
+          // Current document to display
+          _currentdocument: {
+            type: Object,
+            notify: true,
+            observer: '_currentDocumentChanged'
+          },
+
+          _isANote: { 
+            type: Boolean,
+            computed: '_looksLikeANote(_currentdocument)'
+          },
+
+          _loading: {
+            type: Boolean,
+            value: false
+          },
+
+          _visible: {
+            type: Boolean,
+            value: false,
+            observer: '_visibleChanged'
+          },
+
+          _hasLoadedOnce: {
+            type: Boolean,
+            value: false
+          },
+
+          // Helper(s), to avoid calling functions or obj.property.property.property.etc.
+          _entrieslength: {
+            type: Number,
+            value: 0
+          },
+
+          // Track viewer loading state
+          _previewLoading: {
+            type: Boolean,
+            value: false
+          },
+
+          _pageProviderInfo: {
+            type: Object,
+            value: {}
+          }
+        },
+
+        // ==================================================
+        // Listeners
+        // ==================================================
+        // Detect when the carousel becomes visible
+        listeners: {
+          'iron-resize': '_computeVisible'
+        },
+
+        _computeVisible() {
+          this._visible = Boolean(this.offsetWidth || this.offsetHeight);
+        },
+
+        _visibleChanged: function(newValue) {
+          if (newValue) {
+            this._firstFetch();
+          }
+        },
+
+        // ==================================================
+        // **Required callbacks** when inside a nuxeo-results
+        // ==================================================
+        // These are called only in the context of a nuxeo-results.
+        clearSelection: function() {
+          // No selection management in carousel
+        },
+
+        reset: function() {
+          this._documents = null;
+          this._entrieslength = 0;
+          this._index = 0;
+          this._currentdocument = null;
+        },
+
+        selectItems: function() {
+          // No selection management in carousel
+        },
+
+        // The parent nuxeo-results calls fetch() to load data
+        // and expects the promise to be returned.
+        fetch: function() {
+          const pp = this.nxProvider;
+          if (!pp || !pp.fetch) {
+            return Promise.resolve(); // Make sure to return something.
+          }
+
+          const result = pp.fetch();
+          if (result) {
+            return result.then((result) => {
+                this._documents = result;
+                this._entrieslength = result.entries.length;
+                this._index = 0;
+              })
+          }
+        },
+
+        // ==================================================
+        // DOM
+        // ==================================================
+        ready: function() {
+          // Make the carousel focusable
+          this.tabIndex = 0;
+        },
+
+        attached: function () {
+          this._onKeyDownBound = this._onKeyDown.bind(this);
+          this.addEventListener('keydown', this._onKeyDownBound);
+        },
+        
+        detached: function () {
+          this.removeEventListener('keydown', this._onKeyDownBound);
+        },
+
+        _hideNuxeoDocumentBlob: function() {
+          // hide blob actions when a viewer exists
+          Polymer.RenderStatus.afterNextRender(this, () => {
+            const viewer = this.$$('#viewer');
+            if (!viewer) return;
+            try {
+              let nxDocBlob = viewer.shadowRoot && viewer.shadowRoot.querySelector('nuxeo-document-blob');
+              if (nxDocBlob) {
+                nxDocBlob.hidden = true;
+              }
+            } catch (_) {}
+          });
+        },
+
+        // The nuxeo-card is collapsible. We don't handle the show-hide of elements, we
+        // just change background color.
+        _collapseExpandMetadata: function() {
+          const card = this.$$('#metadataCard');
+          if (card) {
+            if(card.opened) {
+              card.classList.remove('nuxeoPageBackground');
+            } else {
+              card.classList.add('nuxeoPageBackground');
+            }
+          }
+        },
+
+        // ==================================================
+        // Observers
+        // ==================================================
+        // Called by parent, when the main folderish document changes.
+        // The params and all have been reset to new values
+        parentDocumentChanged: function() {
+          this._hasLoadedOnce = false;
+          this._firstFetch();
+        },
+
+        _pageProviderChanged: function(newValue) {
+          if(newValue) {
+            this._hasLoadedOnce = false;
+            this._firstFetch();
+          }
+        },
+
+        _documentsChanged: function (newValue) {
+          if (!newValue) {
+            return;
+          }
+
+          // Assume this is a "documents" entity type
+          // But let's check it once, here
+          if(!newValue["entity-type"] || newValue["entity-type"] !== "documents") {
+            throw new Error("documents should be an object with its 'entity-type' property set to 'documents'.");
+          }
+          let len = newValue.entries.length;
+          this._entrieslength = len;
+
+          if(this.$$ && this.$$('#goTo')) {
+            this.$$('#goTo').disabled = (len === 0);
+          }
+          if (len === 0) {
+            this._index = 0;
+            this._currentdocument = null;
+            return;
+          }
+          this._refreshCurrent();
+        },
+
+        _indexChanged: function (newValue, prevValue) {
+          this._refreshCurrent();
+        },
+
+        _hasDocuments: function (docs) {
+          return docs && docs.entries && docs.entries.length > 0;
+        },
+
+        // We want the minimum from the provider, since each document is loaded via the nuxeo-document when displayed
+        _prepareProvider: function() {
+          const pp = this.nxProvider;
+          if (!pp) {
+            return;
+          }
+
+          // Deep copy required
+          this._pageProviderInfo = {
+            enrichers: pp.enrichers ? structuredClone(pp.enrichers) : {},
+            schemas: pp.schemas,
+            headers: pp.headers ? structuredClone(pp.headers) : {}
+          };
+
+          pp.enrichers = {};
+          pp.schemas = "uid";// Trick, because if you pass empty string, it translates to "*"
+          let headers = structuredClone(pp.headers);
+          // Remove as much headers as possible.
+          if(Object.keys(headers).length > 0) {
+            ["properties",
+             "enrichers.document",
+             "fetch.document",
+             "X-NXfetch-document",
+             "fetch-aggregate",
+             "translate-directoryentry",
+             "X-NXtranslate-directoryEntry"].forEach((key) => {
+              if(key in headers) {
+                delete headers[key];
+              }
+            }); 
+          }
+          headers.skipAggregates = true;
+          pp.headers = headers;
+        },
+
+        _restoreProvider: function() {
+          const pp = this.nxProvider;
+          if (!pp) {
+            return;
+          }
+
+          pp.enrichers = this._pageProviderInfo.enrichers;
+          pp.schemas = this._pageProviderInfo.schemas;
+          pp.headers = this._pageProviderInfo.headers;
+        },
+
+        // ==================================================
+        // Fetch new page
+        // ==================================================
+        // Centralize fetching a new page. The callback pickIndexCallback(len) is used to
+        // pick the new index within the new page (len is the number of entries in the new page)
+        // These are *not* called in the context of a nuxeo-results.
+        _fetchPage(page, pickIndexCallback) {
+          const pp = this.nxProvider;
+          if (!pp) {
+            return;
+          }
+
+          this._prepareProvider();
+
+          this._loading = true;
+          pp.page = page;
+          pp.fetch()
+            .then((result) => {
+              const len = (result && result.entries) ? result.entries.length : 0;
+              const targetIndex = Math.max(0, Math.min(pickIndexCallback(len), Math.max(0, len - 1)));
+              this._documents = result;
+              this._entrieslength = len;
+              this._index = (len ? targetIndex : 0);
+
+              this._hasLoadedOnce = true;
+            })
+            .catch((err) => {
+              console.error("Error while fetching page #: " + page + ": ", err);
+            })
+            .finally(() => {
+              this._loading = false;
+              this._restoreProvider();
+            });
+        },
+
+        _firstFetch: function() {
+          if (this._visible && !this._hasLoadedOnce) {
+            this._fetchPage(1, () => 0);
+          }
+        },
+
+        _fetchNextPage: function () {
+          this._fetchPage(this.nxProvider.page + 1, () => 0);
+        },
+
+        _fetchPreviousPage: function () {
+          this._fetchPage(this.nxProvider.page - 1, (len) => len - 1);
+        },
+        
+        _gotoNth: function(n) {
+          // If provider not ready, do nothing.
+          var pp = this.nxProvider;
+          if(!pp) {
+            return;
+          }
+
+          var targetPage = Math.floor((n - 1) / pp.pageSize) + 1;   // 1-based page
+          var targetIndex = (n - 1) % pp.pageSize;                  // 0-based index within page
+
+          // If already on the desired page, just switch index.
+          if (pp.page === targetPage && this._documents && this._documents.entries) {
+            var len = this._documents.entries.length;
+            this._index = Math.min(targetIndex, Math.max(0, len - 1));
+            return;
+          }
+
+          this._fetchPage(targetPage, () => targetIndex);
+        },
+
+        // ==================================================
+        // Handle viewer loading when it takes time
+        // ==================================================
+        _currentDocumentChanged: function(newDoc, oldDoc) {
+          if(!newDoc) return;
+          if(newDoc && oldDoc && newDoc.uid === oldDoc.uid) return;
+
+          if(!this._documentNeedsConversion(newDoc)) {
+            // No conversion needed, no special loading management
+            this._previewLoading = false;
+            return;
+          }
+          
+          this._startPdfRenderWatcher();
+
+        },
+
+        _viewerLooksReady: function() {
+          const viewer = this.$$('#viewer');
+          if (!viewer || !viewer.shadowRoot) {
+            return false;
+          }
+
+          const preview = viewer.shadowRoot.querySelector('nuxeo-document-preview');
+          const pdfViewer = preview && preview.shadowRoot && preview.shadowRoot.querySelector('nuxeo-pdf-viewer');
+          const iframe = pdfViewer && pdfViewer.shadowRoot && pdfViewer.shadowRoot.querySelector('iframe');
+
+          const doc = iframe && iframe.contentDocument;
+          if (!doc) {
+            return false;
+          }
+
+          // Look for a rendered PDF page canvas
+          const canvas = doc.querySelector('.page canvas, canvas');
+          return canvas && canvas.width > 0 && canvas.height > 0;
+        },
+
+        // This looks complex for just UI/UX, but staying n seconds in front of a gray area can be a concern
+        // and the user may click the next/prev button or even try to reload the page while it's just taking
+        // time to convert and render.
+        _startPdfRenderWatcher() {
+
+          if(this._viewerLooksReady()) {
+            this._previewLoading = false;
+            return;
+          }
+
+          let attempts = 0;
+          const ATTEMPT_DURATION_MS = 500;
+          const MAX_ATTEMPTS = 20; // 10s max
+
+          let startTime = Date.now();
+
+          const tick = () => {
+            attempts += 1;
+
+            //console.log("_startPdfRenderWatcher tick, attempt #" + attempts);
+
+            if(attempts > 2) {
+              //console.log("Already one sec, show the loading overlay");
+              this._previewLoading = true;
+            }
+
+            if(this._viewerLooksReady()) {
+              // Wait if it was displayed just a short time ago?
+              if(this._previewLoading) {
+                let timeEllapsed = Date.now() - startTime;
+                if(timeEllapsed < 2000) {
+                  console.log("too short for the viewer...");
+                  //console.log("Viewer looks ready, but wait a bit more to avoid flicker");
+                  this.async(() => {
+                  console.log("...now closing it.");
+                    this._previewLoading = false;
+                  }, 2000 - timeEllapsed);
+                  return; // Exit early, don't schedule next tick
+                } else {
+                  //console.log("Viewer looks ready, hide loading overlay");
+                  this._previewLoading = false;
+                  return; // Exit early, don't schedule next tick
+                }
+              } else {
+                // Viewer was ready before showing overlay, nothing to do
+                return; // Exit early, don't schedule next tick
+              }
+            }
+
+            // Only continue if viewer is not ready and we haven't exceeded max attempts
+            if (attempts < MAX_ATTEMPTS) {
+              this.async(tick, ATTEMPT_DURATION_MS);
+            } else {
+              this._previewLoading = false; // give up gracefully
+            }
+          };
+
+          this.async(tick, ATTEMPT_DURATION_MS);
+        },
+        
+        // Check if document likely needs server-side conversion
+        _documentNeedsConversion: function(doc) {
+          if (!doc || !doc.properties) {
+            return false;
+          }
+
+          const fileContent = doc.properties['file:content'];
+          if (!fileContent) {
+            return false;
+          }
+
+          const mimeType = fileContent['mime-type'] || '';
+          if(mimeType.startsWith('image/') ||
+             mimeType.startsWith('video/') ||
+             mimeType.startsWith('audio/') ||
+             mimeType === 'application/pdf' ||
+             // Using same as nuxeo-document-preview:
+             mimeType === "application/photoshop" ||
+             mimeType.includes("illustrator") ||
+             mimeType.includes("postscript") ||
+             mimeType === 'application/gxf' ||
+             mimeType === 'application/mxf' ||
+             // Special types that we know the viewer fail to render
+             mimeType === "application/zip") {
+            return false;
+          }
+
+          return true;
+
+          /*
+          // Documents that typically need conversion to PDF
+          const conversionMimeTypes = [
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/vnd.ms-excel',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'application/vnd.ms-powerpoint',
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+            'application/vnd.oasis.opendocument.text',
+            'application/vnd.oasis.opendocument.spreadsheet',
+            'application/vnd.oasis.opendocument.presentation',
+            'text/rtf'
+          ];
+
+          const conversionExtensions = [
+            '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx',
+            '.odt', '.ods', '.odp', '.rtf'
+          ];
+
+          // Check MIME type first
+          if (conversionMimeTypes.includes(mimeType)) {
+            return true;
+          }
+
+          // Check file extension as fallback
+          const filename = fileContent.name ? fileContent.name.toLowerCase() : '';
+          return conversionExtensions.some(ext => filename.endsWith(ext));
+          */
+        },
+
+        // ==================================================
+        // Current document
+        // ==================================================
+        _loadDocFromIndex(idx) {
+          let len = this._entrieslength;
+          if(len < 1) {
+            return null;
+          }
+
+          if (typeof idx !== "number") {
+            idx = this._index;
+          }
+
+          if (idx < 0) {
+            idx = 0;
+          } else if (idx >= len) {
+            idx = len - 1;
+          }
+
+          if (this._documents && this._documents.entries) {
+            let docId = this._documents.entries[idx].uid;
+            let docObj = this.$.currentDocument;
+            docObj.docId = docId;
+            docObj.get()
+                  .then((result) => {
+                    this._currentdocument = result;// => _currentDocumentChanged
+                    this._hideNuxeoDocumentBlob();
+                  })
+                  .catch((err) => {
+                    console.error("Error fetching doc ID " + docId + ": ", err);
+                    this._previewLoading = false; // Reset loading state on error
+                  });
+          }
+
+          return null;
+        },
+
+        _refreshCurrent: function () {
+          let len = this._entrieslength;
+
+          if (!len) {
+            this._currentdocument = null;
+            return;
+          }
+          this._loadDocFromIndex();
+          
+        },
+
+        _looksLikeANote: function(doc) {
+          // "note" schema and no "file:content". This is an arbitrary choice. We consider that if
+          // the doc has both "note "and "file", then "file" has priority."
+          if(doc && this.hasSchema(doc, "note") && (!doc.properties || !doc.properties["file:content"])) {
+            return true;
+          }
+          return false;
+        },
+
+        _url: function(uuid) {
+          if(!uuid) {
+            return '';
+          }
+
+          return `${this.$.nxcon.url}/ui/#!/doc/${uuid}`;
+        },
+
+        // ==================================================
+        // Navigation
+        // ==================================================
+        _hasNextPage: function () {
+          if (this.nxProvider) {
+            let pp = this.nxProvider;
+            if( pp.numberOfPages) {
+              return pp.page < pp.numberOfPages;  
+            }
+            return pp.isNextPageAvailable;
+          }
+          return false;
+        },
+
+        _hasPreviousPage: function () {
+          if (this.nxProvider) {
+            let pp = this.nxProvider;
+            return pp.isPreviousPageAvailable || pp.page > 1;
+          }
+          return false;
+        },
+
+        _isPrevDisabled: function (length, index, loading) {
+          if (!length || loading) {
+            return true;
+          }
+
+          if (index > 0) {
+            return false;
+          }
+
+          // First element of current page => do we have previous page(s)?
+          return !this._hasPreviousPage();
+        },
+
+        _isNextDisabled: function (length, index, loading) {
+          if (!length || loading) {
+            return true;
+          }
+
+          if (index < length - 1) {
+            return false;
+          }
+
+          // Last element of current page => do we have more page(s)?
+          return !this._hasNextPage()
+        },
+
+        // Either we navigate in current entries, or we ask for a new page
+        // We change this._index, wich triggers the loading of current doc from the entries.
+        _next: function () {
+          var len = this._entrieslength;
+          if (!len) {
+            return;
+          }
+
+          if (this._index < len - 1) {
+            this._index += 1;
+            this._ensureContainerFocus();
+            return;
+          }
+
+          // At end of page: try to fetch next page
+          if (this._hasNextPage()) {
+            this._fetchNextPage();
+          } else {
+            // Reached absolute end, ensure container keeps focus
+            this._ensureContainerFocus();
+          }
+        },
+
+        _prev: function () {
+          var len = this._entrieslength;
+          if (!len) {
+            return;
+          }
+
+          if (this._index > 0) {
+            this._index = this._index - 1;
+            this._ensureContainerFocus();
+            return;
+          }
+
+          // At start of page: try to fetch previous page
+          if (this._hasPreviousPage()) {
+            // After previous page fetch, jump to last item
+            this._fetchPreviousPage();
+          } else {
+            // Reached absolute beginning, ensure container keeps focus
+            this._ensureContainerFocus();
+          }
+        },
+
+        // ==================================================
+        // Focus and Keyboard
+        // ==================================================
+        // Ensure the carousel container maintains focus after navigation
+        // This prevents focus loss when buttons become disabled
+        _ensureContainerFocus: function() {
+          Polymer.RenderStatus.afterNextRender(this, () => {
+            if (document.activeElement !== this) {
+              this.focus();
+            }
+          });
+        },
+
+        _onKeyDown: function (e) {
+          // Handle arrow keys when carousel container is focused
+          if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            this._prev();
+          } else if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            this._next();
+          }
+        },
+
+        // ==================================================
+        // Position and GoToNth
+        // ==================================================
+        _positionLabel: function(pp, index, pageLen) {
+          // If provider not ready, display nothing.
+          if(!pp) {
+            return "";
+          }
+
+          if(!this._entrieslength) {
+            return "";
+          }
+          
+          let total = pp.resultsCount;
+          let cur = ((pp.page - 1) * pp.pageSize) + (index + 1);
+          return cur + ' / ' + total;
+        },
+
+        _promptJump: function() {
+          // If provider not ready, do nothing.
+          var pp = this.nxProvider;
+          if(!pp) {
+            return;
+          }
+
+          var total = pp.resultsCount;
+          var def = ((pp.page - 1) * pp.pageSize) + (this._index + 1);
+
+          let label = this._my_i18n("carousel.prompt.goTo", "Go to position (1..<VALUE>):");
+          label = label.indexOf("<VALUE>") > -1 ? label.replace("<VALUE>", total) : label;
+          var input = window.prompt(label, def);
+          if (input == null) { // user cancelled
+            return;
+          }
+          var n = parseInt(input, 10);
+          if (!Number.isFinite(n) || n < 1) {
+            return;
+          }
+
+          if(n > total) {
+            n = total;
+          } else if(n < 1) {
+            n = 1;
+          }
+
+          this._gotoNth(n);
+        },
+
+        // ==================================================
+        // The usual "Misc."
+        // ==================================================
+        _my_i18n: function(key, def) {
+          let label = this.i18n(key);
+          if(label === key) {
+            return def;
+          }
+          return label;
+        }
+      });
+    })();
+  </script>
+</dom-module>
