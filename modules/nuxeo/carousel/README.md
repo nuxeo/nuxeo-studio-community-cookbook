@@ -32,7 +32,7 @@ When standalone, and _if_ using a parent document (see below the examples to dis
 
 You can manually add the carousel inside a nuxeo-results:
 
-<img src="README-Images/02-Nuxeo-Results.png" alt="Carousel" width="800">
+<img src="README-Images/02-nuxeo-results.png" alt="Carousel" width="800">
 
 Following nuxeo-results pattern, you just add `nuxeo-carousel-display` with the _required_ attributes:
 
