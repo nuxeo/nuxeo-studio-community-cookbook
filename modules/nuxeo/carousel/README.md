@@ -100,6 +100,13 @@ In both case:
 1. Import the elements in Designer
 2. Create tab using the element(s), setup the correct filters, possibly tune the schema(s) fetched 
 
+## Room for Improvment
+
+Yes, there is room for improvment. This is an example. A bit complex, with hundreds of lines of HTML/JS.
+
+We could extract some parts as behaviors, even some elements (maybe a nuxeo-document-viewer-with-loading-indicator), etc.
+
+Anyone welcome to contribute :-)
 
 ## License
 [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
