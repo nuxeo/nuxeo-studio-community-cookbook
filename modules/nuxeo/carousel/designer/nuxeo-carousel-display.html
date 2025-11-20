@@ -5,12 +5,14 @@
           deployed, and if deployed elsewhere than in "elements", change the import path below.
 
   Displays a carousel of documents, loaded from a PageProvider. With previous+next and Go To buttons.
-  The element can be used:
+  The element can be used (see below about the with/without metadata or blobactions):
     1)  Standalone, with its own nuxeo-page-provider (see nuxeo-carousel-document-content.html):
             <nuxeo-carousel-display
                 id="carouselDisplay"
                 page-provider="myPageProvider"
-                params="[[params]]">
+                params="[[params]]"
+                with-metadata
+                without-blob-actions>
             </nuxeo-carousel-display>
 
         The element exposes the parentDocumentChanged(document) API, to be called _by the parent_
@@ -27,7 +29,9 @@
                 name="carousel"
                 icon="icons:view-carousel"
                 class="results"
-                page-provider="[[nxProvider]]">
+                page-provider="[[nxProvider]]"
+                without-metadata
+                without-blob-actions>
               </nuxeo-carousel-display>
         You don't set params, this is done by the caller.
       
@@ -57,6 +61,23 @@
     In both cases, the parameters are loaded once. When the user clicks the next (or previous)
     arrow and it requests to fetch next (or previous) page, it calls the provider with the same
     parameters (and the prev/next page).
+
+    =====================
+    Attributes/Properties
+    =====================
+    - nxProvider: The page provider to use
+    - params: The parameters to pass to the page provider
+    - schemas: The schemas to fetch for each document. Default is "*"
+
+    Boolean attributes are always a challenge in polymer, since you can't explicitely pass a Boolean
+    attribute to false (<my-element my-bool> and <my-element my-bool="false"> both mean true). So we
+    provide both withX and withoutX:
+    - withMetadata: If true, display the metadata panel. Default is true.
+    - withoutMetadata: If true, do not display the metadata panel. Default is false.
+    - withBlobActions: If true, display blob actions in the document viewer. Default is false.
+    - withoutBlobActions: If true, do not display blob actions in the document viewer.
+
+    Default values display the metadata and not the blob actions
 
     =====================
     Other Info
@@ -214,22 +235,31 @@
       <div class="body">
         <!-- Viewer -->
         <div class="viewerContainer">
-          <nuxeo-se-document-viewer document="[[_currentdocument]]"></nuxeo-se-document-viewer>
+          <template is="dom-if" if="[[withBlobActions]]" restamp>
+            <!-- By default, blob actions are displayedb-->
+            <nuxeo-se-document-viewer document="[[_currentdocument]]"></nuxeo-se-document-viewer>
+          </template>
+          <template is="dom-if" if="[[withoutBlobActions]]" restamp>
+            <nuxeo-se-document-viewer document="[[_currentdocument]]"
+                                      without-blob-actions></nuxeo-se-document-viewer>
+          </template>
         </div>
         
         <!-- Metadata -->
-        <div class="metadataContainer">
-          <nuxeo-card id="metadataCard" 
-                      icon="nuxeo:details"
-                      heading="[[i18n('documentPage.details.opened')]]"
-                      collapsible
-                      class="nuxeoPageBackground"
-                      on-tap="_collapseExpandMetadata">
-            <nuxeo-document-info document="[[_currentdocument]]"></nuxeo-document-info>
-            <div class="empty"></div>
-            <nuxeo-document-metadata document="[[_currentdocument]]"></nuxeo-document-metadata>
-          </nuxeo-card>
-        </div>
+        <template is="dom-if" if="[[withMetadata]]" restamp>
+          <div class="metadataContainer">
+            <nuxeo-card id="metadataCard" 
+                        icon="nuxeo:details"
+                        heading="[[i18n('documentPage.details.opened')]]"
+                        collapsible
+                        class="nuxeoPageBackground"
+                        on-tap="_collapseExpandMetadata">
+              <nuxeo-document-info document="[[_currentdocument]]"></nuxeo-document-info>
+              <div class="empty"></div>
+              <nuxeo-document-metadata document="[[_currentdocument]]"></nuxeo-document-metadata>
+            </nuxeo-card>
+          </div>
+        </template>
       </div>
     </template>
 
@@ -257,11 +287,32 @@
             type: Object,
             observer: "_pageProviderChanged"
           },
+
           schemas: {
             type: String,
             value: "*"
           },
+
           params: Object,
+
+          // Always a challenge to use real booleans for attributes.
+          withMetadata: {
+            type: Boolean,
+            value: true,
+          },
+          withoutMetadata: {
+            type: Boolean,
+            value: false
+          },
+
+          withBlobActions: {
+            type: Boolean,
+            value: false
+          },
+          withoutBlobActions: {
+            type: Boolean,
+            value: true
+          },
 
           // ========================================
           // "Private" properties
@@ -319,7 +370,7 @@
         // ==================================================
         // Detect when the carousel becomes visible
         listeners: {
-          'iron-resize': '_computeVisible'
+          'iron-resize': '_computeVisible',
         },
 
         _computeVisible() {
@@ -375,6 +426,19 @@
         ready: function() {
           // Make the carousel focusable
           this.tabIndex = 0;
+
+          // Handle visibility of stuff
+          if(this.hasAttribute('without-metadata')) {
+            this.withMetadata = !this.withoutMetadata;
+          } else if(this.hasAttribute('with-metadata')) {
+            this.withoutMetadata = !this.withMetadata;
+          }
+
+          if(this.hasAttribute('with-blob-actions')) {
+            this.withoutBlobActions = !this.withBlobActions;
+          } else if(this.hasAttribute('without-blob-actions')) {
+            this.withBlobActions = !this.withoutBlobActions;
+          }
         },
 
         attached: function () {

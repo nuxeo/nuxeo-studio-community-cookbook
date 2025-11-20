@@ -35,5 +35,27 @@ Once uploaded, use it in places where you need to display the preview of a docum
 <!--
 <nuxeo-document-viewer role="widget" document="[[document]]"></nuxeo-document-viewer>
 -->
-<nuxeo-se-document-viewer role="widget" document="[[document]]" show-blob-actions></nuxeo-se-document-viewer>
+<nuxeo-se-document-viewer role="widget" document="[[document]]" with-blob-actions></nuxeo-se-document-viewer>
+```
+
+## Show-Hide Blob Actions
+
+As it always is a bit challenging to use `boolean` atributes, the element provides 2: `withBlobActions` and `withoutBlobActions`. Default value is "display blob actions", to act as `nuxeo-document-viewer`. So:
+
+* To display the blob actions:
+
+```
+<nuxeo-se-document-viewer role="widget" document="[[document]]"></nuxeo-se-document-viewer>
+```
+
+Or, to have an explicit statement in our code:
+
+```
+<nuxeo-se-document-viewer role="widget" document="[[document]]" with-blob-actions></nuxeo-se-document-viewer>
+```
+
+* To hide the blob actions:
+
+```
+<nuxeo-se-document-viewer role="widget" document="[[document]]" without-blob-actions></nuxeo-se-document-viewer>
 ```

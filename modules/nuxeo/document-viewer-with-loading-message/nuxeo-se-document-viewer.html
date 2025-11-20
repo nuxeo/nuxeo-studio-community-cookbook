@@ -11,16 +11,24 @@
 
   Usage:
     In a carousel or in view mode only:
-        <nuxeo-se-document-viewer document="[[document]]"></nuxeo-se-document-viewer>
-
-    Overriding the FFile view layout => we want the blob actions:
         <nuxeo-se-document-viewer document="[[document]]"
-                                  show-blob-actions
-                                  loading-message="my.custom.key"></nuxeo-se-document-viewer>
+                                  without-blob-actions></nuxeo-se-document-viewer>
+
+    Overriding the File view layout => we want the blob actions:
+      <nuxeo-se-document-viewer document="[[document]]"
+                                with-blob-actions
+                                loading-message="my.custom.key"></nuxeo-se-document-viewer>
+      Default is with-blob-actions, so you don't have to use this attribute unless you want
+      to be explicit in your code.
 
   Properties:
     - document: The Nuxeo document to display
-    - showBlobActions: Boolean to show or hide blob actions in the viewer (default: false)
+    - withBlobActions: Boolean to show or hide blob actions in the viewer (default: false)
+    - withoutBlobActions: the reverse
+        Need both because of the way Polymer handles boolean attributes. As a reminder,
+          <my-element with-blob-actions> set withBlobActions to true, but...
+          <my-element with-blob-actions="false">
+        ..._also_ set withoutBlobActions to true.
     - loadingMessage: Custom message to display while loading (optional).
                       Can (should) be a translation key
                       default value: carousel.viewer.loading/"Loading/converting the document…"
@@ -116,7 +124,12 @@
             observer: '_documentChanged'
           },
 
-          showBlobActions: {
+          // Always a challenge to use real booleans for attributes.
+          withBlobActions: {
+            type: Boolean,
+            value: true,
+          },
+          withoutBlobActions: {
             type: Boolean,
             value: false,
           },
@@ -152,6 +165,14 @@
           _blobActionsHidden: {
             type: Boolean,
             value: false,
+          }
+        },
+
+        ready: function() {
+          if(this.hasAttribute('without-blob-actions')) {
+            this.withBlobActions = !this.withoutBlobActions;
+          } else if(this.hasAttribute('with-blob-actions')) {
+            this.withoutBlobActions = !this.withBlobActions;
           }
         },
 
@@ -281,7 +302,7 @@
 
         _hideBlobActions: function() {  
 
-          if(this.showBlobActions || this._blobActionsHidden) {
+          if(this.withBlobActions || this._blobActionsHidden) {
             return;
           }
           

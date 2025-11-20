@@ -30,7 +30,9 @@ Once imported and updated for `nuxeo-se-document-viewer`, the element can be use
 <nuxeo-carousel-display
   id="carouselDisplay"
   page-provider="myPageProvider"
-  params="[[params]]">
+  params="[[params]]"
+  with-metadata
+  without-blob-actions>
 </nuxeo-carousel-display>
 ```
 
@@ -58,7 +60,9 @@ Following nuxeo-results pattern, you just add `nuxeo-carousel-display` with the 
     name="carousel"
     icon="icons:view-carousel"
     class="results"
-    page-provider="[[nxProvider]]">
+    page-provider="[[nxProvider]]"
+    with-metadata
+    with-blob-actions>
   </nuxeo-carousel-display>
   . . .
 ```
@@ -68,7 +72,7 @@ Following nuxeo-results pattern, you just add `nuxeo-carousel-display` with the 
 > * The expression `[[nxProvider]]` is the *required* value to use in the context of a `nuxeo-results`, do not change it
 
 
-### Common Settings (standalone or inside a `nuxeo-results`)
+### Properties/Attributes (standalone or inside a `nuxeo-results`)
   
 * In all cases, you can also pass the `schemas` property. It is set by default to "*", so all schemas are fetched. You can restrict that to only the schemas you need to display in the metadata layout of your documents, for example:
 
@@ -80,6 +84,26 @@ Following nuxeo-results pattern, you just add `nuxeo-carousel-display` with the 
 ```
 
 * Also, the element fetches documents when it is time to render them (hence why you don't need to pass enrichers, the element chooses them internally).
+
+* **About Boolean attributes**
+
+it always is a bit challenging, with Polymer, to handle `boolean` attributes, since you can't explicitly pass a Boolean attribute to false: `<my-element my-bool>` and `<my-element my-bool="false">` both mean `myBool is set to `true`. So we provide both `withX` and `withoutX`:
+    - `withMetadata`: If `true`, display the metadata panel. Default is `true`.
+    - `withoutMetadata`: If `true`, do not display the metadata panel. Default is `false`.
+    - `withBlobActions`: If `true`, display blob actions in the document viewer. Default is `false`.
+    - `withoutBlobActions`: If `true`, do not display blob actions in the document viewer. Default is `true`
+
+=> Default values display the metadata and not the blob actions, so...
+
+```html
+<nuxeo-carousel-display
+  page-provider="myPageprovider"
+  schemas="dublincore,common,uid,file,product,company">
+</nuxeo-carousel-display>
+```
+
+... displays the matadata and not the blob actions.
+
 
 ### Other Info
 
