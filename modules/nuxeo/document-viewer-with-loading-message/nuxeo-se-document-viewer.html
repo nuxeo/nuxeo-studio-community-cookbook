@@ -1,0 +1,334 @@
+<!--
+  nuxeo-se-document-viewer
+
+  A wrapper around nuxeo-document-viewer that displays a loading indicator while the document
+  is being converted to PDF or rendered if it takes more than a couple seconds.
+  This is particularly useful for documents that require server-side conversion (Word, Excel,
+  PowerPoint, etc.), and the conversion takes time.
+      => It is mainly useless if you display an Image, a Note, a Video, an Audio.
+  
+  Typically
+
+  Usage:
+    In a carousel or in view mode only:
+        <nuxeo-se-document-viewer document="[[document]]"></nuxeo-se-document-viewer>
+
+    Overriding the FFile view layout => we want the blob actions:
+        <nuxeo-se-document-viewer document="[[document]]"
+                                  show-blob-actions
+                                  loading-message="my.custom.key"></nuxeo-se-document-viewer>
+
+  Properties:
+    - document: The Nuxeo document to display
+    - showBlobActions: Boolean to show or hide blob actions in the viewer (default: false)
+    - loadingMessage: Custom message to display while loading (optional).
+                      Can (should) be a translation key
+                      default value: carousel.viewer.loading/"Loading/converting the document…"
+    - maxLoadingTimeMS: Maximum time to show loading indicator in milliseconds (default: 10000)
+    - checkIntervalMS: Interval between viewer ready checks in milliseconds (default: 500)
+
+-->
+<dom-module id="nuxeo-se-document-viewer">
+  <template>
+    <style include="nuxeo-styles">
+      :host {
+        display: block;
+        position: relative;
+      }
+      .viewer {
+        flex: 1 1 auto;
+        min-height: 0;
+        border-right: 1px solid var(--nuxeo-border, #e8e8e8);
+        padding: 8px;
+        box-sizing: border-box;
+        overflow: auto;
+
+        position: relative; /* For the overlay */
+      }
+
+      /* Loading overlay styles */
+      .loading-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.9);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 100;
+      }
+
+      .loading-message {
+        margin-top: 16px;
+        font-size: 14px;
+        color: var(--nuxeo-text-default, #666);
+        text-align: center;
+      }
+
+      paper-spinner {
+        --paper-spinner-layer-1-color: var(--nuxeo-primary-color, #0066cc);
+        --paper-spinner-layer-2-color: var(--nuxeo-primary-color, #0066cc);
+        --paper-spinner-layer-3-color: var(--nuxeo-primary-color, #0066cc);
+        --paper-spinner-layer-4-color: var(--nuxeo-primary-color, #0066cc);
+      }
+    </style>
+
+    <nuxeo-card class="viewer">
+      <!-- Loading indicator -->
+      <template is="dom-if" if="[[_loading]]">
+        <div class="loading-overlay">
+          <paper-spinner active></paper-spinner>
+          <div class="loading-message">[[_getLoadingMessage(loadingMessage)]]</div>
+        </div>
+      </template>
+
+      <!-- Actual viewer -->
+      <!-- Note documents are not displayed with nuxeo-document-viewer
+           (see their default view layout)-->
+      <template is="dom-if" if="[[!_isANote]]" restamp>
+        <nuxeo-document-viewer
+          id="viewer"
+          role="widget"
+          document="[[document]]">
+        </nuxeo-document-viewer>
+      </template>
+
+      <template is="dom-if" if="[[_isANote]]" restamp>
+        <nuxeo-note-editor document="[[document]]"></nuxeo-note-editor>
+      </template>
+    </nuxeo-card>
+  </template>
+
+  <script>
+    (function () {
+      'use strict';
+
+      Polymer({
+        is: 'nuxeo-se-document-viewer',
+        behaviors: [Nuxeo.LayoutBehavior],
+
+        properties: {
+          document: {
+            type: Object,
+            observer: '_documentChanged'
+          },
+
+          showBlobActions: {
+            type: Boolean,
+            value: false,
+          },
+
+          loadingMessage: {
+            type: String,
+            value: 'carousel.viewer.loading'
+          },
+
+          // Maximum time to show loading indicator (ms)
+          maxLoadingTimeMS: {
+            type: Number,
+            value: 10000
+          },
+
+          // Interval between viewer ready checks (ms)
+          checkIntervalMS: {
+            type: Number,
+            value: 500
+          },
+
+          // "Private" properties
+          _isANote: {
+            type: Boolean,
+            computed: '_looksLikeANote(document)'
+          },
+
+          _loading: {
+            type: Boolean,
+            value: false
+          },
+
+          _blobActionsHidden: {
+            type: Boolean,
+            value: false,
+          }
+        },
+
+        // ========================================
+        // Observers/Listeners
+        // ========================================
+        _documentChanged: function(newDoc, oldDoc) {
+
+          this._hideBlobActions();
+
+            // No doc or same doc => no processing
+          if (!newDoc || (newDoc && oldDoc && newDoc.uid === oldDoc.uid)) {
+            this._loading = false;
+            return;
+          }
+
+          // No conversion needed => no special processing
+          if (!this._documentNeedsConversion(newDoc)) {
+            this._loading = false;
+            return;
+          }
+
+          this._loading = false;
+          this._startViewerWatcher();
+        },
+
+        // ========================================
+        // Handle slow conversion/loading
+        // ========================================
+        // Check if document likely needs server-side conversion
+        _documentNeedsConversion: function(doc) {
+
+          const fileContent = doc && doc.properties ? doc.properties['file:content'] : null;
+          if (!fileContent) {
+            return false;
+          }
+
+          const mimeType = fileContent['mime-type'] || '';
+          
+          // Documents that don't need conversion
+          if (mimeType.startsWith('image/') ||
+              mimeType.startsWith('video/') ||
+              mimeType.startsWith('audio/') ||
+              mimeType === 'application/pdf' ||
+              // Using same as nuxeo-document-preview:
+              mimeType === "application/photoshop" ||
+              mimeType.includes("illustrator") ||
+              mimeType.includes("postscript") ||
+              mimeType === 'application/gxf' ||
+              mimeType === 'application/mxf' ||
+              // Special types that we know the viewer fails to render
+              mimeType === "application/zip") {
+            return false;
+          }
+
+          return true;
+        },
+
+        // Check if the viewer looks ready (PDF is rendered)
+        // Requires looking inside the shadowRoot.
+        _viewerLooksReady: function() {
+          const viewer = this.$$('#viewer');
+          if (!viewer || !viewer.shadowRoot) {
+            return false;
+          }
+
+          const preview = viewer.shadowRoot.querySelector('nuxeo-document-preview');
+          const pdfViewer = preview && preview.shadowRoot && preview.shadowRoot.querySelector('nuxeo-pdf-viewer');
+          const iframe = pdfViewer && pdfViewer.shadowRoot && pdfViewer.shadowRoot.querySelector('iframe');
+
+          const doc = iframe && iframe.contentDocument;
+          if (!doc) {
+            return false;
+          }
+
+          // Look for a rendered PDF page canvas
+          const canvas = doc.querySelector('.page canvas, canvas');
+          return canvas && canvas.width > 0 && canvas.height > 0;
+        },
+
+        // Monitor the viewer until it's ready or timeout
+        _startViewerWatcher: function() {
+          if (this._viewerLooksReady()) {
+            this._loading = false;
+            return;
+          }
+
+          let attempts = 0;
+          const maxAttempts = Math.floor(this.maxLoadingTimeMS / this.checkIntervalMS);
+          const startTime = Date.now();
+          var self = this;
+
+          const tick = () => {
+            attempts += 1;
+
+            // Show loading overlay after a couple of attempts (avoid flicker for fast renders)
+            if (attempts > 2) {
+              self._loading = true;
+            }
+
+            if (self._viewerLooksReady()) {
+              if (self._loading) {
+                // If loading message was displayed, let it displayed at least 2s
+                const timeElapsed = Date.now() - startTime;
+                if (timeElapsed < 2000) {
+                  self.async(() => {
+                    self._loading = false;
+                  }, 2000 - timeElapsed);
+                } else {
+                  self._loading = false;
+                }
+              }
+              return; // No tick scheduling needed
+            }
+
+            // Continue checking if we haven't exceeded max attempts
+            if (attempts < maxAttempts) {
+              self.async(tick, self.checkIntervalMS);
+            } else {
+              // Give up gracefully
+              self._loading = false;
+            }
+          };
+
+          this.async(tick, this.checkIntervalMS);
+        },
+
+        _hideBlobActions: function() {  
+
+          if(this.showBlobActions || this._blobActionsHidden) {
+            return;
+          }
+          
+          // hide blob actions when a viewer exists
+          Polymer.RenderStatus.afterNextRender(this, () => {
+            const viewer = this.$$('#viewer');
+            if (!viewer) return;
+            try {
+              let nxDocBlob = viewer.shadowRoot && viewer.shadowRoot.querySelector('nuxeo-document-blob');
+              if (nxDocBlob) {
+                nxDocBlob.hidden = true;
+                this._blobActionsHidden = true;
+              }
+            } catch (_) {}
+          });
+        },
+
+        // ========================================
+        // Utility methods
+        // ========================================
+        _looksLikeANote: function(doc) {
+          if (doc && this.hasSchema(doc, 'note') &&
+              (!doc.properties || !doc.properties['file:content'])) {
+            return true;
+          }
+          return false;
+        },
+
+        _getLoadingMessage: function(message) {
+          const defaultMsg = 'Loading/converting the document…';
+
+          if (!message) {
+            return defaultMsg;
+          }
+                    
+          const translated = this.i18n(message);
+          if(translated === message) {
+            // Hard to detect if it is a translation key not found or a custom message.
+            // We choose that if there are more than 2 dots, it's a key.
+            const dotsCount = (message.match(/\./g) || []).length;
+            if(dotsCount > 1) {
+              return defaultMsg;
+            }
+          }
+          return translated;
+        }
+      });
+    })();
+  </script>
+</dom-module>

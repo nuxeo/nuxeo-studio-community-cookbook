@@ -108,5 +108,4 @@ We could extract some parts as behaviors, even some elements (maybe a nuxeo-docu
 
 Anyone welcome to contribute :-)
 
-## License
-[Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
+
