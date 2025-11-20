@@ -6,13 +6,21 @@ The `nuxeo-carousel-display` element displays a carousel of documents, loaded fr
 
 Data comes from a page provider, and the carousel handles the fetching of more data when needed. For example, typically, the `pageSize` of a page provider is 40. When the user is on document #39 and clicks the "Next" button, the element increments the page index and calls the page provider for next page.
 
+## Prerequisites
+
+- Nuxeo Web UI
+- The `nuxeo-se-document-viewer`element, available [here](https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/document-viewer-with-loading-message)
+
 ## Usage
 
-In Nuxeo Designer, import `nuxeo-carousel-display.html`, found [here](designer/nuxeo-carousel-display.html).
+In Nuxeo Designer:
 
-We typically import it in the "elements" folder (that you can create in Designer if not already done), but you can put it wherever you want of course.
+* If not done yet, import the `nuxeo-se-document-viewer` element, available [here](https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/document-viewer-with-loading-message)
+* Import `nuxeo-carousel-display.html`, found [here](designer/nuxeo-carousel-display.html).
 
-Once imported, the element can be used standalone or inside a `nuxeo-results`.
+In `nuxeo-carousel-display.html`, check the import of `nuxeo-se-document-viewer` is OK (check the link is correct for accessing `nuxeo-se-document-viewer`)
+
+Once imported and updated for `nuxeo-se-document-viewer`, the element can be used standalone or inside a `nuxeo-results`.
 
 ### Standalone Usage, with its own nuxeo-page-provider
 

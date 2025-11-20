@@ -63,11 +63,7 @@
             // If not first call, ask the child to reset the search
             // (typicaly user is changing the main document)
             if(prevDoc) {
-              // Because the carousel is really running only when visible, we must
-              // check it is there.
-              if(this.$.carouselDisplay && this.$.carouselDisplay.parentDocumentChanged) {
-                this.$.carouselDisplay.parentDocumentChanged();
-              }
+              this.$.carouselDisplay.parentDocumentChanged();
             }
           }
         }

@@ -1,5 +1,9 @@
 <!--  nuxeo-carousel-display
 
+  INFO: This element uses nuxeo-se-document-viewer and expects it to be in the elements folder.
+        => it is available in the NUxeo Studio Community Cookbook: make sure to also have it
+          deployed, and if deployed elsewhere than in "elements", change the import path below.
+
   Displays a carousel of documents, loaded from a PageProvider. With previous+next and Go To buttons.
   The element can be used:
     1)  Standalone, with its own nuxeo-page-provider (see nuxeo-carousel-document-content.html):
@@ -66,6 +70,7 @@
           - If your label has "<VALUE>", it will be replaced by the total number of entries.
       - carousel.converting: "Converting to PDF..." (Loading message)
   -->
+<link rel="import" href="../elements/nuxeo-se-document-viewer.html">
 <dom-module id="nuxeo-carousel-display">
   <template>
     <style include="nuxeo-styles">
@@ -146,16 +151,7 @@
         flex: 1 1 auto;
         min-width: 0;
       }
-
-      .viewer {
-        flex: 1 1 auto;
-        min-height: 0;
-        border-right: 1px solid var(--nuxeo-border, #e8e8e8);
-        padding: 8px;
-        box-sizing: border-box;
-        overflow: auto;
-      }
-
+      
       #metadataCard {
         flex: 1 1 auto;
         min-height: 0;
@@ -170,39 +166,6 @@
 
       .nuxeoPageBackground {
         background-color: var(--nuxeo-page-background, #f5f5f5);
-      }
-
-      /* Loading overlay styles */
-      .loading-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(255, 255, 255, 0.9);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        z-index: 100;
-      }
-
-      .loading-message {
-        margin-top: 16px;
-        font-size: 14px;
-        color: var(--nuxeo-text-default, #666);
-        text-align: center;
-      }
-
-      paper-spinner {
-        --paper-spinner-layer-1-color: var(--nuxeo-primary-color, #0066cc);
-        --paper-spinner-layer-2-color: var(--nuxeo-primary-color, #0066cc);
-        --paper-spinner-layer-3-color: var(--nuxeo-primary-color, #0066cc);
-        --paper-spinner-layer-4-color: var(--nuxeo-primary-color, #0066cc);
-      }
-
-      .viewer {
-        position: relative; /* Required for absolute positioning of loading overlay */
       }
     </style>
 
@@ -251,26 +214,7 @@
       <div class="body">
         <!-- Viewer -->
         <div class="viewerContainer">
-          <nuxeo-card class="viewer">
-            <!-- Loading indicator -->
-            <template is="dom-if" if="[[_previewLoading]]">
-              <div class="loading-overlay">
-                <paper-spinner active></paper-spinner>
-                <div class="loading-message">[[_my_i18n('carousel.viewer.loading', 'Loading/converting the document…')]]</div>
-              </div>
-            </template>
-            
-            <template is="dom-if" if="[[!_isANote]]" restamp>
-              <nuxeo-document-viewer id="viewer" 
-                                     role="widget" 
-                                     document="[[_currentdocument]]">
-              </nuxeo-document-viewer>
-            </template>
-            <!-- For a reason I fail to explain, note documents are not displayed with nuxeo-document-viewer -->
-            <template is="dom-if" if="[[_isANote]]" restamp>
-              <nuxeo-document-preview document="[[_currentdocument]]"></nuxeo-document-preview>
-            </template>
-          </nuxeo-card>
+          <nuxeo-se-document-viewer document="[[_currentdocument]]"></nuxeo-se-document-viewer>
         </div>
         
         <!-- Metadata -->
@@ -339,13 +283,7 @@
           // Current document to display
           _currentdocument: {
             type: Object,
-            notify: true,
-            observer: '_currentDocumentChanged'
-          },
-
-          _isANote: { 
-            type: Boolean,
-            computed: '_looksLikeANote(_currentdocument)'
+            notify: true
           },
 
           _loading: {
@@ -368,12 +306,6 @@
           _entrieslength: {
             type: Number,
             value: 0
-          },
-
-          // Track viewer loading state
-          _previewLoading: {
-            type: Boolean,
-            value: false
           },
 
           _pageProviderInfo: {
@@ -452,20 +384,6 @@
         
         detached: function () {
           this.removeEventListener('keydown', this._onKeyDownBound);
-        },
-
-        _hideNuxeoDocumentBlob: function() {
-          // hide blob actions when a viewer exists
-          Polymer.RenderStatus.afterNextRender(this, () => {
-            const viewer = this.$$('#viewer');
-            if (!viewer) return;
-            try {
-              let nxDocBlob = viewer.shadowRoot && viewer.shadowRoot.querySelector('nuxeo-document-blob');
-              if (nxDocBlob) {
-                nxDocBlob.hidden = true;
-              }
-            } catch (_) {}
-          });
         },
 
         // The nuxeo-card is collapsible. We don't handle the show-hide of elements, we
@@ -646,163 +564,6 @@
         },
 
         // ==================================================
-        // Handle viewer loading when it takes time
-        // ==================================================
-        _currentDocumentChanged: function(newDoc, oldDoc) {
-          if(!newDoc) return;
-          if(newDoc && oldDoc && newDoc.uid === oldDoc.uid) return;
-
-          if(!this._documentNeedsConversion(newDoc)) {
-            // No conversion needed, no special loading management
-            this._previewLoading = false;
-            return;
-          }
-          
-          this._startPdfRenderWatcher();
-
-        },
-
-        _viewerLooksReady: function() {
-          const viewer = this.$$('#viewer');
-          if (!viewer || !viewer.shadowRoot) {
-            return false;
-          }
-
-          const preview = viewer.shadowRoot.querySelector('nuxeo-document-preview');
-          const pdfViewer = preview && preview.shadowRoot && preview.shadowRoot.querySelector('nuxeo-pdf-viewer');
-          const iframe = pdfViewer && pdfViewer.shadowRoot && pdfViewer.shadowRoot.querySelector('iframe');
-
-          const doc = iframe && iframe.contentDocument;
-          if (!doc) {
-            return false;
-          }
-
-          // Look for a rendered PDF page canvas
-          const canvas = doc.querySelector('.page canvas, canvas');
-          return canvas && canvas.width > 0 && canvas.height > 0;
-        },
-
-        // This looks complex for just UI/UX, but staying n seconds in front of a gray area can be a concern
-        // and the user may click the next/prev button or even try to reload the page while it's just taking
-        // time to convert and render.
-        _startPdfRenderWatcher() {
-
-          if(this._viewerLooksReady()) {
-            this._previewLoading = false;
-            return;
-          }
-
-          let attempts = 0;
-          const ATTEMPT_DURATION_MS = 500;
-          const MAX_ATTEMPTS = 20; // 10s max
-
-          let startTime = Date.now();
-
-          const tick = () => {
-            attempts += 1;
-
-            //console.log("_startPdfRenderWatcher tick, attempt #" + attempts);
-
-            if(attempts > 2) {
-              //console.log("Already one sec, show the loading overlay");
-              this._previewLoading = true;
-            }
-
-            if(this._viewerLooksReady()) {
-              // Wait if it was displayed just a short time ago?
-              if(this._previewLoading) {
-                let timeEllapsed = Date.now() - startTime;
-                if(timeEllapsed < 2000) {
-                  console.log("too short for the viewer...");
-                  //console.log("Viewer looks ready, but wait a bit more to avoid flicker");
-                  this.async(() => {
-                  console.log("...now closing it.");
-                    this._previewLoading = false;
-                  }, 2000 - timeEllapsed);
-                  return; // Exit early, don't schedule next tick
-                } else {
-                  //console.log("Viewer looks ready, hide loading overlay");
-                  this._previewLoading = false;
-                  return; // Exit early, don't schedule next tick
-                }
-              } else {
-                // Viewer was ready before showing overlay, nothing to do
-                return; // Exit early, don't schedule next tick
-              }
-            }
-
-            // Only continue if viewer is not ready and we haven't exceeded max attempts
-            if (attempts < MAX_ATTEMPTS) {
-              this.async(tick, ATTEMPT_DURATION_MS);
-            } else {
-              this._previewLoading = false; // give up gracefully
-            }
-          };
-
-          this.async(tick, ATTEMPT_DURATION_MS);
-        },
-        
-        // Check if document likely needs server-side conversion
-        _documentNeedsConversion: function(doc) {
-          if (!doc || !doc.properties) {
-            return false;
-          }
-
-          const fileContent = doc.properties['file:content'];
-          if (!fileContent) {
-            return false;
-          }
-
-          const mimeType = fileContent['mime-type'] || '';
-          if(mimeType.startsWith('image/') ||
-             mimeType.startsWith('video/') ||
-             mimeType.startsWith('audio/') ||
-             mimeType === 'application/pdf' ||
-             // Using same as nuxeo-document-preview:
-             mimeType === "application/photoshop" ||
-             mimeType.includes("illustrator") ||
-             mimeType.includes("postscript") ||
-             mimeType === 'application/gxf' ||
-             mimeType === 'application/mxf' ||
-             // Special types that we know the viewer fail to render
-             mimeType === "application/zip") {
-            return false;
-          }
-
-          return true;
-
-          /*
-          // Documents that typically need conversion to PDF
-          const conversionMimeTypes = [
-            'application/msword',
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            'application/vnd.ms-excel',
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            'application/vnd.ms-powerpoint',
-            'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-            'application/vnd.oasis.opendocument.text',
-            'application/vnd.oasis.opendocument.spreadsheet',
-            'application/vnd.oasis.opendocument.presentation',
-            'text/rtf'
-          ];
-
-          const conversionExtensions = [
-            '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx',
-            '.odt', '.ods', '.odp', '.rtf'
-          ];
-
-          // Check MIME type first
-          if (conversionMimeTypes.includes(mimeType)) {
-            return true;
-          }
-
-          // Check file extension as fallback
-          const filename = fileContent.name ? fileContent.name.toLowerCase() : '';
-          return conversionExtensions.some(ext => filename.endsWith(ext));
-          */
-        },
-
-        // ==================================================
         // Current document
         // ==================================================
         _loadDocFromIndex(idx) {
@@ -827,12 +588,10 @@
             docObj.docId = docId;
             docObj.get()
                   .then((result) => {
-                    this._currentdocument = result;// => _currentDocumentChanged
-                    this._hideNuxeoDocumentBlob();
+                    this._currentdocument = result;// => triggers changes in nuxeo-se-document-viewer
                   })
                   .catch((err) => {
                     console.error("Error fetching doc ID " + docId + ": ", err);
-                    this._previewLoading = false; // Reset loading state on error
                   });
           }
 
@@ -848,15 +607,6 @@
           }
           this._loadDocFromIndex();
           
-        },
-
-        _looksLikeANote: function(doc) {
-          // "note" schema and no "file:content". This is an arbitrary choice. We consider that if
-          // the doc has both "note "and "file", then "file" has priority."
-          if(doc && this.hasSchema(doc, "note") && (!doc.properties || !doc.properties["file:content"])) {
-            return true;
-          }
-          return false;
         },
 
         _url: function(uuid) {
