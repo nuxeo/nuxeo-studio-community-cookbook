@@ -1,4 +1,33 @@
 <!-- virtual-tree
+
+The `virtual-tree` element allows for building a virtual navigation with a tree view on the left and
+the list of corresponding documents on the right.
+
+Replace the op attribute of the nuxeo-operation for fetching the configuration. It can even be a
+hard-coded JSON if you wish, just respect the expected format and attributes. For example:
+
+{
+  "resultLayout": "products-virtual-tree-results",
+  "levels": [
+    {
+      "field": "product:type",
+      "label": "Product",
+      "ppParameter": "product_type"
+    }, {
+      "field": "company:country",
+      "label": "Country",
+      "ppParameter": "company_country"
+    }, {
+      "field": "company:city",
+      "label": "City",
+      "ppParameter":
+      "company_city"
+    }
+  ]
+}
+
+Contributors:
+ * Thibaud Arguillere <https://github.com/ThibArg>
 -->
 <dom-module id="virtual-tree">
   <template>

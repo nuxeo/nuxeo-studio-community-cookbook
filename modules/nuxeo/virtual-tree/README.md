@@ -5,6 +5,7 @@ The `virtual-tree` element allows for building a virtual navigation with a tree 
 <img src="README-Images/overview.png" alt="Virtual Tree" width="800">
 
 The element calls operations server side
+
 * One returns the unique values to display in the tree view, depending one the line selected
 * One returns the expected configuration for the tree. This allows for displaying different virtual tree views, based on different fields. You can also just change the `virtual-tree` and hard code the value if you wish, of course.
 
