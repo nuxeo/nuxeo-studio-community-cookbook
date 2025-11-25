@@ -114,12 +114,6 @@ Contributors:
         height: calc(100vh - var(--toolbar-height) - 62px);
       }
 
-      /* Layout part must not tkae the whole width */
-      :host([opened]) .metadataContainer {
-        flex: 0 0 30%;
-        max-width: 30%;
-      }
-
       .toolbar {
         display: flex;
         align-items: center;
@@ -174,6 +168,17 @@ Contributors:
       .viewerContainer {
         flex: 1 1 auto;
         min-width: 0;
+      }
+
+      .metadataContainer {
+        flex: 0 0 100px;
+        width: 100px;
+        transition: flex-basis 0.3s ease, width 0.3s ease;
+      }
+
+      .metadataContainer.expanded {
+        flex: 0 0 400px;
+        width: 400px;
       }
       
       #metadataCard {
@@ -454,14 +459,21 @@ Contributors:
         },
 
         // The nuxeo-card is collapsible. We don't handle the show-hide of elements, we
-        // just change background color.
+        // just change background color and container width.
         _collapseExpandMetadata: function() {
           const card = this.$$('#metadataCard');
           if (card) {
+            const container = card.parentElement;
             if(card.opened) {
               card.classList.remove('nuxeoPageBackground');
+              if (container) {
+                container.classList.add('expanded');
+              }
             } else {
               card.classList.add('nuxeoPageBackground');
+              if (container) {
+                container.classList.remove('expanded');
+              }
             }
           }
         },
