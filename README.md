@@ -1,28 +1,47 @@
 <img src="nuxeo-logo.png" width="20%" align="right" />
 
-# Nuxeo Studio Community Cookbook
+# About Nuxeo Studio Community Cookbook
 
-This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio projects. It provides a list of features and visual elements ready to be copy-pasted. The modules are for **LTS 2019 and LTS 2021**:
+This repository contains examples to help the Nuxeo Community enrich Nuxeo Studio projects. It provides various features and visual elements ready to be copy-pasted. Examples are included for Studio Modeler as well as Studio Designer.
 
-- They can be unrelated to the UI (to provide new backend features, such as utilities to handle multimedia files, specific conversions, email templates etc.).
-- They can provide UI elements for Nuxeo Web UI, or any frontend application.
+# Repository Organization
 
-## Module listing
+* [modules/nuxeo](modules/nuxeo): Contributions from the Hyland Nuxeo Team.
+* [modules/partners](modules/partners): Contributions from the Hyland Nuxeo Partner ecosystem.
+* [toolkit-and-guidelines](toolkit-and-guidelines): these are template files for adding a new module.
 
-- [Latest Modules](#latest-modules)
-- [Tips and Tricks](#tips-and-tricks)
-- [Layouts](#layouts)
-- [DAM](#dam)
-- [AI](#ai)
-- [Security / Authentication / User and Group Management](#security--authentication--user-and-group-management)
-- [Reporting](#reporting)
-- [Business Logics](#business-logics)
-- [Templates](#templates)
-- [Integrations](#integrations)
+# Prerequisites
 
-:information_source: Click on the module thumbnail to view the module contributions.
+A **Nuxeo Studio Account** as well as an **active Nuxeo Studio Project** are needed. You can create an account from our [registration page](https://connect.nuxeo.com/register/#/) and benefit from a free 30-day trial to get access to:
 
-### Latest Modules
+* Nuxeo Studio, the web-based configuration and customization environment
+* Nuxeo Marketplace, the application store with ready-to-install plugins and packages
+
+# Getting Started
+
+There is nothing to build. Each module may contain:
+
+* XML extension, page providers, automation chain or automation scripting into Nuxeo Studio Modeler.
+* Layouts, contributions within the Nuxeo bundle file,  HTML resources, medias that should be created in Nuxeo Studio Designer.
+
+These items are for copy/paste into Nuxeo Studio.
+
+# Module listing
+
+* [Latest Modules](#latest-modules)
+* [Tips and Tricks](#tips-and-tricks)
+* [Layouts](#layouts)
+* [DAM](#dam)
+* [AI](#ai)
+* [Security / Authentication / User and Group Management](#security--authentication--user-and-group-management)
+* [Reporting](#reporting)
+* [Business Logics](#business-logics)
+* [Templates](#templates)
+* [Integrations](#integrations)
+
+:information_source: Tip: you can click the thumbnail to view the module.
+
+## Latest Modules
 
 <table style="width:100%">
   <tr style="font-weight:bold">
@@ -76,7 +95,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
 </table>
 
 
-### Tips and Tricks
+## Tips and Tricks
 
 <table width="100%">
   <tr style="font-weight:bold">
@@ -101,7 +120,7 @@ This repository aims at helping the Nuxeo Community to enrich Nuxeo Studio proje
   </tr>
 </table>
 
-### Layouts
+## Layouts
 
 Module | Description | Contributor
 --- | --- | ---
@@ -138,7 +157,7 @@ Module | Description | Contributor
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/document-load-and-preview"><img src="modules/nuxeo/eml-previewer/eml-previewer.png" width="150px"/></a> | Preview related documents | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/replace-rendition"><img src="modules/nuxeo/replace-rendition/replace-rendition-1.png" width="150px"/></a> | Replace Picture and Video Renditions | Nuxeo
 
-### DAM
+## DAM
 
 Module | Description | Contributor
 --- | --- | ---
@@ -146,7 +165,7 @@ Module | Description | Contributor
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/video-thumbnail"><img src="modules/nuxeo/video-thumbnail/video-thumbnail2.png" width="100px"/></a> | Sets the video poster and search thumbnail | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/video-conversions"><img src="modules/nuxeo/video-conversions/movie.png" width="100px"/></a> | Additional video conversions | Nuxeo
 
-### AI
+## AI
 
 Module | Description | Contributor
 --- | --- | ---
@@ -154,7 +173,7 @@ Module | Description | Contributor
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/google-vision-ocr"><img src="modules/nuxeo/google-vision-ocr/ocr.png" width="100px"/></a> | Extract text from an image-based PDF with Google Vision | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/sensitive-data"><img src="modules/nuxeo/sensitive-data/sensitive-data1.png" width="100px"/></a> | Display sensitive data details contained in a document | Nuxeo
 
-### Security / Authentication / User and Group Management
+## Security / Authentication / User and Group Management
 
 Module | Description | Contributor
 --- | --- | ---
@@ -164,7 +183,7 @@ Module | Description | Contributor
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/sensitive-data"><img src="modules/nuxeo/sensitive-data/sensitive-data1.png" width="100px"/></a> | Display sensitive data details contained in a document | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/ssn"><img src="modules/nuxeo/ssn/ssn.jpg" width="100px"/></a> | Show/hide the value of a secret field | Nuxeo
 
-### Reporting
+## Reporting
 
 Module | Description | Contributor
 --- | --- | ---
@@ -172,9 +191,7 @@ Module | Description | Contributor
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/project-metrics"><img src="modules/nuxeo/project-metrics/kibana.png" width="100px"/></a> | Display Kibana dashboards in the "Analytics" menu | Nuxeo
 <a href="https://github.com/nuxeo-sandbox/nuxeo-generic-dashboard-studio-template"><img src="modules/nuxeo/generic-dashboard/generic-dashboard.png" width="100px"/></a> | Generic Web UI Analytic Dashboards | Nuxeo
 
-### Business Logics
-
-
+## Business Logics
 
 Module | Description | Contributor
 --- | --- | ---
@@ -187,7 +204,7 @@ Module | Description | Contributor
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/delete-all-trashed-documents"><img src="modules/nuxeo/delete-all-trashed-documents/trash.png" width="80px"/></a> | Permanently delete all trashed documents | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/automation-script-utils"><img src="modules/nuxeo/automation-script-utils/script-utils-2.png" width="80px"/></a> | Automation Script Utilities | Nuxeo
 
-### Templates
+## Templates
 
 Module | Description | Contributor
 --- | --- | ---
@@ -195,61 +212,27 @@ Module | Description | Contributor
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/email-templates-nuxeo"><img src="modules/nuxeo/email-templates-nuxeo/dark.png" width="100px"/></a> | Email templates | Nuxeo
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/create-from-template"><img src="modules/nuxeo/create-from-template/CreateFromTemplate.png" width="100px"/></a> | Document templates | Nuxeo
 
-### Integrations
+## Integrations
 
 Module | Description | Contributor
 --- | --- | ---
 <a href="https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/modules/nuxeo/salesforce-ui"><img src="modules/nuxeo/salesforce-ui/sfdc-webui.png" width="100px"/></a> | Display Salesforce metadata | Nuxeo
 
-## Getting Started
-
-There is nothing to build. Each module generally contains:
-
-- XML extension, page providers, automation chain or automation scripting into Nuxeo Studio Modeler.
-- Layouts, contributions within the Nuxeo bundle file,  HTML resources, medias that should be created in Nuxeo Studio Designer.
-
-You can clone the repository locally:
-
-```
-git clone https://github.com/nuxeo/nuxeo-studio-community-cookbook.git
-```
-
-### Prerequisites
-
-A **Nuxeo Studio Account** as well as an **active Nuxeo Studio Project** is needed. You can create an account from our [registration page](https://connect.nuxeo.com/register/#/) and benefit from a free 30-day trial to get access to:
-
-- Nuxeo Studio, the web-based configuration and customization environment
-- Nuxeo Marketplace, the application store with ready-to-install plugins and packages
-
-## Repository Structuration
-
-Each new module should be created in a specific folder:
-
-- `/modules/nuxeo`: Contributions from the Nuxeo Team, for demos, PoC or tests.
-- `/modules/partners`: Contributions from the Nuxeo Partner Ecosystem.
-- `/modules/community`: Contributions from the Nuxeo Community.
-
-## Contributing
+# Contributing
 
 You have to follow the repository contribution [guidelines](toolkit-and-guidelines) when submitting a new addon:
 
-- If you're a partner, create your partner folder under `/modules/partners/` if it doesn't exist already. Then, create the readme file to present your company and your contributions. We provide a [README-PARTNER.MD template](https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/toolkit-and-guidelines/README-PARTNER.md).
-- Create a README file to present your module, using the [README-MODULE.MD template](https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/toolkit-and-guidelines/README-MODULE.md).
-- Create a `/modeler` and `/designer` folders to upload respectively resources from Nuxeo Studio Modeler and Nuxeo Studio Designer.
-- Upload your resources.
-- Push your changes
-  - If you're from Nuxeo, reference your addon in this page.
-  - If not, you won't be allowed to push directly to master. Your pull request will be then checked by the Nuxeo Team before being published.
-- Et voilà! :wink:
+* If you're a partner, create your partner folder under `/modules/partners/` if it doesn't exist already. Then, create the readme file to present your company and your contributions. We provide a [README-PARTNER.MD template](https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/toolkit-and-guidelines/README-PARTNER.md).
+* Create a README file to present your module, using the [README-MODULE.MD template](https://github.com/nuxeo/nuxeo-studio-community-cookbook/blob/master/toolkit-and-guidelines/README-MODULE.md).
+* Create a `/modeler` and `/designer` folders to upload respectively resources from Nuxeo Studio Modeler and Nuxeo Studio Designer.
+* Upload your resources.
+* Push your changes
+* Et voilà! :wink:
 
-## Nuxeo Labs
+# Learn
 
-You can access complete Nuxeo Marketplace addons on [Nuxeo Marketplace - Nuxeo Labs](https://connect.nuxeo.com/nuxeo/site/marketplace/category/nuxeo-labs) category (done for PoC and test purposes)
-
-## Learn
-
-- [Nuxeo Documentation](https://doc.nuxeo.com)
-- [Nuxeo University](https://university.nuxeo.com)
+* [Nuxeo Documentation](https://doc.nuxeo.com)
+* [Nuxeo Training](https://university.hyland.com/pages/nuxeo)
 
 # Support
 
