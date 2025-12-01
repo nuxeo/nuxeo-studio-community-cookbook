@@ -1,5 +1,3 @@
-<img src="nuxeo-logo.png" width="20%" align="right" />
-
 # About Nuxeo Studio Community Cookbook
 
 This repository contains examples to help the Nuxeo Community enrich Nuxeo Studio projects. It provides various features and visual elements ready to be copy-pasted. Examples are included for Studio Modeler as well as Studio Designer.
