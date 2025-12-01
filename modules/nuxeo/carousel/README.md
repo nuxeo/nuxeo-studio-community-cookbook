@@ -73,7 +73,7 @@ Following nuxeo-results pattern, you just add `nuxeo-carousel-display` with the 
 
 
 ### Properties/Attributes (standalone or inside a `nuxeo-results`)
-  
+
 * In all cases, you can also pass the `schemas` property. It is set by default to "*", so all schemas are fetched. You can restrict that to only the schemas you need to display in the metadata layout of your documents, for example:
 
 ```html
@@ -130,7 +130,7 @@ In both case:
 
 0. (for `nuxeo-carousel-pictures-in-container`, create the page provider)
 1. Import the elements in Designer
-2. Create tab using the element(s), setup the correct filters, possibly tune the schema(s) fetched 
+2. Create tab using the element(s), setup the correct filters, possibly tune the schema(s) fetched
 
 ## Room for Improvment
 
@@ -139,5 +139,3 @@ Yes, there is room for improvment. This is an example. A bit complex, with hundr
 We could extract some parts as behaviors, even some elements (maybe a nuxeo-document-viewer-with-loading-indicator), etc.
 
 Anyone welcome to contribute :-)
-
-
