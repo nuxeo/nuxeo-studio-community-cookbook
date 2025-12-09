@@ -52,6 +52,17 @@ limitations under the License.
       .datetime {
         @apply(--layout-horizontal);
       }
+      nuxeo-custom-time-picker {
+        height: 100%;
+      }
+      nuxeo-custom-time-picker:hover {
+        border-color: #374151;
+      }
+      nuxeo-custom-time-picker:focus-within {
+        border-color: #2563eb !important;
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+        outline: none;
+      }
       .error {
         color: var(--lumo-error-text-color);
         font-size: var(--lumo-font-size-xs);

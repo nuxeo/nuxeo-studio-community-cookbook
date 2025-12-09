@@ -28,8 +28,7 @@ limitations under the License.
       :host {
         @apply(--layout-horizontal);
         align-items: center;
-        background-color: var(--nuxeo-page-background) !important;
-        border: 1px solid var(--nuxeo-border) !important;
+        border: 1px solid #6b7280;
         border-radius: var(--lumo-border-radius);
         font-family: var(--lumo-font-family);
         font-size: var(--lumo-font-size-m) !important;
@@ -43,7 +42,6 @@ limitations under the License.
         background: var(--paper-dialog_-_background, var(--paper-dialog-background-color, var(--primary-background-color)))
       }
       iron-input {
-        height: 100%;
         padding: 0px;
       }
       iron-input > input {
@@ -58,7 +56,6 @@ limitations under the License.
         padding: 0px 0px 0px 0px;
         text-align: center;
         width: 3em;
-        height: 100%;
       }
       iron-input > input:disabled {
         color: var(--lumo-disabled-text-color);
@@ -81,7 +78,9 @@ limitations under the License.
         font-family: inherit;
         font-size: inherit;
         font-weight: inherit;
-        height: 100%;
+        --paper-button: {
+          height: 32px;
+        };
         margin: 0px 5px 0px 0px;
         min-width: 2em;
         padding: 1px 0px 0px 0px;
