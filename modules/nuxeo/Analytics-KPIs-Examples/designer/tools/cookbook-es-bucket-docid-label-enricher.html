@@ -1,0 +1,73 @@
+<!--
+Example provided by Nuxeo Studio Community Cookbook
+https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/analytics-kpi-examples
+-->
+
+<!--
+An element which adds a label to each aggregate entry assuming the key is a document ID
+
+Example:
+
+    <cookbook-es-bucket-docid-label-enricher
+      input=[[input_agg]]
+      output={{output_agg}}>
+    </cookbook-es-bucket-docid-label-enricher>
+
+@group Nuxeo UI
+@element cookbook-es-bucket-docid-label-enricher
+-->
+<dom-module id="cookbook-es-bucket-docid-label-enricher">
+  <style>
+    :host {
+      display: none;
+    }
+
+  </style>
+  <template>
+    <nuxeo-page-provider id="pp" schemas="dublincore, common"></nuxeo-page-provider>
+  </template>
+
+  <script>
+  Polymer({
+    is: 'cookbook-es-bucket-docid-label-enricher',
+
+    properties: {
+
+      input: {
+        type: Array,
+        observer: '_enrich'
+      },
+
+      output: {
+        type: Array,
+        notify: true
+      }
+    },
+
+    _enrich: function(entries) {
+      if (entries.length <= 0) return;
+
+      var docids = entries.map(function(entry) {
+        return '\'' + entry.key + '\'';
+      }).join(',');
+
+      this.$.pp.query = 'SELECT * FROM Document WHERE ecm:uuid IN (' + docids + ')';
+      this.$.pp.pageSize = entries.length;
+      this.$.pp.fetch().then(function(data) {
+        var docs = data.entries;
+        this.output = entries.map(function(entry) {
+          var doc = docs.find(obj => {
+            return obj.uid === entry.key;
+          });
+          return {
+            key: entry.key,
+            label: doc ? doc.properties['dc:title'] : undefined,
+            value: entry.value
+          };
+        })
+      }.bind(this));
+    }
+    
+  })
+  </script>
+</dom-module>

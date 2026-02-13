@@ -1,0 +1,179 @@
+<!--
+Example provided by Nuxeo Studio Community Cookbook
+https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/analytics-kpi-examples
+-->
+
+<!--
+`cookbook-user-analytics`
+@group Nuxeo UI
+@element cookbook-user-analytics.html
+-->
+
+<link rel="import" href="cookbook-analytics/behaviors/cookbook-analytics-dashboard-behavior.html">
+<link rel="import" href="cookbook-analytics/behaviors/cookbook-analytics-format-behavior.html">
+<link rel="import" href="cookbook-analytics/styles/cookbook-analytics-styles.html">
+<link rel="import" href="cookbook-analytics/styles/cookbook-grid-styles.html">
+<link rel="import" href="cookbook-analytics/tools/cookbook-es-bucket-docid-label-enricher.html">
+
+<dom-module id="cookbook-user-analytics">
+  <template>
+    <style include="iron-flex iron-flex-alignment cookbook-grid-styles cookbook-analytics-styles">
+      .cell {
+        min-height:300px;
+      }
+
+    </style>
+
+    <!-- Active users by day -->
+    <nuxeo-audit-data class="data"
+                      event-id="loginSuccess"
+                      start-date="[[startDate]]" end-date="[[endDate]]"
+                      date-format="[[dateFormat]]"
+                      with-date-intervals="day"
+                      date-field="eventDate"
+                      metrics="cardinality(principalName)"
+                      data="{{UniqueUsersPerDay}}">
+    </nuxeo-audit-data>
+
+
+    <!-- Logins per hour of the day -->
+    <nuxeo-audit-data class="data"
+                      event-id="loginSuccess"
+                      start-date="[[startDate]]" end-date="[[endDate]]"
+                      with-date-intervals="hour"
+                      without-extended-bounds
+                      date-format="H"
+                      data="{{loginPerHour}}">
+    </nuxeo-audit-data>
+
+    <!-- Total unique users -->
+    <nuxeo-audit-data class="data"
+                      event-id="loginSuccess"
+                      start-date="[[startDate]]" end-date="[[endDate]]"
+                      metrics="cardinality(principalName)"
+                      data="{{totalUniqueUsers}}">
+    </nuxeo-audit-data>
+
+    <!-- Most Active Users -->
+    <nuxeo-audit-data class="data"
+                      event-id="loginSuccess"
+                      start-date="[[startDate]]" end-date="[[endDate]]"
+                      grouped-by="principalName"
+                      group-limit="50"
+                      data="{{mostActiveUsers}}">
+    </nuxeo-audit-data>
+
+    <!-- Most Login Failure -->
+    <nuxeo-audit-data class="data"
+                      event-id="loginFailed"
+                      start-date="[[startDate]]" end-date="[[endDate]]"
+                      grouped-by="principalName"
+                      group-limit="50"
+                      data="{{mostLoginFailureUsers}}">
+    </nuxeo-audit-data>
+
+    <div class="container">
+
+      <div class="layout horizontal wrap">
+
+        <div class="row">
+          <nuxeo-card class="dates">
+            <div class="horizontal flex end-justified layout wrap">
+              <nuxeo-date-picker value="{{startDate}}"
+                                 label="[[i18n('label.date.interval.from')]]"
+                                 default-time="00:00:00"></nuxeo-date-picker>
+              <nuxeo-date-picker value="{{endDate}}"
+                                 label="[[i18n('label.date.interval.to')]]"
+                                 default-time="23:59:59"></nuxeo-date-picker>
+              <paper-icon-button class="refresh" icon="icons:refresh" on-tap="refresh"></paper-icon-button>
+            </div>
+          </nuxeo-card>
+        </div>
+
+        <div class="row">
+          <nuxeo-card heading="[[i18n('analytics.user.unique.per.day')]]">
+            <chart-line id="newApplicationChart"
+                        class="chart"
+                        labels="[[_formatDateLabels(UniqueUsersPerDay,'L')]]"
+                        values="[[_values(UniqueUsersPerDay)]]"
+                        options="[[defaultLineChartOptions]]">
+            </chart-line>
+          </nuxeo-card>
+        </div>
+
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('analytics.user.unique.total')]]">
+            <div class="numberContainer">
+              <h1 class="number">[[totalUniqueUsers]]</h1>
+            </div>
+          </nuxeo-card>
+        </div>
+
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('analytics.login.per.hour')]]">
+            <div>
+              <chart-bar id="calls" class="chart" labels="[[_range(0,23)]]"
+                         values="[[_aggregatePerHourOfDay(loginPerHour)]]"
+                         series="[[_range(0,23)]]"
+                         options='{ "legend": { "display": false }, "animation": false }'>
+              </chart-bar>
+            </div>
+          </nuxeo-card>
+        </div>
+
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('analytics.user.most.login.users')]]">
+            <template is="dom-if" if="[[!_isEmpty(mostActiveUsers)]]">
+              <nuxeo-data-table items="[[mostActiveUsers]]">
+                <nuxeo-data-table-column name="[[i18n('analytics.user.most.login.username')]]">
+                  <template>[[item.key]]</template>
+                </nuxeo-data-table-column>
+                <nuxeo-data-table-column name="[[i18n('analytics.user.most.login.nb')]]">
+                  <template>[[item.value]]</template>
+                </nuxeo-data-table-column>
+              </nuxeo-data-table>
+            </template>
+            <template is="dom-if" if="[[_isEmpty(mostActiveUsers)]]">
+              <div class="message">[[i18n('repositoryAnalytics.noResults')]]</div>
+            </template>
+          </nuxeo-card>
+        </div>
+
+        <div class="cell">
+          <nuxeo-card heading="[[i18n('analytics.user.most.login.failure.users')]]">
+            <template is="dom-if" if="[[!_isEmpty(mostLoginFailureUsers)]]">
+              <nuxeo-data-table items="[[mostLoginFailureUsers]]">
+                <nuxeo-data-table-column name="[[i18n('analytics.user.most.login.username')]]">
+                  <template>[[item.key]]</template>
+                </nuxeo-data-table-column>
+                <nuxeo-data-table-column name="[[i18n('analytics.user.most.login.nb')]]">
+                  <template>[[item.value]]</template>
+                </nuxeo-data-table-column>
+              </nuxeo-data-table>
+            </template>
+            <template is="dom-if" if="[[_isEmpty(mostLoginFailureUsers)]]">
+              <div class="message">[[i18n('repositoryAnalytics.noResults')]]</div>
+            </template>
+          </nuxeo-card>
+        </div>
+
+
+      </div>
+    </div>
+
+    <div class="footer"></div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'cookbook-user-analytics',
+      behaviors: [
+        Nuxeo.CookbookAnalyticsDashboardBehavior,Nuxeo.CookbookAnalyticsFormatBehavior,
+        Nuxeo.I18nBehavior
+      ],
+      properties: {}
+
+    });
+  </script>
+</dom-module>

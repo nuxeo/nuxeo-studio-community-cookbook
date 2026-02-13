@@ -1,0 +1,197 @@
+<!--
+Example provided by Nuxeo Studio Community Cookbook
+https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/analytics-kpi-examples
+-->
+
+<script>
+  var Nuxeo = Nuxeo || {};
+  (function() {
+
+    /**
+     * @polymerBehavior Nuxeo.CookbookAnalyticsFormatBehaviorImpl
+     */
+    Nuxeo.CookbookAnalyticsFormatBehaviorImpl = {
+
+      properties: {
+
+        colors: {
+          type: Array,
+          value: function () {
+            return [
+              '#3366cc', '#ff9900', '#dc3912', '#109618', '#990099', '#0099c6', '#dd4477', '#66aa00',
+              '#b82e2e', '#316395', '#994499', '#22aa99', '#aaaa11', '#6633cc', '#e67300', '#8b0707',
+              '#651067', '#329262', '#5574a6', '#3b3eac', '#b77322', '#16d620', '#b91383', '#f4359e',
+              '#9c5935', '#a9c413', '#2a778d', '#668d1c', '#bea413', '#0c5922', '#743411'
+            ];
+          }
+        },
+
+        defaultPieChartOptions: {
+          type: Object,
+          value: function(){
+            return {
+              legend: {
+                display: true,
+                position: "right",
+                labels: { boxWidth: 12 }
+              },
+              animation: false
+            }
+          }
+        },
+
+        defaultLineChartOptions: {
+          type: Object,
+          value: function() {
+            return {
+              legend: { display: false },
+              animation: false,
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    precision: 0,
+                  }
+                }]
+              }
+            }
+          }
+        },
+
+        defaultBarChartOptions: {
+          type: Object,
+          value: function () {
+            return {
+              legend: { display: false },
+              animation: false ,
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true,
+                    precision: 0
+                  }
+                }]
+              }
+            }
+          }
+        },
+
+        hoursBounds: {
+          value: {
+            min: 0,
+            max: 23
+          }
+        }
+
+      },
+
+      _isEmpty: function(array) {
+        return !array || array.length === 0;
+      },
+
+      _FormatDuration: function(duration) {
+        let seconds = Math.floor(duration / 1000);
+        let minutes = Math.floor(seconds / 60);
+        let hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+        let result = '';
+        hours -= days * 24;
+        minutes = minutes - days * 24 * 60 - hours * 60;
+        seconds = seconds - days * 24 * 60 * 60 - hours * 60 * 60 - minutes * 60;
+        if (days > 0) {
+          result += `${days}`;
+          result += this.i18n(days > 0 ? 'label.duration.day.plural' : 'label.duration.day');
+        }
+        if (hours > 0) {
+          result += `${hours}`;
+          result += this.i18n(hours > 0 ? 'label.duration.hour.plural' : 'label.duration.hour');
+        }
+        if (minutes > 0) {
+          result += `${minutes}`;
+          result += this.i18n(days > 0 ? 'label.duration.minute.plural' : 'label.duration.minute');
+        }
+        if (seconds > 0) {
+          result += `${seconds}`;
+          result += this.i18n(days > 0 ? 'label.duration.second.plural' : 'label.duration.second');
+        }
+        return result;
+      },
+
+      _formatDateLabels: function(data,format) {
+        return data.map(function(entry) {
+          if (Array.isArray(entry.value)) {
+            return entry.value.map(this._formatDateLabels.bind(this));
+          }
+          return moment(entry.key).format(format);
+        });
+      },
+
+      _formatLabels: function(data,prefix) {
+        return data.map(function(entry) {
+          if (Array.isArray(entry.value)) {
+            entry.value.map(this._formatLabels.bind(this));
+          }
+          return prefix ? this.i18n(prefix+entry.key) : this.i18n(entry.key);
+        }.bind(this));
+      },
+
+
+      _formatSingleDatasetforBarChart: function(data, startColorIndex, labelPrefix) {
+        var values = this._values(data);
+        return {
+          labels: this._formatLabels(data, labelPrefix),
+          datasets: values.map(function(val, i){
+            var actualColors = values[i].map(function(value,index){
+              return this.colors[(startColorIndex + index) % this.colors.length];
+            }.bind(this))
+            return {
+              data: values[i],
+              fill: true,
+              backgroundColor: actualColors,
+              borderColor: actualColors,
+              borderWidth: 1
+            };
+          }.bind(this))
+        };
+      },
+
+      _range: function(start, end) {
+        var res = [];
+        for (var i = start; i <= end; i++) {
+          res.push(i);
+        }
+        return res;
+      },
+
+      _aggregatePerHourOfDay: function(entries) {
+        // aggregate our buckets by key
+        var agg = {};
+        entries.forEach(function(e) {
+          agg[e.key] = agg[e.key] || [];
+          agg[e.key].push(e.value);
+        });
+        // build our total per bucket
+        var hours = this._range(this.hoursBounds.min, this.hoursBounds.max);
+        return [hours.map(function(i) {
+          if (!agg[i] || !agg[i].length) {
+            return 0;
+          }
+          // TODO: use Array.reduce once prototype.js is removed!
+          // return agg[i].reduce(function(a, b) { return a + b; });
+          var sum = 0;
+          agg[i].forEach(function(v) {
+            sum += v;
+          });
+          return sum;
+        })];
+      }
+
+    };
+
+    /** @polymerBehavior */
+    Nuxeo.CookbookAnalyticsFormatBehavior = [
+      Nuxeo.ChartDataBehavior, Nuxeo.I18nBehavior, Nuxeo.FormatBehavior,
+      Nuxeo.CookbookAnalyticsFormatBehaviorImpl
+    ];
+
+  })();
+</script>

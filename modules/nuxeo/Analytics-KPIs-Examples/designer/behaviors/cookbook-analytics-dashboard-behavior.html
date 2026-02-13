@@ -1,0 +1,81 @@
+<!--
+Example provided by Nuxeo Studio Community Cookbook
+https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/analytics-kpi-examples
+-->
+
+<script>
+  var Nuxeo = Nuxeo || {};
+  (function() {
+
+    /**
+     * @polymerBehavior Nuxeo.CookbookAnalyticsDashboardBehaviorImpl
+     */
+    Nuxeo.CookbookAnalyticsDashboardBehaviorImpl = {
+
+      properties: {
+        
+        dateFormat: {
+          type:String,
+          value: "yyyy-MM-dd'T'HH:mm:ss.SSSX"
+        },
+
+        startDate: String,
+
+        endDate: String,
+
+        index: {
+          type: String,
+          value: '_all'
+        },
+
+        visible: {
+          type: Boolean,
+          value: false,
+          observer: "_onVisibilityChange"
+        }
+
+      },
+
+      listeners: {
+        'iron-resize': '_resize'
+      },
+
+      ready: function() {
+        this.startDate = moment().utc().subtract(1, 'month').toISOString();
+        this.endDate = moment().utc().toISOString();
+      },
+
+      _resize: function() {
+        var charts = this.shadowRoot.querySelectorAll(".chart");
+        charts.forEach(function(chart) {
+          chart.resize();
+        });
+      },
+
+      _onVisibilityChange: function(visible) {
+        if (visible) {
+   				this.refresh();
+        }
+      },
+
+      refresh: function() {
+        var dataElements = this.shadowRoot.querySelectorAll(".data");
+        dataElements.forEach(function(element) {
+          if (typeof element._doFetch === "function") {
+            element._doFetch();
+          }
+        });
+        if (this._refresh) {
+          this._refresh();
+        }
+      }
+
+    };
+
+    /** @polymerBehavior */
+    Nuxeo.CookbookAnalyticsDashboardBehavior = [
+      Polymer.IronResizableBehavior, Nuxeo.CookbookAnalyticsDashboardBehaviorImpl
+    ];
+
+  })();
+</script>

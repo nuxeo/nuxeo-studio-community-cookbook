@@ -43,6 +43,7 @@ These items are for copy/paste into Nuxeo Studio.
 
 Module | Description | Contributor
 --- | --- | ---
+[<img src="modules/nuxeo/Analytics-KPIs-Examples/kpi-users.jpg" width="120px"/>](modules/nuxeo/Analytics-KPIs-Examples) | Custom Analytics/KPIs Examples | Hyland
 [<img src="modules/nuxeo/document-viewer-with-loading-message/01-Viewer-with-loading-message.png" width="120px"/>](modules/nuxeo/document-viewer-with-loading-message) | Document Viewer with "Loading..." Message | Hyland
 [<img src="modules/nuxeo/carousel/README-Images/01-Carousel.png" width="120px"/>](modules/nuxeo/carousel) | Carousel | Hyland
 [<img src="modules/nuxeo/virtual-tree/README-Images/overview.png" width="120px"/>](modules/nuxeo/virtual-tree) | Virtual Navigation | Hyland
@@ -130,6 +131,7 @@ Module | Description | Contributor
 [<img src="modules/nuxeo/workflow-status/workflow-status.png" width="100px"/>](modules/nuxeo/workflow-status) | Monitor workflow instances status | Hyland
 [<img src="modules/nuxeo/project-metrics/kibana.png" width="100px"/>](modules/nuxeo/project-metrics) | Display Kibana dashboards in the "Analytics" menu | Hyland
 [<img src="modules/nuxeo/generic-dashboard/generic-dashboard.png" width="100px"/>](https://github.com/nuxeo-sandbox/nuxeo-generic-dashboard-studio-template) | Generic Web UI Analytic Dashboards | Hyland
+[<img src="modules/nuxeo/Analytics-KPIs-Examples/kpi-users.jpg" width="100px"/>](modules/nuxeo/Analytics-KPIs-Examples) | Custom Analytics/KPIs Examples | Hyland
 
 ## Business Logics
 
