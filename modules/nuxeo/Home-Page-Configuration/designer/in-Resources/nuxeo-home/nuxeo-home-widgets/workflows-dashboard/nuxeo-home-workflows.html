@@ -1,0 +1,75 @@
+<!--
+nuxeo-home-workflows (license Apache, see nuxeo-home-page-layout.html)
+
+This comes basically from Nuxeo Studio Cookbook:
+     https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/workflow-status
+File modified so it can be used with the misc. Home Page Configuration module.
+(add the behavior, add the parentWidget property, styles, ...)
+-->
+<link rel="import" href="../../nuxeo-home-config/nuxeo-home-config-behavior.html">
+<link rel="import" href="../nuxeo-home-style.html">
+<link rel="import" href="workflow-status/workflow-status-bar.html">
+<link rel="import" href="workflow-status/workflow-status-layout.html">
+<link rel="import" href="workflow-status/workflow-status-widget.html">
+<dom-module id="nuxeo-home-workflows">
+  <template>
+    <style include="nuxeo-styles nuxeo-home-style">
+      :host {
+        display: block;
+      }
+
+      .workflow-status-layout {
+        position: relative;
+      }
+
+      #wfStatusBar {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+        left: 250px;
+        z-index: 1;
+      }
+
+      @media (max-width: 600px) {
+        #wfStatusBar {
+          position: static;
+          width: 100%;
+          margin-bottom: 12px;
+        }
+      }
+    </style>
+
+    <nuxeo-connection id="nx"></nuxeo-connection>
+
+    <div class="workflow-status-layout">
+      <nuxeo-card icon="nuxeo:tasks" heading="Workflows">
+        
+        <workflow-status-bar id="wfStatusBar"></workflow-status-bar>
+        
+        <workflow-status-layout name="workflowStatus"
+                                visible="[[visible]]"
+                                parent-widget="[[_parentWidget]]"></workflow-status-layout>
+      </nuxeo-card>
+    </div>
+    
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-home-workflows',
+      behaviors: [Nuxeo.NuxeoHomeConfigBehavior],
+      properties: {
+        // Handled by workflow-status-layout
+        visible: Boolean,
+        _parentWidget: {
+          type: String,
+          computed: '_getThisName()'
+        }
+      },
+      _getThisName: function() {
+        return this.is;
+      }
+
+    });
+  </script>
+</dom-module>

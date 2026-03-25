@@ -1,0 +1,522 @@
+<!--
+nuxeo-home-page-user-config (license Apache, see nuxeo-home-page-layout.html)
+
+This is the element allowing users to configure their home page, by choosing which widgets to display and where.
+
+It is a bit complex and some parts may look overkill, but simplification is not easy. For example, we could
+limit the duplication of the dom elements (that are basically the same for each column), but Polymer 2
+is less easy to work with when it comes to dynamic dom generation, and the code would be even more complex.
+
+When the user hits "Save", the config is sent (via an operation) then an event is raised, so the parent element
+can update its display.
+-->
+<link rel="import" href="nuxeo-home-config-behavior.html">
+<dom-module id="nuxeo-home-page-user-config">
+  <template>
+    <style include="nuxeo-styles">
+      :host {
+        display: block;
+        --nuxeo-home-widget-item-height: 80px;
+        --nuxeo-home-widget-item-gap: 8px;
+        --nuxeo-home-widget-list-padding: 8px;
+      }
+
+      paper-dialog {
+        width: min(980px, 92vw);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 12px;
+      }
+
+      .column {
+        border: 1px solid var(--nuxeo-border, #ddd);
+        border-radius: 6px;
+        min-height: 300px;
+        background: #fafafa;
+      }
+
+      .column h3 {
+        margin: 0;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--nuxeo-border, #ddd);
+        font-size: 0.95rem;
+      }
+
+      .list {
+        position: relative;
+        min-height: 250px;
+        padding: var(--nuxeo-home-widget-list-padding);
+        max-height: calc(
+          (var(--nuxeo-home-widget-item-height) * 6) +
+          (var(--nuxeo-home-widget-item-gap) * 5) +
+          (var(--nuxeo-home-widget-list-padding) * 2)
+        );
+        overflow-y: auto;
+      }
+
+      .list.drop-list-active {
+        border-radius: 4px;
+        background: rgba(30, 136, 229, 0.08);
+      }
+
+      .list.drop-at-end::after {
+        content: '';
+        position: absolute;
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+        height: 2px;
+        border-radius: 2px;
+        background: #1e88e5;
+      }
+
+      .item {
+        margin: 0 0 var(--nuxeo-home-widget-item-gap);
+        padding: 10px;
+        border: 1px solid #d7d7d7;
+        border-radius: 4px;
+        background: #fff;
+        cursor: move;
+        min-height: var(--nuxeo-home-widget-item-height);
+        box-sizing: border-box;
+      }
+
+      .item.drop-before {
+        box-shadow: inset 0 2px 0 0 #1e88e5;
+      }
+
+      .item.drop-after {
+        box-shadow: inset 0 -2px 0 0 #1e88e5;
+      }
+
+      .item:last-child {
+        margin-bottom: 0;
+      }
+
+      .title {
+        font-weight: 500;
+      }
+
+      .desc {
+        color: var(--nuxeo-secondary-text, #666);
+        font-size: 0.85rem;
+      }
+
+      .help {
+        margin: 0 0 10px;
+        color: var(--nuxeo-secondary-text, #666);
+      }
+
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        padding: 8px 0 0;
+      }
+
+      .buttons {
+        @apply --buttons-bar;
+        @apply --layout-horizontal;
+        @apply --layout-justified;
+        align-items: center;
+      }
+
+      .buttonGroup {
+        display: inline-flex;
+        gap: 8px;
+      }
+    </style>
+
+    <nuxeo-connection id="nx" user="{{user}}"></nuxeo-connection>
+    <nuxeo-operation id="getConfigOp" op="javascript.HomePageConfiguration_GetUserConfig"></nuxeo-operation>
+    <nuxeo-operation id="saveConfigOp" op="javascript.HomePageConfiguration_SaveUserConfig"></nuxeo-operation>
+
+    <paper-dialog id="dialog" with-backdrop>
+      <h2>[[i18n('home.ui.customize')]]</h2>
+      <div class="help">[[i18n('home.ui.customize.prompt')]]</div>
+
+      <div class="layout">
+        <div class="column">
+          <h3>[[i18n('home.ui.customize.column1')]]</h3>
+          <div class="list" data-list="column" data-column="0" on-dragover="_onDragOver" on-dragleave="_onDragLeave" on-drop="_onDrop">
+            <template is="dom-repeat" items="[[column1Widgets]]" as="widget" index-as="index">
+              <div class="item" draggable="true" on-dragstart="_onDragStart" on-dragend="_onDragEnd" data-widget-id$="[[widget.id]]" data-list="column" data-column="0" data-index$="[[index]]">
+                <div class="title">[[i18n(widget.title)]]</div>
+                <div class="desc">[[i18n(widget.description)]]</div>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <div class="column">
+          <h3>[[i18n('home.ui.customize.column2')]]</h3>
+          <div class="list" data-list="column" data-column="1" on-dragover="_onDragOver" on-dragleave="_onDragLeave" on-drop="_onDrop">
+            <template is="dom-repeat" items="[[column2Widgets]]" as="widget" index-as="index">
+              <div class="item" draggable="true" on-dragstart="_onDragStart" on-dragend="_onDragEnd" data-widget-id$="[[widget.id]]" data-list="column" data-column="1" data-index$="[[index]]">
+                <div class="title">[[i18n(widget.title)]]</div>
+                <div class="desc">[[i18n(widget.description)]]</div>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <div class="column">
+          <h3>[[i18n('home.ui.customize.availableWidgets')]]</h3>
+          <div class="list" data-list="available" on-dragover="_onDragOver" on-dragleave="_onDragLeave" on-drop="_onDrop">
+            <template is="dom-repeat" items="[[availableWidgets]]" as="widget" index-as="index">
+              <div class="item" draggable="true" on-dragstart="_onDragStart" on-dragend="_onDragEnd" data-widget-id$="[[widget.id]]" data-list="available" data-index$="[[index]]">
+                <div class="title">[[i18n(widget.title)]]</div>
+                <div class="desc">[[i18n(widget.description)]]</div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <div class="buttonGroup">
+          <paper-button class="secondary" on-click="_applyDefaultConfiguration">[[i18n('home.ui.customize.defaultConfig')]]</paper-button>
+          <paper-button class="secondary" on-click="_clearConfiguration">[[i18n('home.ui.customize.clear')]]</paper-button>
+        </div>
+        <div class="buttonGroup">
+          <paper-button class="secondary" dialog-dismiss>[[i18n('home.ui.customize.cancel')]]</paper-button>
+          <paper-button class="primary" raised on-click="_save">[[i18n('home.ui.customize.save')]]</paper-button>
+        </div>
+      </div>
+    </paper-dialog>
+
+    <paper-toast id="toast"></paper-toast>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-home-page-user-config',
+      behaviors: [Nuxeo.FormatBehavior, Nuxeo.NuxeoHomeConfigBehavior],
+      properties: {
+        config:Object,
+        column1Widgets: {
+          type: Array,
+          value: function () {
+            return [];
+          }
+        },
+        column2Widgets: {
+          type: Array,
+          value: function () {
+            return [];
+          }
+        },
+        availableWidgets: {
+          type: Array,
+          value: function () {
+            return [];
+          }
+        },
+        user: Object
+      },
+
+      open: function() {
+        return this._loadConfig().then(function() {
+          this.$.dialog.open();
+        }.bind(this));
+      },
+
+      _loadConfig: function() {
+        return this.$.getConfigOp
+          .execute()
+          .then(function(config) {
+            var parsed = config;
+            if (typeof config === 'string') {
+              parsed = JSON.parse(config);
+            }
+            this.config = this.normalizeConfig(parsed);
+            this._syncListsFromConfig();
+          }.bind(this))
+          .catch(function onError() {
+            this.config = this.getDefaultConfig();
+            this._syncListsFromConfig();
+          }.bind(this));
+      },
+
+      _syncListsFromConfig: function() {
+        var widgetsById = {};
+        (this.getAvailableWidgets() || []).forEach(function eachWidget(widget) {
+          widgetsById[widget.id] = widget;
+        });
+
+        var c1 = this.getWidgetsInColumn(this.config, 1)
+                    .map(function toWidget(id) {
+                        return widgetsById[id];
+                      }).filter(Boolean);
+
+        var c2 = this.getWidgetsInColumn(this.config, 2)
+                     .map(function toWidget(id) {
+                        return widgetsById[id];
+                      }).filter(Boolean);
+
+        var used = {};
+        c1.concat(c2).forEach(function markUsed(widget) {
+          used[widget.id] = true;
+        });
+
+        var available = (this.getAvailableWidgets() || []).filter(function notUsed(widget) {
+          return !used[widget.id];
+        }).sort(this._compareWidgetLabels.bind(this));
+
+        this.set('column1Widgets', c1);
+        this.set('column2Widgets', c2);
+        this.set('availableWidgets', available);
+      },
+
+      _onDragStart: function(event) {
+        var target = event.currentTarget;
+        var payload = {
+          widgetId: target.dataset.widgetId,
+          sourceList: target.dataset.list,
+          sourceColumn: target.dataset.column,
+          sourceIndex: target.dataset.index,
+        };
+        event.dataTransfer.setData('text/plain', JSON.stringify(payload));
+        event.dataTransfer.effectAllowed = 'move';
+      },
+
+      _onDragOver: function(event) {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'move';
+
+        var target = event.target.closest('.list') || event.currentTarget;
+        var dropTarget = event.target.closest('.item');
+        this._dropDestination = this._computeDestination(target, dropTarget, event.clientY);
+        this._showDropClue(target, dropTarget, event.clientY);
+      },
+
+      _onDragLeave: function(event) {
+        var nextTarget = event.relatedTarget;
+        if (!nextTarget || !event.currentTarget.contains(nextTarget)) {
+          this._clearDropClue();
+        }
+      },
+
+      _onDragEnd: function() {
+        this._clearDropClue();
+      },
+
+      _computeDestination: function(target, dropTarget, clientY) {
+        if (!target || !target.dataset) {
+          return null;
+        }
+
+        var destinationIndex = (this.get(this._toListPath(target.dataset.list, target.dataset.column)) || []).length;
+        if (dropTarget && dropTarget.parentElement === target) {
+          destinationIndex = Number(dropTarget.dataset.index) || 0;
+          var rect = dropTarget.getBoundingClientRect();
+          if (clientY > rect.top + (rect.height / 2)) {
+            destinationIndex += 1;
+          }
+        }
+
+        return {
+          list: target.dataset.list,
+          column: target.dataset.column,
+          index: destinationIndex,
+        };
+      },
+
+      _showDropClue: function(listTarget, dropTarget, pointerY) {
+        this._clearDropClue();
+        listTarget.classList.add('drop-list-active');
+        this._dropClueList = listTarget;
+
+        if (dropTarget && dropTarget.parentElement === listTarget) {
+          var rect = dropTarget.getBoundingClientRect();
+          var markerClass = pointerY > rect.top + (rect.height / 2) ? 'drop-after' : 'drop-before';
+          dropTarget.classList.add(markerClass);
+          this._dropClueItem = dropTarget;
+          return;
+        }
+
+        listTarget.classList.add('drop-at-end');
+      },
+
+      _clearDropClue: function() {
+        if (this._dropClueItem) {
+          this._dropClueItem.classList.remove('drop-before');
+          this._dropClueItem.classList.remove('drop-after');
+          this._dropClueItem = null;
+        }
+        if (this._dropClueList) {
+          this._dropClueList.classList.remove('drop-list-active');
+          this._dropClueList.classList.remove('drop-at-end');
+          this._dropClueList = null;
+        }
+        this._dropDestination = null;
+      },
+
+      _onDrop: function(event) {
+        event.preventDefault();
+        var payloadRaw = event.dataTransfer.getData('text/plain');
+        var destination = this._dropDestination;
+        var clueList = this._dropClueList;
+        var clueItem = this._dropClueItem;
+        this._clearDropClue();
+        if (!payloadRaw) {
+          return;
+        }
+
+        var payload = JSON.parse(payloadRaw);
+        if (!destination) {
+          var target = clueList || event.target.closest('.list') || event.currentTarget;
+          var dropTarget = clueItem || event.target.closest('.item');
+          destination = this._computeDestination(target, dropTarget, event.clientY);
+        }
+
+        if (!destination) {
+          return;
+        }
+
+        this._moveWidget(payload, destination);
+      },
+
+      _moveWidget: function(source, destination) {
+        var extracted = this._extractWidget(source.sourceList, source.sourceColumn, source.widgetId, source.sourceIndex);
+        if (!extracted) {
+          return;
+        }
+
+        var destinationIndex = destination.index;
+        var destinationPath = this._toListPath(destination.list, destination.column);
+        if (extracted.listPath === destinationPath && extracted.index < destinationIndex) {
+          destinationIndex -= 1;
+        }
+
+        this._insertWidget(destination.list, destination.column, extracted.widget, destinationIndex);
+        this._syncConfigFromLists();
+      },
+
+      _extractWidget: function(listName, column, widgetId, sourceIndex) {
+        var listPath = this._toListPath(listName, column);
+        var list = this.get(listPath) || [];
+        var index = Number(sourceIndex);
+        if (Number.isNaN(index) || !list[index] || list[index].id !== widgetId) {
+          index = list.findIndex(function byId(widget) {
+            return widget.id === widgetId;
+          });
+        }
+        if (index < 0) {
+          return null;
+        }
+        var widget = list[index];
+        this.splice(listPath, index, 1);
+        return {
+          widget: widget,
+          index: index,
+          listPath: listPath,
+        };
+      },
+
+      _insertWidget: function(listName, column, widget, destinationIndex) {
+        var listPath = this._toListPath(listName, column);
+        var list = this.get(listPath) || [];
+        if (list.some(function byId(item) { return item.id === widget.id; })) {
+          return;
+        }
+
+        var safeIndex = Math.max(0, Math.min(Number(destinationIndex), list.length));
+        if (Number.isNaN(safeIndex)) {
+          safeIndex = list.length;
+        }
+        this.splice(listPath, safeIndex, 0, widget);
+
+        if (listPath === 'availableWidgets') {
+          this.set('availableWidgets', this.availableWidgets.slice().sort(this._compareWidgetLabels.bind(this)));
+        }
+      },
+
+      _toListPath: function(listName, column) {
+        if (listName === 'available') {
+          return 'availableWidgets';
+        }
+        return Number(column) === 0 ? 'column1Widgets' : 'column2Widgets';
+      },
+
+      _compareWidgetLabels: function(left, right) {
+        var leftLabel = this._getTranslatedWidgetLabel(left);
+        var rightLabel = this._getTranslatedWidgetLabel(right);
+        return leftLabel.localeCompare(rightLabel);
+      },
+
+      _getTranslatedWidgetLabel: function(widget) {
+        if (!widget || !widget.title) {
+          return '';
+        }
+        if (typeof this.i18n !== 'function') {
+          return widget.title;
+        }
+        var translated = this.i18n(widget.title);
+        return translated || widget.title;
+      },
+
+      _syncConfigFromLists: function() {
+        let col1 = this.column1Widgets.map(function toId(widget) { return widget.id; });
+        let col2 = this.column2Widgets.map(function toId(widget) { return widget.id; });
+        this.config = this.columnsToConfig(col1, col2);
+        this._syncListsFromConfig();
+      },
+
+      // For whatever reason, after clicking the button, it keeps the focus ring, even after
+      // the mouse leaves the button. We clear the thing in an async() function. Ugly, but well...
+      _clearActionButtonFocus: function(event) {
+        if (!event || !event.currentTarget || typeof event.currentTarget.blur !== 'function') {
+          return;
+        }
+        var currentTarget = event.currentTarget;
+        this.async(function blurButton() {
+          currentTarget.blur();
+        }, 1);
+      },
+
+      _applyDefaultConfiguration: function(event) {
+        this._clearActionButtonFocus(event);
+        this.config = this.normalizeConfig(this.getDefaultConfig());
+        this._syncListsFromConfig();
+      },
+
+      _clearConfiguration: function(event) {
+        this._clearActionButtonFocus(event);
+        this.config = this.getEmptyConfig();
+        this.set('column1Widgets', []);
+        this.set('column2Widgets', []);
+        this.set('availableWidgets', (this.getAvailableWidgets() || []).slice().sort(this._compareWidgetLabels.bind(this)));
+      },
+
+      _save: function() {
+        var configJson = JSON.stringify(this.config);
+        this.$.saveConfigOp.params = {
+          configJson: configJson,
+        };
+
+        this.$.saveConfigOp
+          .execute()
+          .then(function onSaved() {
+            this.$.toast.text = this.i18n('home.ui.customize.saveSuccess');
+            this.$.toast.open();
+            this.$.dialog.close();
+            this.dispatchEvent(new CustomEvent('home-page-config-saved', {
+              bubbles: true,
+              composed: true,
+              detail: {
+                config: this.cloneConfig(this.config),
+              },
+            }));
+          }.bind(this))
+          .catch(function onError() {
+            this.$.toast.text = this.i18n('home.ui.customize.saveFailure');
+            this.$.toast.open();
+          }.bind(this));
+      },
+    });
+  </script>
+</dom-module>

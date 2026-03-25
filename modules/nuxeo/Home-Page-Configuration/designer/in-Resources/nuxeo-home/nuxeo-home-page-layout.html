@@ -1,0 +1,225 @@
+<!--
+nuxeo-home-page-layout (license Apache, at the end of this file, available for all anad every file of this module)
+
+Layout for the nuxeo-home dashboard page. To be called from nuxeo-home.html, instead
+of its original code. It makes nuxeo-home super simple, basically:
+
+<link rel="import" href="nuxeo-home/nuxeo-home-page-layout.html">
+<dom-module id="nuxeo-home">
+  <template>
+    <nuxeo-home-page-layout id="homePage" visible="[[visible]]"></nuxeo-home-page-layout>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-home',
+      properties: {
+        visible: Boolean
+      }
+    });
+  </script>
+</dom-module>
+
+Notice: It is very important to propagate the visible attribute to the widgets,
+        otherwise they won't be able to refresh their content when they become visible.
+        (this "visible" property is set by Nuxeo WebUI, which is using an iron-page element
+        that handles automatically this property).
+
+nuxeo-home-page-layout expects 2 operations:
+  * One to get the list of available widgets for the current user
+  * One to get the configuration for the current user
+    (The order of the calls is important)
+
+  It then just dom-repeat a nuxeo-home-host for each widget.
+-->
+<link rel="import" href="nuxeo-home-config/nuxeo-home-config-behavior.html">
+<link rel="import" href="nuxeo-home-host.html">
+<link rel="import" href="nuxeo-home-config/nuxeo-home-page-user-config.html">
+<dom-module id="nuxeo-home-page-layout">
+  <template>
+    <style include="nuxeo-styles">
+      :host {
+        display: block;
+      }
+
+      .pageHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .pageTitle {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      paper-button {
+        text-transform: none;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .column {
+        display: grid;
+        grid-auto-rows: min-content;
+        gap: 12px;
+      }
+
+      @media (max-width: 1024px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+
+    <nuxeo-operation id="getAvailableWidgetsOp"
+                     op="javascript.HomePageConfig_GetAvailableWidgets"></nuxeo-operation>
+    <nuxeo-operation id="getConfigOp"
+                     op="javascript.HomePageConfiguration_GetUserConfig"></nuxeo-operation>
+
+    <nuxeo-home-page-user-config id="configDialog"
+                                 on-home-page-config-saved="_onConfigSaved"></nuxeo-home-page-user-config>
+
+    <nuxeo-page>
+      <div slot="header" class="pageHeader">
+        <div class="pageTitle">
+          <nuxeo-repositories></nuxeo-repositories>
+          <span>[[i18n('home.dashboard')]]</span>
+        </div>
+        <paper-button raised on-click="_openConfig">[[i18n('home.ui.customize')]]</paper-button>
+      </div>
+
+      <!-- Example of banner displayed at the top of the dashboard
+           Here, the image used to be a 3892 × 596 jpeg
+      <img src="/nuxeo/ui/images/CHANGE_ME.jpg" alt="Banner" style="width: 100%; height: auto;">
+      -->
+
+      <div>
+        <section name="dashboard" class="dashboard">
+          <template is="dom-if" if="[[hasWidgets]]" restamp>
+            <div class="grid">
+              <div class="column">
+                <template is="dom-repeat" items="[[config.column1]]" as="widgetId">
+                  <nuxeo-home-host widget-id="[[widgetId]]"
+                                   visible="[[visible]]"></nuxeo-home-host>
+                </template>
+              </div>
+              <div class="column">
+                <template is="dom-repeat" items="[[config.column2]]" as="widgetId">
+                  <nuxeo-home-host widget-id="[[widgetId]]"
+                                   visible="[[visible]]"></nuxeo-home-host>
+                </template>
+              </div>
+            </div>
+          </template>
+
+          <template is="dom-if" if="[[!hasWidgets]]" restamp>
+            <nuxeo-card icon="icons:info" heading="[[i18n('home.ui.noWidget.title')]]">
+              <p>[[i18n('home.ui.noWidget.desc')]]</p>
+            </nuxeo-card>
+            <img src="/nuxeo/ui/nuxeo-home/nuxeo-home-empty.jpg" alt="Banner" style="width: 75%; height: auto; display: block; margin: 0 auto;">
+          </template>
+        </section>
+      </div>
+    </nuxeo-page>
+ 
+ 
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-home-page-layout',
+      behaviors: [Nuxeo.FormatBehavior, Nuxeo.NuxeoHomeConfigBehavior],
+      properties: {
+        config: Object,
+        hasWidgets: Boolean,
+        visible: Boolean
+      },
+
+      // Getting available widgets _then_ fetching config must be done once only.
+      attached: function() {
+        this.$.getAvailableWidgetsOp
+              .execute()
+              .then(function(response) {
+
+                let widgets = response;
+                if(!Array.isArray(response) && response.details && Array.isArray(response.details.entries)) {
+                  widgets = response.details.entries;
+                }
+                if (widgets) {
+                  // From NuxeoHomeConfigBehavior
+                  this.setAvailableWidgets(widgets);
+                }
+              }.bind(this))
+              .catch(function onError(err) {
+                console.error("Unable to fetch available widgets for home page, using empty list", err);
+                this.setAvailableWidgets([]);
+              }.bind(this))
+              .finally(function() {
+                  this.refresh();
+              }.bind(this));
+      },
+
+      _newJsonConfigAvailable(jsonConfig) {
+        // setDisplayedWidgets must be called _before_ normalizeConfig
+        this.setDisplayedWidgets(jsonConfig);
+        this.config = this.normalizeConfig(jsonConfig);
+        this.hasWidgets = this.hasWidgetsToDisplay(this.config);
+      },
+
+      refresh: function() {
+        this.$.getConfigOp
+              .execute()
+              .then(function onConfig(rawConfig) {
+                var parsed = rawConfig;
+                if (typeof rawConfig === 'string') {
+                  parsed = JSON.parse(rawConfig);
+                }
+                this._newJsonConfigAvailable(parsed);
+              }.bind(this))
+              .catch(function onError(err) {
+                console.error("Unable to fetch home page configuration, using default", err);
+                this.config = this.getDefaultConfig();
+                this.hasWidgets = this.hasWidgetsToDisplay(this.config);
+              }.bind(this));
+      },
+
+      _openConfig: function() {
+        this.$.configDialog.open();
+      },
+
+      _onConfigSaved: function(event) {
+        var updated = event.detail && event.detail.config;
+        if (updated) {
+           this._newJsonConfigAvailable(updated);
+          return;
+        }
+        this.refresh();
+      },
+    });
+  </script>
+</dom-module>
+<!--
+@license
+©2023 Hyland Software, Inc. and its affiliates. All rights reserved. 
+All Hyland product names are registered or unregistered trademarks of Hyland Software, Inc. or its affiliates.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+

@@ -1,0 +1,120 @@
+<!--
+nuxeo-home-recently-viewed (license Apache, see nuxeo-home-page-layout.html)
+
+Displays the documents recently viewed. This comes almost directly from nuxeo-home original code,
+modified to handle visibility, avoid useless refresh, etc.
+-->
+<link rel="import" href="../nuxeo-home-config/nuxeo-home-config-behavior.html">
+<link rel="import" href="nuxeo-home-style.html">
+<dom-module id="nuxeo-home-recently-viewed">
+  <template>
+    <style include="nuxeo-styles nuxeo-home-style">
+    </style>
+
+    <nuxeo-card icon="nuxeo:recent" heading="[[i18n(title)]]">
+      <nuxeo-document-storage
+        id="recentStorage"
+        name="nuxeo-recent-documents"
+        documents="{{_recentDocuments}}"
+      ></nuxeo-document-storage>
+      <nuxeo-page-provider id="recentProvider" page-size="15" schemas="uid"></nuxeo-page-provider>
+      <nuxeo-data-table
+        id="latestViewedDocs"
+        wrapper-height="350px"
+        max-items="15"
+        empty-label="[[i18n('recentDocuments.empty')]]"
+        empty-label-when-filtered="[[i18n('recentDocuments.empty')]]"
+        on-row-clicked="_navigate"
+        caption-text="[[i18n('table.caption.recentlyViewedDocs')]]"
+      >
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.title')]]" flex="100">
+          <template>
+            <nuxeo-document-thumbnail document="[[item]]"></nuxeo-document-thumbnail>
+            <a class="ellipsis" href$="[[urlFor(item)]]">[[item.title]]</a>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('recentDocumentsTable.type')]]" flex="50">
+          <template>
+            <nuxeo-tag>[[formatDocType(item.type)]]</nuxeo-tag>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('recentDocumentsTable.lastViewed')]]" flex="50">
+          <template>
+            <nuxeo-date datetime="[[item.lastViewed]]" format="relative"></nuxeo-date>
+          </template>
+        </nuxeo-data-table-column>
+      </nuxeo-data-table>
+    </nuxeo-card>
+    
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-home-recently-viewed',
+      behaviors: [Nuxeo.RoutingBehavior, Nuxeo.NuxeoHomeConfigBehavior],
+      properties: {
+        title: String,
+        visible: {
+          type: Boolean,
+          observer: '_visibleChanged',
+        },
+
+        _recentDocuments: {
+          type: Array,
+          value: [],
+          observer: '_recentDocumentsChanged',
+        }
+      },
+
+      ready: function() {
+        this._refresh();
+      },
+      
+      _visibleChanged(visible) {
+        if (visible) {
+          this._refresh();
+        }
+      },
+
+      _refresh() {
+        if(!this.isDisplayed(this.is)) {
+          return;
+        }
+        this.$.recentStorage.reload();
+      },
+
+      _recentDocumentsChanged(docs) {
+        if (docs && docs.length > 0) {
+          const storage = this.$.recentStorage;
+          const provider = this.$.recentProvider;
+          const ids = docs.map((doc) => `'${doc.uid}'`).join(',');
+          provider.query = `SELECT * FROM Document WHERE ecm:uuid IN (${ids}) AND ecm:isTrashed = 0`;
+          provider.fetch().then((result) => {
+            docs.forEach((doc) => {
+              if (result.entries.findIndex((entry) => entry.uid === doc.uid) === -1) {
+                storage.remove(doc);
+              }
+            });
+            this.$.latestViewedDocs.items = docs;
+            this.$.latestViewedDocs.notifyResize(); // XXX: force rendering for Edge (NXP-26244)
+          });
+        }
+      },
+
+      _navigate(e) {
+        let detail;
+        if (e.detail.item) {
+          detail = {
+            doc: e.detail.item,
+          };
+          this.navigateTo(detail.doc);
+        } else {
+          detail = {
+            doc: e.model.item,
+          };
+        }
+        this.fire('navigate', detail);
+      }
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,76 @@
+<!--
+nuxeo-home-recently-created (license Apache, see nuxeo-home-page-layout.html)
+
+Displays the documents recently created.
+Idea of centralising code: we could make nuxeo-home-search lmore configurable in terms of columns to display,
+and then use it for recently created, expired, ... 
+-->
+<link rel="import" href="../nuxeo-home-config/nuxeo-home-config-behavior.html">
+<link rel="import" href="nuxeo-home-style.html">
+<dom-module id="nuxeo-home-recently-created">
+  <template>
+    <style include="nuxeo-styles nuxeo-home-style">
+    </style>
+
+    <nuxeo-home-search
+      title="[[i18n(title)]]"
+      icon="icons:add"
+      query="[[query]]"
+      order-by="dc:created DESC"
+      visible="[[visible]]"
+      columns="dc:title,dc:created,dc:creator"
+    ></nuxeo-home-search>
+    
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-home-recently-created',
+      behaviors: [Nuxeo.RoutingBehavior, Nuxeo.NuxeoHomeConfigBehavior],
+      properties: {
+        title: String,
+        query: String,
+        visible: {
+          type: Boolean,
+          observer: '_visibleChanged',
+        }
+      },
+
+      ready: function() {
+        this.refresh();
+      },
+
+      _visibleChanged: function(visible) {
+        if(visible) {
+          this.refresh();
+        }
+      },
+
+      refresh: function() {
+        // See NuxeoHomeConfigBehavior
+        if(!this.isDisplayed(this.is)) {
+          return;
+        }
+        this.query = this._getCreatedNxql();
+      },
+
+      _getCreatedNxql: function() {
+        let now = new Date().toISOString().substring(0, 10);
+        return `SELECT * FROM Document WHERE dc:created >= TIMESTAMP '${this.computeRelativeDate(-30)}'
+          AND ecm:mixinType != 'Folderish'
+          AND ecm:mixinType != 'SystemDocument'
+          AND ecm:mixinType != 'HiddenInNavigation'
+          AND ecm:isVersion = 0
+          AND ecm:isProxy = 0
+          AND ecm:isTrashed = 0`
+      },
+
+      computeRelativeDate(days) {
+        const date = new Date();
+        date.setDate(date.getDate() + days);
+        return date.toISOString();
+      }
+
+    });
+  </script>
+</dom-module>

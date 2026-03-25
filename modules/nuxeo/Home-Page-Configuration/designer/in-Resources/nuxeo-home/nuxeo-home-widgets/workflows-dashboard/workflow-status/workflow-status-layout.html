@@ -1,0 +1,124 @@
+<!-- This is inspired from Nuxeo Studio Cookbook:
+     https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/workflow-status
+
+     File modified so it can be used with the misc. Home Page Configuration module.
+     (add the behavior, add the parentWidget property, styles, ...)
+-->
+<link rel="import" href="../../nuxeo-home-style.html">
+<dom-module id="workflow-status-layout">
+  <template>
+    <style include="iron-flex iron-flex-alignment nuxeo-styles nuxeo-home-style">
+      :host {
+        display: block;
+      }
+
+      .status-bar {
+        height: 100px;
+      }
+
+      nuxeo-document-suggestion {
+        width: 100%;
+      }
+
+      /* Specific to this workflow layout, we want smaller columns */
+      nuxeo-data-table-cell {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+    </style>
+
+    <nuxeo-page-provider id="tasksProvider" provider="HomePageConfiguration_WorkflowStatus" page-size="20" enrichers="permissions" schemas="dublincore,common,uid,task" headers='{"X-NXfetch.document": "properties", "X-NXtranslate.directoryEntry": "label"}'></nuxeo-page-provider>
+
+    <!-- Table view -->
+    <nuxeo-data-table id="tasksTable" nx-provider="tasksProvider" class="results" settings-enabled="false" empty-label="[[emptyLabel]]" empty-label-when-filtered="[[emptyLabelWhenFiltered]]">
+
+      <nuxeo-data-table-column name="" width="25px">
+        <template>
+          <workflow-status-widget document="[[item]]"></workflow-status-widget>
+        </template>
+      </nuxeo-data-table-column>
+
+      <nuxeo-data-table-column name="Workflow" field="nt:processId" width="150px" flex="70">
+        <template>
+          <nuxeo-document auto="true" response="{{workflow}}" doc-id="[[item.properties.nt:processId]]"></nuxeo-document>
+          <span>[[i18n(workflow.title)]], [[i18n(item.properties.nt:name)]]</span>
+        </template>
+      </nuxeo-data-table-column> 
+
+      <nuxeo-data-table-column name="Task" field="nt:name" sort-by="nt:name" hidden>
+        <template>
+          [[i18n(item.properties.nt:name)]]
+        </template>
+      </nuxeo-data-table-column>
+
+      <nuxeo-data-table-column name="Target" field="nt:targetDocumentsIds" flex="75">
+        <template>
+          <nuxeo-document-suggestion value="{{_getTaskTarget(item)}}" readonly></nuxeo-document-suggestion>
+        </template>
+      </nuxeo-data-table-column>
+
+      <nuxeo-data-table-column name="Assignee(s)" flex="75">
+        <template>
+          [[_getTaskAssignee(item)]]
+        </template>
+      </nuxeo-data-table-column>
+
+      <nuxeo-data-table-column name="Due" field="nt:dueDate" sort-by="nt:dueDate" flex="8" hidden>
+        <template>
+          [[formatDate(item.properties.nt:dueDate)]]
+        </template>
+      </nuxeo-data-table-column>
+
+      <nuxeo-data-table-column name="[[i18n('label.dublincore.modified')]]" field="dc:modified" sort-by="dc:modified" flex="8" hidden>
+        <template>
+          [[formatDate(item.properties.dc:modified)]]
+        </template>
+      </nuxeo-data-table-column>
+
+    </nuxeo-data-table>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'workflow-status-layout',
+      behaviors: [Nuxeo.LayoutBehavior, Nuxeo.NuxeoHomeConfigBehavior],
+      properties: {
+        parentWidget: String,
+        visible: {
+          type: Boolean,
+          observer: '_visibleChanged'
+        }
+      },
+
+      _visibleChanged: function (visible) {
+        if (visible) {
+          this._refresh();
+        }
+      },
+
+      ready: function () {
+        this._refresh();
+      },
+
+      _refresh: function () {
+        // isDisplayed() => See NuxeoHomeConfigBehavior
+        if(this.parentWidget && this.isDisplayed(this.parentWidget)) {
+          this.$.tasksTable.fetch();
+        }
+      },
+
+      _getTaskTarget: function (item) {
+        if (item && item.properties && item.properties["nt:targetDocumentsIds"] && item.properties["nt:targetDocumentsIds"].length > 0) {
+          return item.properties["nt:targetDocumentsIds"][0];
+        }
+      },
+
+      _getTaskAssignee: function (item) {
+        if (item && item.properties && item.properties["nt:actors"] && item.properties["nt:actors"].length > 0) {
+          return item.properties["nt:actors"][0];
+        }
+      }
+    });
+  </script>
+</dom-module>

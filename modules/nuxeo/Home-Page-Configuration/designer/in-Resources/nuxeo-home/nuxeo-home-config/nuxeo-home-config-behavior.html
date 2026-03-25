@@ -1,0 +1,201 @@
+<!--
+nuxeo-home-config-behavior (license Apache, see nuxeo-home-page-layout.html)
+
+This is the behavior for both the configuration of the home page and the usage of the widgets.
+It centralizes handling of configuration, to avoid accessing the JSON definition from widgets,
+so we can centralize the logic here. For example, avoid an element to use config.column1 or
+other element, so if we change the JSON config structure we can change logic only here.
+It basically provides:
+* The list of available widgets for the user (coming from the server)
+* The list of widgets that are currently displayed
+* A default configuration
+* Utility methods to manipulate/check the configuration.
+* Utility methods like isDisplayed() for a widget to detect it is displayed or not.
+  (so it does not run a search when not needed)
+-->
+<script>
+  var Nuxeo = Nuxeo || {};
+  // We need a shared state of the displayed widgets across all the widgets.
+  Nuxeo.HomeConfigState = Nuxeo.HomeConfigState || {
+    availableWidgets: [],
+    displayedWidgets: []
+  };
+
+  (function () {
+    /**
+     * @polymerBehavior Nuxeo.NuxeoHomeConfigImpl
+     */
+    Nuxeo.NuxeoHomeConfigImpl = {
+      properties: {
+        // This is the default in Nuxeo Home
+        DEFAULT_CONFIG: {
+          type: Object,
+          value: {
+            column1: ['recentlyEdited', 'recentlyEdited'],
+            column2: ['tasks', 'favorites']
+          }
+        }
+      },
+
+      cloneConfig: function (obj) {
+        return JSON.parse(JSON.stringify(obj));
+      },
+
+      getDefaultConfig: function () {
+        return this.cloneConfig(this.DEFAULT_CONFIG);
+      },
+
+      _getAvailableWidgetsNoCopy() {
+        if(!Nuxeo.HomeConfigState.availableWidgets) {
+          Nuxeo.HomeConfigState.availableWidgets = [];
+        }
+        return Nuxeo.HomeConfigState.availableWidgets;
+      },
+
+      getAvailableWidgets: function () {
+        return this._getAvailableWidgetsNoCopy().slice();
+      },
+
+      setAvailableWidgets: function (widgets) {
+        Nuxeo.HomeConfigState.availableWidgets = widgets.slice();
+      },
+
+      _getWidget: function (widgetIdOrName) {
+        // Widget name provided, need to find the id
+        let widget = this._getAvailableWidgetsNoCopy()
+                          .find(function (widget) {
+                            return widget.widgetName === widgetIdOrName || widget.id === widgetIdOrName;
+                          });
+        if (widget) {
+          return widget;
+        } else {
+          // Not found, consider it as not displayed
+          console.warn('Widget with name ' + widgetIdOrName + ' not found in availableWidgets.');
+          return null;
+        }
+      },
+
+      getElementNameForId: function (widgetId) {
+        let widget = this._getWidget(widgetId);
+        if (widget) {
+          return widget.widgetName;
+        } else {
+          console.warn('Widget with id ' + widgetId + ' not found in availableWidgets.');
+          return null;
+        }
+      },
+
+      getWidgetTitle: function (widgetIdOrName) {
+        let widget = this._getWidget(widgetIdOrName);
+        if (widget) {
+          return widget.title;
+        } else {
+          console.warn('Widget with id ' + widgetIdOrName + ' not found in availableWidgets.');
+          return widgetIdOrName;
+        }
+      },
+
+      flatten: function (config) {
+        if(!config || !config.column1 || !config.column2) {
+          console.warn("Invalid config provided to flatten, returning empty list", config);
+          return [];
+        }
+        return [config.column1, config.column2].flat();
+      },
+
+      hasWidgetsToDisplay: function (config) {
+        return this.flatten(config).length > 0;
+      },
+
+      getWidgetsInColumn: function (config, columnNumStartAt1) {
+        if(!config) {
+          return [];
+        }
+        if(columnNumStartAt1 === 1) {
+          return config.column1;
+        } else if(columnNumStartAt1 === 2) {
+          return config.column2;
+        } else {
+          console.warn("Invalid column provided to getWidgetsInColumn", columnNumStartAt1);
+          return [];
+        }
+      },
+
+      getEmptyConfig: function () {
+        return {
+          column1: [],
+          column2: []
+        };
+      },
+
+      columnsToConfig: function (col1, col2) {
+        let tempConfig = {
+          column1: col1,
+          column2: col2
+        };
+        return this.normalizeConfig(tempConfig);
+      },
+
+      // Check widgets are available 
+      normalizeConfig: function (config) {
+        var safe = config || {};
+        var col1 = Array.isArray(safe.column1) ? safe.column1.slice() : [];
+        var col2 = Array.isArray(safe.column2) ? safe.column2.slice() : [];
+
+        var allowed = this.getAvailableWidgets()
+                          .map(function toId(widget) {
+                            return widget.id;
+                          });
+
+        col1 = col1.filter(function filterAllowed(widgetId) {
+          return allowed.indexOf(widgetId) !== -1;
+        });
+        col2 = col2.filter(function filterAllowed(widgetId) {
+          return allowed.indexOf(widgetId) !== -1 && col1.indexOf(widgetId) === -1;
+        });
+
+        let normalized =  {
+          column1: col1,
+          column2: col2
+        };
+
+        return normalized;
+      },
+
+      setDisplayedWidgets: function (config) {
+        Nuxeo.HomeConfigState.displayedWidgets = this.flatten(config);
+      },
+
+      isDisplayed: function (widgetIdOrName) {
+        let displayedWidgets = Nuxeo.HomeConfigState.displayedWidgets;
+        if(!displayedWidgets) {
+          return false;
+        }
+
+        let widget = this._getWidget(widgetIdOrName);
+        if(widget) {
+          return displayedWidgets.indexOf(widget.id) > -1;
+        } else {
+          console.error('Widget with id or name ' + widgetIdOrName + ' not found in availableWidgets.');
+          return false;
+        }
+      },
+
+      i18nCustom: function (key, defaultValue) {
+        let translated = this.i18n(key);
+        if (translated === key) {
+          translated = defaultValue ? defaultValue : key;
+        }
+         return translated;
+      }
+
+    };
+
+    /** @polymerBehavior */
+    Nuxeo.NuxeoHomeConfigBehavior = [
+      Nuxeo.NuxeoHomeConfigImpl,
+      Nuxeo.FormatBehavior
+    ];
+    
+  })();
+</script>

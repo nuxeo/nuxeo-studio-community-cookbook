@@ -1,0 +1,424 @@
+<!--
+nuxeo-home-repository-overview (license Apache, see nuxeo-home-page-layout.html)
+
+This element and its main behavior (RepositoryOverviewBehavior) are a bit more complex than the other widgets,
+because of the usage of Elasticsearch/Opensearch passthourgh queries, and the specific format of the data for the charts.
+
+Not talking about styling. And I'm not super good at styling, even with an AI :-)
+-->
+<link rel="import" href="../../nuxeo-home-config/nuxeo-home-config-behavior.html">
+<link rel="import" href="../nuxeo-home-style.html">
+<!-- A _lot_ is done in this behavior (ES query JSON, format, ...) -->
+<link rel="import" href="repository-overview-analytics-behavior.html">
+
+<dom-module id="nuxeo-home-repository-overview">
+  <template>
+    <style include="nuxeo-styles nuxeo-home-style">
+
+      .container {
+        height: 328px;
+        min-height: auto;
+        overflow: hidden;
+      }
+
+      .container .layout {
+        height: 100%;
+        flex-wrap: nowrap !important;
+      }
+
+      .cell {
+        min-width: 0;
+      }
+
+      .cell > nuxeo-card {
+        height: 100%;
+      }
+
+      .importantText {
+        font-size: 1.2em;
+      }
+
+      .highlightNumber {
+        font-weight: bold;
+      }
+
+      .smallerText {
+        font-size: 0.8em;
+      }
+
+      .spaceLeft {
+        margin-left: 16px;
+      }
+
+      .dataDisplay {
+        margin-top: 3px;
+        overflow-x: auto;
+      }
+
+      .moreSpaceTop {
+        margin-top: 25px;
+      }
+
+      .rightBorder {
+        border-right: 1px solid var(--nuxeo-border, #e5e9ee);
+      }
+
+      .headerLine {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 12px;
+      }
+
+      .chartsRow {
+        display: flex;
+        gap: 12px;
+        width: 100%;
+        align-items: center;
+      }
+
+      #byDocTypeChart,
+      #newDocumentsChart {
+        flex: 1 1 0;
+        min-width: 0;
+      }
+      /*
+      #byDocTypeChart {
+        flex: 0 0 35%;
+        min-width: 180px;
+      }
+
+      #newDocumentsChart {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+        */
+
+      #tablenumbers {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        table-layout: fixed;
+        border: 1px solid var(--nuxeo-border, #ff0000);
+        background-color: var(--nuxeo-box, #fff);
+      }
+
+      #tablenumbers th {
+        background-color: var(--nuxeo-table-header-background, #f5f7fa);
+        color: var(--nuxeo-text-default, #3f4752);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        text-align: center;
+        padding: 5px 6px;
+        border-bottom: 1px solid var(--nuxeo-border, #d7dce1);
+      }
+
+      #tablenumbers td {
+        padding: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        text-align: center;
+        border-bottom: 1px solid var(--nuxeo-border, #e5e9ee);
+        font-variant-numeric: tabular-nums;
+      }
+
+      #tablenumbers tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      .marginTop {
+        margin-top: 25px;
+      }
+
+      /*
+      .totals-line {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        flex-wrap: wrap;
+      }*/
+
+      .sup {
+        vertical-align: super;
+        font-size: smaller;
+        font-weight: normal;
+      }
+      
+    </style>
+
+    <nuxeo-connection id="nx"></nuxeo-connection>
+
+    <!-- ============================= Fetch Data ============================= -->
+    <!-- Total Documents -->
+    <nuxeo-repository-data ecm-primary-type="[[_documentTypeFilter]]"
+                          metrics="value_count(ecm:primaryType)"
+                          date-field="dc:created"
+                          data="{{allDocsCount}}"
+                          index="[[index]]">
+    </nuxeo-repository-data>
+    
+    <!-- Total Live Documents -->
+    <nuxeo-repository-data ecm-primary-type="[[_documentTypeFilter]]"
+                           metrics="value_count(ecm:primaryType)"
+                           date-field="dc:created"
+                           data="{{liveDocsCount}}"
+                           where="[[ES_QUERIES.onlyLiveDocuments]]"
+                           index="[[index]]">
+    </nuxeo-repository-data>
+    
+    <!-- Total Versions -->
+    <nuxeo-repository-data ecm-primary-type="[[_documentTypeFilter]]"
+                           metrics="value_count(ecm:primaryType)"
+                           date-field="dc:created"
+                           data="{{versionsCount}}"
+                           where="[[ES_QUERIES.onlyVersionDocuments]]"
+                           index="[[index]]">
+    </nuxeo-repository-data>
+    
+    <!-- Total Proxies -->
+    <nuxeo-repository-data ecm-primary-type="[[_documentTypeFilter]]"
+                           metrics="value_count(ecm:primaryType)"
+                           date-field="dc:created"
+                           data="{{proxiesCount}}"
+                           where="[[ES_QUERIES.onlyProxyDocuments]]"
+                           index="[[index]]">
+    </nuxeo-repository-data>
+
+    <!-- Document Types -->
+    <nuxeo-repository-data ecm-primary-type="[[_documentTypeFilter]]"
+                           grouped-by="ecm:primaryType"
+                           group-limit="20"
+                           date-field="dc:created"
+                           data="{{documentsByType}}"
+                           where="[[ES_QUERIES.onlyLiveDocuments]]"
+                           index="[[index]]">
+    </nuxeo-repository-data>
+
+    <!-- Total running tasks -->
+    <nuxeo-repository-data ecm-primary-type="RoutingTask"
+                          metrics="value_count(ecm:primaryType)"
+                          date-field="dc:created"
+                          data="{{totalTasks}}"
+                          where="[[ES_QUERIES.openedTasks]]"
+                          index="[[index]]">
+    </nuxeo-repository-data>
+
+    <!-- number of documents created by day during last month
+         (startDate/endDate in RepositoryOverviewBehavior) -->
+    <nuxeo-repository-data start-date="[[startDate]]" end-date="[[endDate]]"
+                           ecm-primary-type="[[_documentTypeFilter]]"
+                           date-format="[[dateFormat]]"
+                           with-date-intervals="day"
+                           date-field="dc:created"
+                           data="{{documentsCreatedPerDay}}"
+                           where="[[ES_QUERIES.onlyLiveDocuments]]"
+                           index="[[index]]">
+    </nuxeo-repository-data>
+
+    <!-- ============================= Display Data ============================= -->
+    <nuxeo-card icon="icons:dashboard" heading="[[i18n(title)]]">
+      <div class="headerLine">
+        <label>For documents: [[_formatStringList(_documentTypeFilter)]]</label>
+        <label class="smallerText">(*) Size of binaries</label>
+      </div>
+      <div class="container">
+        <div class="layout horizontal">
+          <div class="cell">
+            <div class="dataDisplay">
+              <table id="tablenumbers">
+                <thead>
+                  <tr>
+                    <th>Total Count</th>
+                    <th>Live</th>
+                    <th>Versions</th>
+                    <th class="rightBorder">Proxies</th>
+                    <th>Total Size<span class="sup">*</span></th>
+                    <th class="rightBorder">Live Docs Size<span class="sup">*</span></th>
+                    <th>Opened Tasks</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>[[_formatNumber(allDocsCount)]]</td>
+                    <td>[[_formatNumber(liveDocsCount)]]</td>
+                    <td>[[_formatNumber(versionsCount)]]</td>
+                    <td class="rightBorder">[[_formatNumber(proxiesCount)]]</td>
+                    <td>[[formatSize(totalBinariesSize)]]</td>
+                    <td class="rightBorder">[[formatSize(liveBinariesSize)]]</td>
+                    <td>[[_formatNumber(totalTasks)]]</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="cell">
+            <div class="dataDisplay moreSpaceTop chartsRow">
+              <chart-bar id="byDocTypeChart"
+                        class="chart"
+                        data="[[_formatSingleDatasetforBarChart(documentsByType, 5, 'label.document.type.')]]"
+                        options="[[defaultBarChartOptions]]">
+              </chart-bar>
+              <chart-line id="newDocumentsChart"
+                          class="spaceLeft"
+                          data="[[_newDocumentsLineData(documentsCreatedPerDay)]]"
+                          options="[[defaultLineChartOptions]]">
+              </chart-line>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </nuxeo-card>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-home-repository-overview',
+      behaviors: [Nuxeo.NuxeoHomeConfigBehavior, Nuxeo.RepositoryOverviewBehavior],
+      properties: {
+        title: String,
+        visible: {
+          type: Boolean,
+          observer: "_visibleChanged"
+        },
+        refreshingCount: {
+          type: Number,
+          value: 0
+        },
+
+        // Specific analytics
+        _documentTypeFilter: {
+          type: String,
+          value: 'File,Picture,Video,Audio'
+        }
+      },
+
+      _getThisName: function() {
+        return this.is;
+      },
+
+      _formatNumber: function(value) {
+        if (value === null || value === undefined || value === '') {
+          return '0';
+        }
+        var num = Number(value);
+        if (isNaN(num)) {
+          return value;
+        }
+        return num.toLocaleString();
+      },
+
+      _formatStringList(list) {
+        if (!list) {
+          return ''; 
+        }
+
+        if(Array.isArray(list)) {
+          return list.join(', ');
+        }
+
+        return list.split(',')
+                    .map(s => s.trim())
+                    .filter(s => s !== '')
+                    .join(', ');
+      },
+
+      ready: function() {
+        this.title = this.getWidgetTitle(this.is);
+        this.refresh();
+      },
+
+      _visibleChanged: function(visible) {
+        if(visible) {
+          this.refresh();
+        }
+      },
+      
+      refresh: function() {
+        // See NuxeoHomeConfigBehavior
+        if(!this.isDisplayed(this.is)) {
+          return;
+        }
+
+        if(this.refreshingCount == 2) {
+          return;
+        }
+        this.refreshingCount = 2;
+        this._fetchAssetTotalSize();
+        this._fetchLiveAssetTotalSize();
+      },
+      
+      _fetch: function(body,success) {
+        let url = [this.$.nx.client._baseURL, 'site/es', this.index, '_search'].join('/');
+        url = url.replace(/(^\/+)|([^:])\/\/+/g, '$2/');
+        url += `?filter_path=aggregations.total_size`;
+
+        const options = {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: body,
+          url
+        };
+        return this.$.nx.request().then(function(request) {
+          return request.execute(options);
+        }).then(success).catch(function(error){
+          //this._handleError.bind(this))
+        });
+      },
+      
+      _fetchAssetTotalSize: function() {
+        var body = this.getBinariesSizeQueryTemplate(this._documentTypeFilter);
+        this._fetch(body,function(response){
+          this.totalBinariesSize = response.aggregations.total_size.value;
+          this.refreshingCount -= 1;
+        }.bind(this));
+      },
+      
+
+      _fetchLiveAssetTotalSize: function() {
+        var body = this.getBinariesSizeQueryTemplate(this._documentTypeFilter);
+        body.query.bool.must.push({
+          "term": {
+            "ecm:isVersion": false
+          }
+        });
+        
+        this._fetch(body,function(response){
+          this.liveBinariesSize = response.aggregations.total_size.value;
+          this.refreshingCount -= 1;
+        }.bind(this));
+      },
+
+      _newDocumentsLineData: function(data) {
+        var labels = this._formatDateLabels(data, 'DD');
+        var values = this._values(data);
+        var series = [];
+
+        if (Array.isArray(values) && Array.isArray(values[0])) {
+          series = values[0];
+        } else if (Array.isArray(values)) {
+          series = values;
+        }
+
+        let color = this.colors[0];
+
+        return {
+          labels: labels,
+          datasets: [{
+            label: 'Created/day (last 2 weeks)',
+            data: series,
+            fill: false,
+            borderColor: color,
+            backgroundColor: color,
+            borderWidth: 2,
+            pointRadius: 2
+          }]
+        };
+      },
+
+    });
+  </script>
+</dom-module>

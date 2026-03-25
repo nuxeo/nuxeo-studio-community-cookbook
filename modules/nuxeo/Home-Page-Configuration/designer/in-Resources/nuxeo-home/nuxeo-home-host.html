@@ -1,0 +1,90 @@
+<!--
+nuxeo-home-host (license Apache, see nuxeo-home-page-layout.html)
+
+To avoid a gigantic dom-if for each widget, we dynamically create the widget.
+You must be very careful and change the javascript.HomePageConfig_GetAvailableWidgets automation script
+if you add new widgets: make sure to <link rel="import" href="..."> them here.
+-->
+<link rel="import" href="nuxeo-home-config/nuxeo-home-config-behavior.html">
+
+<!-- ADD/REMOVE/CHANGE WIDGET IMPORT HERE -->
+<link rel="import" href="nuxeo-home-widgets/nuxeo-home-quick-search.html">
+<link rel="import" href="nuxeo-home-widgets/nuxeo-home-expired.html">
+<link rel="import" href="nuxeo-home-widgets/nuxeo-home-favorites.html">
+<link rel="import" href="nuxeo-home-widgets/nuxeo-home-recently-viewed.html">
+<link rel="import" href="nuxeo-home-widgets/nuxeo-home-recently-edited.html">
+<link rel="import" href="nuxeo-home-widgets/nuxeo-home-recently-created.html">
+<link rel="import" href="nuxeo-home-widgets/nuxeo-home-tasks.html">
+<link rel="import" href="nuxeo-home-widgets/nuxeo-home-search-state.html">
+<link rel="import" href="nuxeo-home-widgets/workflows-dashboard/nuxeo-home-workflows.html">
+<link rel="import" href="nuxeo-home-widgets/repository-overview/nuxeo-home-repository-overview.html">
+<dom-module id="nuxeo-home-host">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <nuxeo-card>
+      <div id="widgetContainer"></div>
+    </nuxeo-card>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-home-host',
+      behaviors: [Nuxeo.FormatBehavior, Nuxeo.NuxeoHomeConfigBehavior],
+      properties: {
+        widgetId: String,
+        visible: Boolean
+      },
+
+      observers: [
+        '_renderWidget(widgetId, visible)'
+      ],
+
+      _renderWidget: function(widgetId, visible) {
+        if(!widgetId || typeof visible !== "boolean") {
+          console;log("NOT READY");
+          return;
+        }
+
+        let container = this.$.widgetContainer;
+        if (!container) {
+          return;
+        }
+
+        // Cleanup
+        while (container.firstChild) {
+          container.removeChild(container.firstChild);
+        }
+
+        let tagName = this.getElementNameForId(widgetId);
+
+        let el = document.createElement(tagName);
+
+        // Common properties
+        el.visible = this.visible;
+        el.title = this.getWidgetTitle(widgetId);
+
+        // Special cases
+        this._morePropertiesIfNeeded(el, widgetId);
+
+        container.appendChild(el);
+      },
+
+      _morePropertiesIfNeeded: function(el, widgetId) {
+        switch(widgetId) {
+        case 'approved':
+          el.state = 'approved';
+          break;
+        case 'published':
+          el.state = 'published';
+          break;
+        }
+      }
+    });
+  </script>
+</dom-module>
