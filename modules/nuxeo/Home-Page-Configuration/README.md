@@ -22,6 +22,10 @@ Once imported in your Studio project, you can of course (and you likely will) ch
 
 ## How Does it Work?
 
+> [!IMPORTANT]
+> Since first release of this module, on March 2026, Nuxeo LTS 2025.16 (and soon, backported to LTS 2023) brings a new cool feature. A new REST API endpoint to handle user preferences (see [New Nuxeo User Preferences Modules](https://doc.nuxeo.com/nxdoc/nuxeo-server-release-notes/#introduce-new-nuxeo-user-preferences-modules).
+> So, it is very likely that we will rewrite the storage part of the preferences, since it will be way easier: No need for a dedicated document type, no need to fetch or create this document, to handle permissions, etc.
+
 1. **Saving the Configuration**
 
 When a user saves a configuration, the `HomePageConfiguration_SaveUserConfig` Automation Script is run, and it saves the user configuration in a `UserHomeConfig` document (see below). Such a document is created only if a user explicitly saves a new configuration. As long a s user does not save a new configuration, the default configuration applies. This is done to avoid creating thousands of documents, one every time a user just logs in and has no (not yet) configuration available.
