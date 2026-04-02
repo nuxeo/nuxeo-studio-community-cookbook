@@ -1,0 +1,214 @@
+<!--
+nuxeo-home-search (license Apache, see nuxeo-home-page-layout.html)
+
+Centralize several search related widgets (quick search, search by lifecycle state, ...).
+
+Properties:
+  * schemas:
+    * Optional, default is "dublincore,common,uid"
+    * To be used only if you display a column using one of the schemas
+  * Columns:
+    * Optional, default is "dc:modified,dc:lastContributor"
+      * dc:title is always displayed
+    * Comma separated list of xpaths
+     ---------------------------------------------------------------------------------------------------------
+  ⚠️ You must modify this file and add the correct dom-if corresponding to the colum you want to display,
+     We can't create a gigantic file full of dom-if, nor even dyamically create the nuxeo-data-table-column,
+     it would be too complex to handle the misc types and displays etc.
+     See an example in nuxeo-home-expired
+     ---------------------------------------------------------------------------------------------------------
+     We recommend you keep this element as simple as possible. It is meant to be reused, of course, but still.
+  * order-by is optional. It is the expression passed after "ORDER BY", like "dc:created DESC")
+  * IMPORTANT
+    This element always add the usual filters to the query:
+            ecm:mixinType != 'HiddenInNavigation'
+        AND ecm:isVersion = 0
+        AND ecm:isProxy = 0
+        AND ecm:isTrashed = 0
+
+Ideas for whoever wants to improve it :-)
+  * Allow for choosing the columns to display, including the title, the "hidden" property, etc.
+  * Allow for some query properties (page size, schemas, enrichers, ...)
+  * Maybe add some predefined queries (like "My documents", "Shared with me", "Recently modified", ...)
+    (so, no more needs of specialized widgets)
+  * Mauybe, allow for using a page provider instead of a query string?
+
+--
+First release on 2023-03-25
+@author Thibaud Arguillere
+-->
+<link rel="import" href="../nuxeo-home-config/nuxeo-home-config-behavior.html">
+ <link rel="import" href="nuxeo-home-style.html">
+<dom-module id="nuxeo-home-search">
+  <template>
+    <style include="nuxeo-styles nuxeo-home-style">
+    </style>
+
+    <nuxeo-card icon="[[icon]]" heading="[[i18n(title)]]">
+      <nuxeo-page-provider
+        id="thePageProvider"
+        query="[[finalQuery]]"
+        page-size="20"
+        schemas="[[shemas]]"
+        enrichers="thumbnail"
+        headers='{"fetch-document": "properties"}'
+      ></nuxeo-page-provider>
+
+      <nuxeo-data-table
+        id="foundDocs"
+        wrapper-height="350px"
+        max-items="15"
+        nx-provider="thePageProvider"
+        empty-label="[[i18n('queryWidget.noDocuments')]]"
+        on-row-clicked="_navigate"
+        caption-text="[[i18n(title)]]">
+
+        <!-- Title, always displayed -->
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.title')]]" flex="100">
+          <template>
+            <nuxeo-document-thumbnail document="[[item]]"></nuxeo-document-thumbnail>
+            <a class="ellipsis" href$="[[urlFor(item)]]">[[item.title]]</a>
+          </template>
+        </nuxeo-data-table-column>
+
+        <template is="dom-if" if="[[_hasColumn('dc:modified')]]">
+           <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.modified')]]" flex="50">
+             <template>
+               <nuxeo-date datetime="[[item.properties.dc:modified]]" format="relative"></nuxeo-date>
+             </template>
+           </nuxeo-data-table-column>
+        </template>
+
+        <template is="dom-if" if="[[_hasColumn('dc:lastContributor')]]">
+          <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.lastContributor')]]" flex="50">
+            <template>
+              <nuxeo-user-tag user="[[item.properties.dc:lastContributor]]"></nuxeo-user-tag>
+            </template>
+          </nuxeo-data-table-column>
+        </template>
+
+        <template is="dom-if" if="[[_hasColumn('dc:created')]]">
+          <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.created')]]" flex="50">
+            <template>
+              <nuxeo-date datetime="[[item.properties.dc:created]]" format="relative"></nuxeo-date>
+            </template>
+          </nuxeo-data-table-column>
+        </template>
+
+        <template is="dom-if" if="[[_hasColumn('dc:creator')]]">
+          <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.author')]]" flex="50">
+            <template>
+              <nuxeo-user-tag user="[[item.properties.dc:creator]]"></nuxeo-user-tag>
+            </template>
+          </nuxeo-data-table-column>
+        </template>
+
+        <template is="dom-if" if="[[_hasColumn('dc:expired')]]">
+          <nuxeo-data-table-column name="[[i18nCustom('nuxeo.home.expired', 'Expired')]]" flex="50">
+            <template>
+              <nuxeo-date datetime="[[item.properties.dc:expired]]"></nuxeo-date>
+            </template>
+          </nuxeo-data-table-column>
+        </template>
+
+      </nuxeo-data-table>
+    </nuxeo-card>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-home-search',
+      behaviors: [Nuxeo.RoutingBehavior, Nuxeo.NuxeoHomeConfigBehavior],
+      properties: {
+        title: String,
+        icon: {
+          type: String,
+          value: "nuxeo:search"
+        },
+        query: String,
+        shemas: {
+          type: String,
+          value: "dublincore,common,uid"
+        },
+        orderBy: String,
+        finalQuery: String,
+        columns: {
+          type: String,
+          value: "dc:modified,dc:lastContributor"
+        }
+      },
+
+      observers: [
+        '_computeFinalQuery(query, orderBy)'
+      ],
+
+      _computeFinalQuery: function(query, orderBy) {
+        if (query) {
+          let toAdd = "ecm:mixinType != 'HiddenInNavigation' AND ecm:isVersion = 0 AND ecm:isProxy = 0 AND ecm:isTrashed = 0";
+          if(query.toLowerCase().indexOf(" where ") < 0) {
+            toAdd = " WHERE " + toAdd;
+          } else {
+            toAdd = " AND " + toAdd;
+          }
+          if (orderBy) {
+            toAdd += " ORDER BY " + orderBy;
+          }
+          finalQuery = query + toAdd;
+        } else {
+          finalQuery = query;
+        }
+        this.finalQuery = finalQuery;
+        this._refresh();
+      },
+      
+      ready: function() {
+        this._refresh();
+      },
+
+      _hasColumn: function(xpath) {
+        return this.columns && this.columns.indexOf(xpath) > -1;
+      },
+
+      // Called from users of the element
+      search: function() {
+        this._refresh();
+      },
+      
+      _visibleChanged(visible) {
+        if (visible) {
+          this._refresh();
+        }
+      },
+
+      _refresh() {
+        if(!this.$.foundDocs || !this.finalQuery) {
+          //console.log("No query or no foundDocs element, not refreshing");
+          return;
+        }
+        this.$.foundDocs.fetch();
+      },
+
+      _navigate(e) {
+        let detail;
+        if (e.detail.item) {
+          detail = {
+            doc: e.detail.item,
+          };
+          this.navigateTo(detail.doc);
+        } else {
+          detail = {
+            doc: e.model.item,
+          };
+        }
+        this.fire('navigate', detail);
+      },
+
+       urlFor: function(doc) {
+         if (doc && doc.uid) {
+           return this.urlForDoc(doc.uid);
+         }
+         return "#";
+       }
+    });
+  </script>
+</dom-module>

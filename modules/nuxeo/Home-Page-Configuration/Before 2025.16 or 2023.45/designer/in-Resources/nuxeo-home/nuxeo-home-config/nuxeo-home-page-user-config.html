@@ -15,7 +15,6 @@ First release on 2023-03-25
 @author Thibaud Arguillere
 -->
 <link rel="import" href="nuxeo-home-config-behavior.html">
-<link rel="import" href="../../elements/nuxeo-user-preferences.html">
 <dom-module id="nuxeo-home-page-user-config">
   <template>
     <style include="nuxeo-styles">
@@ -135,7 +134,9 @@ First release on 2023-03-25
       }
     </style>
 
-    <nuxeo-user-preferences id="userPref" key="HomePageConfiguration" value="{{configPrefValue}}" ></nuxeo-user-preferences>
+    <nuxeo-connection id="nx" user="{{user}}"></nuxeo-connection>
+    <nuxeo-operation id="getConfigOp" op="javascript.HomePageConfiguration_GetUserConfig"></nuxeo-operation>
+    <nuxeo-operation id="saveConfigOp" op="javascript.HomePageConfiguration_SaveUserConfig"></nuxeo-operation>
 
     <paper-dialog id="dialog" with-backdrop>
       <h2>[[i18n('home.ui.customize')]]</h2>
@@ -200,10 +201,6 @@ First release on 2023-03-25
       behaviors: [Nuxeo.FormatBehavior, Nuxeo.NuxeoHomeConfigBehavior],
       properties: {
         config:Object,
-        configPrefValue: {
-          type: String,
-          observer: '_configPrefValueChanged'
-        },
         column1Widgets: {
           type: Array,
           value: function () {
@@ -225,20 +222,27 @@ First release on 2023-03-25
         user: Object
       },
 
-      _configPrefValueChanged: function(newValue) {
-        if(!newValue || newValue === "NOT_FOUND") {
-          this.config = this.getDefaultConfig();
-        } else {
-          let parsed = JSON.parse(newValue);
-          this.config = this.normalizeConfig(parsed);
-        }
-        
-        this._syncListsFromConfig();
-        this.$.dialog.open();
+      open: function() {
+        return this._loadConfig().then(function() {
+          this.$.dialog.open();
+        }.bind(this));
       },
 
-      open: function() {
-        this.$.userPref.getValue(); // Sets configPrefValue => _configPrefValueChanged
+      _loadConfig: function() {
+        return this.$.getConfigOp
+          .execute()
+          .then(function(config) {
+            var parsed = config;
+            if (typeof config === 'string') {
+              parsed = JSON.parse(config);
+            }
+            this.config = this.normalizeConfig(parsed);
+            this._syncListsFromConfig();
+          }.bind(this))
+          .catch(function onError() {
+            this.config = this.getDefaultConfig();
+            this._syncListsFromConfig();
+          }.bind(this));
       },
 
       _syncListsFromConfig: function() {
@@ -494,25 +498,29 @@ First release on 2023-03-25
 
       _save: function() {
         var configJson = JSON.stringify(this.config);
-        this.$.userPref
-              .setValue(configJson)
-              .then(function() {
-                this.$.toast.text = this.i18n('home.ui.customize.saveSuccess');
-                this.$.toast.open();
-                this.$.dialog.close();
-                this.dispatchEvent(new CustomEvent('home-page-config-saved', {
-                  bubbles: true,
-                  composed: true,
-                  detail: {
-                    config: this.cloneConfig(this.config),
-                  },
-                }));
-              }.bind(this))
-              .catch(function() {
-                this.$.toast.text = this.i18n('home.ui.customize.saveFailure');
-                this.$.toast.open();
-              }.bind(this));
-      }
+        this.$.saveConfigOp.params = {
+          configJson: configJson,
+        };
+
+        this.$.saveConfigOp
+          .execute()
+          .then(function onSaved() {
+            this.$.toast.text = this.i18n('home.ui.customize.saveSuccess');
+            this.$.toast.open();
+            this.$.dialog.close();
+            this.dispatchEvent(new CustomEvent('home-page-config-saved', {
+              bubbles: true,
+              composed: true,
+              detail: {
+                config: this.cloneConfig(this.config),
+              },
+            }));
+          }.bind(this))
+          .catch(function onError() {
+            this.$.toast.text = this.i18n('home.ui.customize.saveFailure');
+            this.$.toast.open();
+          }.bind(this));
+      },
     });
   </script>
 </dom-module>

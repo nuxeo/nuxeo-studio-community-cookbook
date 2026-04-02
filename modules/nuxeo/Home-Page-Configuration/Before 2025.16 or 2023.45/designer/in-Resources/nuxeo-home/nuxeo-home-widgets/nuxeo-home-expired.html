@@ -1,0 +1,70 @@
+<!--
+nuxeo-home-expired (license Apache, see nuxeo-home-page-layout.html)
+
+Displays the documents expired.
+Will likely be tuned by customers, to add a bit more filters than just checking that
+dc:expired < now, but this is a good starting point. Just change _getExpiredNxql().
+
+Typically, the _getExpiredNxql() will be updated to the final need. Here, we just search
+on dc:expired, but ciustomers will likely need to add some filters, and/or change the
+ORDER BY statement, etc.
+
+--
+First release on 2023-03-25
+@author Thibaud Arguillere
+-->
+<link rel="import" href="../nuxeo-home-config/nuxeo-home-config-behavior.html">
+<link rel="import" href="nuxeo-home-search.html">
+<link rel="import" href="nuxeo-home-style.html">
+<dom-module id="nuxeo-home-expired">
+  <template>
+    <style include="nuxeo-styles nuxeo-home-style">
+    </style>
+    <nuxeo-home-search
+      title="[[i18n(title)]]"
+      icon="notification:sim-card-alert"
+      query="[[query]]"
+      order-by="dc:expired DESC"
+      visible="[[visible]]"
+      columns="dc:title,dc:modified,dc:lastContributor,dc:expired"
+    ></nuxeo-home-search>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-home-expired',
+      behaviors: [Nuxeo.NuxeoHomeConfigBehavior],
+      properties: {
+        query: String,
+        title: String,
+        visible: {
+          type: Boolean,
+          observer: "_visibleChanged"
+        }
+      },
+
+      ready: function() {
+        this.refresh();
+      },
+
+      _visibleChanged: function(visible) {
+        if(visible) {
+          this.refresh();
+        }
+      },
+
+      refresh: function() {
+        // See NuxeoHomeConfigBehavior
+        if(!this.isDisplayed(this.is)) {
+          return;
+        }
+        this.query = this._getExpiredNxql();
+      },
+
+      _getExpiredNxql: function() {
+        let now = new Date().toISOString().substring(0, 10);
+        return "SELECT * FROM Document WHERE dc:expired < DATE '" + now + "' ";
+      }
+    });
+  </script>
+</dom-module>

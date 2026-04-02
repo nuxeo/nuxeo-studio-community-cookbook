@@ -1,0 +1,267 @@
+<!--
+nuxeo-user-preferences (license Apache, at the end of this file)
+      * * * * * * * * * * * * * * * * * * * * * * * *
+      WARNING: Requires 2025.17 or 2023.45 or higher
+      * * * * * * * * * * * * * * * * * * * * * * * *
+
+To load/set user prefs with the RETS API and the "me/preferences" endpoint
+(new 2025.17 and 2023.45)
+Values are always set/get as string => parse them if they are JSON, for example.
+
+Notice: This is about server-side storage, these preferences are not saved in the localstorage or anything similar.
+
+------------------------------
+Getting a preference
+------------------------------
+* To automatically fetch the value, use the auto property:
+<nuxeo-user-preferences id="userPref" key="thepref" value="{{value}}" auto></nuxeo-user-preferences>
+
+* No auto property => fetch on demand and explicitely call getValue().
+<nuxeo-user-preferences id="userPref" key="thepref" value="{{value}}"></nuxeo-user-preferences>
+. . .
+this.$.userPref.getValue();
+
+In all cases (auto or manual), you can set an observer on the preference to detect once it has been fetched.
+
+    = = = = = = = = = = = = = = = = = = = = = = = = = =
+    IMPORTANT: GETTING A PREFERENCE THAT DOES NOT EXIST
+    = = = = = = = = = = = = = = = = = = = = = = = = = =
+    When getting a preference that does not exist, Nuxeo returns a 404. The element then explicitely sets
+    the value to "NOT_FOUND".
+    So, typically, in your element you should detect that. For example:
+
+      <nuxeo-user-preferences key="thePref" value="{{thePrefValue}}" auto></nuxeo-user-preferences>
+      . . .
+      observers: ['_thePrefValueChanged(thePrefValue)'],
+      _thePrefValueChanged: function(value) {
+        if(value === "NOT_FOUND") {
+          // The preference does not exist, handle this case (for example, set a default value)
+        } else {
+          // The preference exists, handle the value
+        }
+
+Also, the element handles the fact that the value may be sanitized (See nuxeo.user.preferences.sanitizeValues.enabled,
+https://doc.nuxeo.com/nxdoc/user-preferences-endpoint/#global-user-preferences), and decodes it.
+
+
+------------------------------
+Setting a preference
+------------------------------
+Setting a preference requires the nuxeo-user-preferences element has an ID and you call its setValue() method. It is an
+asynchronous call that returns a promise, so you can handle success and error cases.
+The value must be a string (call JSON.stringify before if needed).
+For example:
+
+      <nuxeo-user-preferences id="userPref" key="thePref" value="{{thePrefValue}}" auto></nuxeo-user-preferences>
+        . . .
+      this.$.userPref
+            .setValue(newPrefValueString)
+            .then(function() {
+              // Success => handle it if needed
+            }.bind(this))
+            .catch(function() {
+              // Error => display message, for example
+            }.bind(this));
+
+            
+------------------------------
+Deleting a preference
+------------------------------
+Deleting a preference requires the nuxeo-user-preferences element has an ID and you call its deletePreference() method. It is an
+asynchronous call that returns a promise, so you can handle success and error cases.
+This deletes the whole preferences, it is not about removing the value. To clear the value, pass an empty string.
+For example:
+
+      <nuxeo-user-preferences id="userPref" key="thePref" value="{{thePrefValue}}" auto></nuxeo-user-preferences>
+        . . .
+      this.$.userPref
+            .deletePreference()
+            .then(function() {
+              // Success => handle it if needed
+            }.bind(this))
+            .catch(function() {
+              // Error => display message, for example
+            }.bind(this));
+--
+First release on 2023-03-25
+@author Thibaud Arguillere
+-->
+<dom-module id="nuxeo-user-preferences">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <nuxeo-connection id="nx" user="{{user}}"></nuxeo-connection>
+
+  </template>
+
+  <script>
+    Nuxeo = Nuxeo || {};
+    Nuxeo.nuxeoVersionChecked = 0;
+
+    Polymer({
+      is: 'nuxeo-user-preferences',
+      properties: {
+        key: String,
+        value: {
+          type: String,
+          notify: true
+        },
+        auto: {
+          type: Boolean,
+          value: false
+        },
+        // This is to detect that the nuxeo-connection is all set up and we can read the version of Nuxeo.
+        user: {
+          type: Object,
+          observer: '_userChanged'
+        }
+      },
+
+      observers: ['_autoGetValue(auto, key)'],
+
+      // USed to get when the connection is ready and the misc objects are set
+      // => We can check the version of Nuxeo.
+      _userChanged: function(newValue) {
+
+        if(Nuxeo.nuxeoVersionChecked > 0) {
+          return;
+        }
+        Nuxeo.nuxeoVersionChecked += 1;
+        if(!this._isAtLeastVersion(2025, 16) || !this._isAtLeastVersion(2023, 45)) {
+          // WARNING with 2025.16 and 20023.45, only admins can create preferences.
+          // Maybe wait for 2025.17/2023.46 for production.
+          console.log("nuxeo-user-preferences element requires Nuxeo 2023.45 or 2025.16 or higher, but the server version is " + this.$.nx.client.nuxeoVersion + ". The element will always fail getting/setting a value.");
+        }
+      },
+
+      _isAtLeastVersion: function(major, minor) {
+        let currentVersion = this.$.nx.client.serverVersion;
+        if(currentVersion.major > major) {
+          return true; // But caller must have checked this higher version too
+        } else if(currentVersion.major === major) {
+          return currentVersion.minor >= minor;
+        }
+        return false;
+      },
+
+      _autoGetValue: function(auto, key) {
+        if(this.auto && this.key) {
+          this.getValue();
+        }
+      },
+
+      getValue: function() {
+        if(!this.key) {
+          console.warn("Cannot get user preference value without a key.");
+          return;
+        }
+
+        // the NxClient restUrl is /nuxeo/api/v1/, with a final "/"
+        let path = `me/preferences/${encodeURIComponent(this.key)}`;
+        this.$.nx.client.request(path)
+                        .get()
+                        .then(function(response) {
+                          let value = response.value;
+                          value = this._decodeSanitizedValue(value);
+                          this.set('value', value);
+                        }.bind(this))
+                        .catch(function(error) {
+                          let value = null;
+                          if(this._is404(error)) {
+                            value = "NOT_FOUND";
+                          } else { 
+                            console.error('Error fetching user preference', error);
+                          }
+                          this.set('value', value);
+                        }.bind(this))
+      },
+
+      _is404: function(resultError) {
+        // We have to handle multiple possible error objects...
+        // Typically, it is resultError.response.status. In Chrome at least.
+        const status =
+            (resultError && resultError.status) ||
+            (resultError && resultError.response && (resultError.response.status || resultError.response.statusCode)) ||
+            (resultError && resultError.data && resultError.data.status) ||
+            (resultError && resultError.entity && resultError.entity.status);
+
+        return status === 404;
+
+      },
+
+      setValue: function(value) {
+        if(!this.key) {
+          console.warn("Cannot set user preference value without a key.");
+          return;
+        }
+        
+        // the NxClient restUrl is /nuxeo/api/v1/, with a final "/"
+        let path = `me/preferences/${encodeURIComponent(this.key)}`;
+        let body = value;
+        return this.$.nx.client.request(path)
+                        .header('Content-Type', 'text/plain')
+                        .put({body: body })
+                        .then(function(response) {
+                          console.log('User preference value set successfully');
+                        }.bind(this))
+                        .catch(function(error) {
+                          console.error('Error setting user preference', error);
+                        }.bind(this));
+      },
+
+      // If the nuxeo.user.preferences.sanitizeValues.enabled is true (default value,
+      // see https://doc.nuxeo.com/nxdoc/user-preferences-endpoint/#global-user-preferences),
+      // We need to decode it. Also, the server encodes it with "&#34", or just &, etc.
+      // We don't check the value of the config. parameter. If it was set to false (not recommended
+      // if used in the front end), this code is useless, but no big deal.
+      _decodeSanitizedValue: function(value) {
+        if (!value) {
+          return value;
+        }
+        // Classical use of a textarea to decode HTML entities.
+        let textarea = document.createElement('textarea'); // Garbage collected by browser (it is not added to the DOM)
+        textarea.innerHTML = value;
+        return textarea.value;
+      },
+
+      deletePreference: function() {
+        if(!this.key) {
+          console.warn("Cannot delete user preference without a key.");
+          return;
+        }
+        
+        // the NxClient restUrl is /nuxeo/api/v1/, with a final "/"
+        let path = `me/preferences/${encodeURIComponent(this.key)}`;
+        return this.$.nx.client.request(path)
+                        .delete()
+                        .then(function(response) {
+                          console.log('User preference deleted successfully');
+                        }.bind(this))
+                        .catch(function(error) {
+                          console.error('Error deleting user preference', error);
+                        }.bind(this));
+      }
+    });
+  </script>
+</dom-module>
+<!--
+@license
+©2023 Hyland Software, Inc. and its affiliates. All rights reserved. 
+All Hyland product names are registered or unregistered trademarks of Hyland Software, Inc. or its affiliates.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->

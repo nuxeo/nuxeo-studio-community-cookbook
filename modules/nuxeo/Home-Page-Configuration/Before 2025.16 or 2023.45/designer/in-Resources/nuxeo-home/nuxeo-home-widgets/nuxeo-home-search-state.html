@@ -1,0 +1,64 @@
+<!--
+nuxeo-home-search-state (license Apache, see nuxeo-home-page-layout.html)
+
+Centralize a search by lifecycle state. Caller passes the expected state.
+
+Possible evolution: Add a drop down that allows for choosing the state (so, no need for multiple hard coded widgets for each state).
+
+--
+First release on 2023-03-25
+@author Thibaud Arguillere
+-->
+<link rel="import" href="../nuxeo-home-config/nuxeo-home-config-behavior.html">
+<link rel="import" href="nuxeo-home-search.html">
+<link rel="import" href="nuxeo-home-style.html">
+<dom-module id="nuxeo-home-search-state">
+  <template>
+    <style include="nuxeo-styles nuxeo-home-style">
+    </style>
+    
+    <nuxeo-home-search
+      id="homeSearch"
+      title="[[title]]"
+      query="[[query]]"
+      order-by="dc:modified DESC"
+    ></nuxeo-home-search>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-home-search-state',
+      behaviors: [Nuxeo.RoutingBehavior, Nuxeo.FormatBehavior, Nuxeo.NuxeoHomeConfigBehavior],
+      properties: {
+        title: String,
+        state: String,
+        query: String,
+        visible: {
+          type: Boolean,
+          observer: "_visibleChanged"
+        }
+      },
+
+      ready: function() {
+        this.refresh();
+      },
+
+      _visibleChanged: function(visible) {
+        if(visible) {
+          this.refresh();
+        }
+      },
+
+      refresh: function() {
+        if(!this.isDisplayed(this.is)) {
+          return;
+        }
+        this.query = this._buildQuery(this.state);
+      },
+
+      _buildQuery: function(state) {
+        return `SELECT * FROM Document WHERE ecm:currentLifeCycleState = '${state}' `;
+      }
+    });
+  </script>
+</dom-module>

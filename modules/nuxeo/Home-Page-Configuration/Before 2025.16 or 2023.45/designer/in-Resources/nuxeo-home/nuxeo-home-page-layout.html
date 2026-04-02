@@ -32,13 +32,13 @@ nuxeo-home-page-layout expects 2 operations:
 
   It then just dom-repeat a nuxeo-home-host for each widget.
 
+--
 First release on 2023-03-25
 @author Thibaud Arguillere
 -->
 <link rel="import" href="nuxeo-home-config/nuxeo-home-config-behavior.html">
 <link rel="import" href="nuxeo-home-host.html">
 <link rel="import" href="nuxeo-home-config/nuxeo-home-page-user-config.html">
-<link rel="import" href="../elements/nuxeo-user-preferences.html">
 <dom-module id="nuxeo-home-page-layout">
   <template>
     <style include="nuxeo-styles">
@@ -84,7 +84,8 @@ First release on 2023-03-25
 
     <nuxeo-operation id="getAvailableWidgetsOp"
                      op="javascript.HomePageConfig_GetAvailableWidgets"></nuxeo-operation>
-    <nuxeo-user-preferences id="userPref" key="HomePageConfiguration" value="{{configPrefValue}}"></nuxeo-user-preferences>
+    <nuxeo-operation id="getConfigOp"
+                     op="javascript.HomePageConfiguration_GetUserConfig"></nuxeo-operation>
 
     <nuxeo-home-page-user-config id="configDialog"
                                  on-home-page-config-saved="_onConfigSaved"></nuxeo-home-page-user-config>
@@ -142,21 +143,7 @@ First release on 2023-03-25
       properties: {
         config: Object,
         hasWidgets: Boolean,
-        visible: Boolean,
-        configPrefValue: {
-          type: String,
-          observer: '_configPrefValueChanged'
-        }
-      },
-
-      _configPrefValueChanged: function(newValue) {
-        if(!newValue || newValue === "NOT_FOUND") {
-          this.config = this.getDefaultConfig();
-          this.hasWidgets = this.hasWidgetsToDisplay(this.config);
-          return;
-        }
-        var parsed = JSON.parse(newValue);
-        this._newJsonConfigAvailable(parsed);
+        visible: Boolean
       },
 
       // Getting available widgets _then_ fetching config must be done once only.
@@ -164,6 +151,7 @@ First release on 2023-03-25
         this.$.getAvailableWidgetsOp
               .execute()
               .then(function(response) {
+
                 let widgets = response;
                 if(!Array.isArray(response) && response.details && Array.isArray(response.details.entries)) {
                   widgets = response.details.entries;
@@ -190,7 +178,20 @@ First release on 2023-03-25
       },
 
       refresh: function() {
-        this.$.userPref.getValue(); // Sets configPrefValue => _configPrefValueChanged
+        this.$.getConfigOp
+              .execute()
+              .then(function onConfig(rawConfig) {
+                var parsed = rawConfig;
+                if (typeof rawConfig === 'string') {
+                  parsed = JSON.parse(rawConfig);
+                }
+                this._newJsonConfigAvailable(parsed);
+              }.bind(this))
+              .catch(function onError(err) {
+                console.error("Unable to fetch home page configuration, using default", err);
+                this.config = this.getDefaultConfig();
+                this.hasWidgets = this.hasWidgetsToDisplay(this.config);
+              }.bind(this));
       },
 
       _openConfig: function() {

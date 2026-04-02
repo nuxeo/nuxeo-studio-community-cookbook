@@ -1,0 +1,124 @@
+<!--
+nuxeo-home-favorites (license Apache, see nuxeo-home-page-layout.html)
+
+Displays the user's favorite documents. This comes almost directly from nuxeo-home original code,
+modified to handle visibility, title, avoid useless refresh, etc.
+-->
+<link rel="import" href="../nuxeo-home-config/nuxeo-home-config-behavior.html">
+<link rel="import" href="nuxeo-home-style.html">
+<dom-module id="nuxeo-home-favorites">
+  <template>
+    <style include="nuxeo-styles nuxeo-home-style">
+
+    </style>
+
+    <!-- favorites -->
+    <nuxeo-card icon="nuxeo:favorites" heading="[[i18n(title)]]">
+      <nuxeo-operation id="fetchFavOp" op="Favorite.Fetch" response="favorite"></nuxeo-operation>
+      <nuxeo-page-provider
+        id="favoritesProvider"
+        provider="default_content_collection"
+        page-size="20"
+        schemas="dublincore,common,uid"
+        headers='{"fetch-document": "properties"}'
+        enrichers="thumbnail"
+      >
+      </nuxeo-page-provider>
+      <nuxeo-data-table
+        id="favoriteDocs"
+        wrapper-height="350px"
+        max-items="15"
+        nx-provider="favoritesProvider"
+        empty-label="[[i18n('favorites.empty')]]"
+        on-row-clicked="_navigate"
+        caption-text="[[i18n('table.caption.favoriteDocs')]]"
+      >
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.title')]]" flex="100">
+          <template>
+            <nuxeo-document-thumbnail document="[[item]]"></nuxeo-document-thumbnail>
+            <a class="ellipsis" href$="[[urlFor(item)]]">[[item.title]]</a>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column name="[[i18n('documentContentView.datatable.header.modified')]]" flex="50">
+          <template>
+            <nuxeo-date datetime="[[item.properties.dc:modified]]" format="relative"></nuxeo-date>
+          </template>
+        </nuxeo-data-table-column>
+        <nuxeo-data-table-column
+          name="[[i18n('documentContentView.datatable.header.lastContributor')]]"
+          flex="50"
+        >
+          <template>
+            <nuxeo-user-tag user="[[item.properties.dc:lastContributor]]"></nuxeo-user-tag>
+          </template>
+        </nuxeo-data-table-column>
+      </nuxeo-data-table>
+    </nuxeo-card>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-home-favorites',
+      behaviors: [Nuxeo.RoutingBehavior, Nuxeo.NuxeoHomeConfigBehavior],
+      properties: {
+        title: String,
+        visible: {
+          type: Boolean,
+          observer: '_visibleChanged',
+        },
+      },
+
+      ready: function() {
+        this._refresh();
+      },
+      
+      _visibleChanged(visible) {
+        if (visible) {
+          this._refresh();
+        }
+      },
+
+      _refresh() {
+        // See NuxeoHomeConfigBehavior
+        if(!this.isDisplayed(this.is)) {
+          return;
+        }
+        
+        this._fetchFavorite().then((favorite) => {
+          if (!(favorite && favorite.uid)) {
+            return;
+          }
+
+          this.$.favoritesProvider.params = [favorite.uid];
+          this.$.favoritesProvider.page = 1;
+          this.$.favoriteDocs.fetch();
+        });
+      },
+
+      _navigate(e) {
+        let detail;
+        if (e.detail.item) {
+          detail = {
+            doc: e.detail.item,
+          };
+          this.navigateTo(detail.doc);
+        } else {
+          detail = {
+            doc: e.model.item,
+          };
+        }
+        this.fire('navigate', detail);
+      },
+
+      _fetchFavorite() {
+        if (this.favorite) {
+          return Promise.resolve(this.favorite);
+        }
+        return this.$.fetchFavOp.execute().then((resp) => {
+          this.favorite = resp;
+          return resp;
+        });
+      }
+    });
+  </script>
+</dom-module>

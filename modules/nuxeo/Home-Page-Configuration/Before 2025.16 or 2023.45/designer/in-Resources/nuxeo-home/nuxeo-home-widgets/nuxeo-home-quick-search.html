@@ -1,0 +1,86 @@
+<!--
+nuxeo-home-quick-search (license Apache, see nuxeo-home-page-layout.html)
+
+Displays a quick search input for the user to search documents.
+
+--
+First release on 2023-03-25
+@author Thibaud Arguillere
+-->
+<link rel="import" href="../nuxeo-home-config/nuxeo-home-config-behavior.html">
+<link rel="import" href="nuxeo-home-search.html">
+<link rel="import" href="nuxeo-home-style.html">
+<dom-module id="nuxeo-home-quick-search">
+  <template>
+    <style include="nuxeo-styles nuxeo-home-style">
+      :host {
+        display: block;
+      }
+
+      .quick-search-layout {
+        position: relative;
+      }
+
+      #searchInput {
+        position: absolute;
+        top: 8px;
+        right: 16px;
+        z-index: 1;
+        width: min(260px, calc(100% - 180px));
+      }
+
+      @media (max-width: 600px) {
+        #searchInput {
+          position: static;
+          width: 100%;
+          margin-bottom: 12px;
+        }
+      }
+    </style>
+
+    <div class="quick-search-layout">
+      <nuxeo-input id="searchInput"
+                   placeholder="[[i18n('home.ui.quickSearch.placeholder')]]"
+                   value="{{inputTerm}}"
+                   on-keyup="_onKeyUp"></nuxeo-input>
+      <nuxeo-home-search
+        title="[[i18n(title)]]"
+        query="[[query]]"
+        order-by="dc:modified DESC"
+      ></nuxeo-home-search>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'nuxeo-home-quick-search',
+      behaviors: [Nuxeo.NuxeoHomeConfigBehavior],
+      properties: {
+        inputTerm: String,
+        term: String,
+        query: {
+          type: String,
+          value: "SELECT * FROM Document WHERE ecm:uuid = 'abc' "
+        },
+        title: String
+      },
+
+      ready:function() {
+        // Nothing special
+      },
+
+      _buildQuery: function(term) {
+          this.query = `SELECT * FROM Document WHERE ecm:fulltext = '${term}' `;
+      },
+
+      _onKeyUp: function(e) {
+        var key = e && e.key;
+        var keyCode = e && (e.keyCode || e.which);
+        if (key === 'Enter' || key === 'Return' || keyCode === 13) {
+          this.term = this.inputTerm;
+          this._buildQuery(this.term);
+        }
+      },
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,29 @@
+<!--
+nuxeo-home-style
+
+Centralize styles for nuxeo-home widgets.
+
+--
+First release on 2023-03-25
+@author Thibaud Arguillere
+-->
+<dom-module id="nuxeo-home-style">
+  <template>
+    <style>
+      
+      nuxeo-data-table,
+      nuxeo-data-list {
+        height: 350px;
+        min-height: auto;
+      }
+
+      .ellipsis {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        display: block;
+        width: calc(100% - 38px);
+      }
+    </style>
+  </template>
+</dom-module>

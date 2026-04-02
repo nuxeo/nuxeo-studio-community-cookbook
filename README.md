@@ -43,6 +43,7 @@ These items are for copy/paste into Nuxeo Studio.
 
 Module | Description | Contributor
 --- | --- | ---
+[<img src="modules/nuxeo/nuxeo-user-preferences/README-Images/person-setting-2.png" width="120px"/>](modules/nuxeo/nuxeo-user-preferences) | User Preferences | Hyland
 [<img src="modules/nuxeo/Home-Page-Configuration/README-Images/02-Config.jpg" width="120px"/>](modules/nuxeo/Home-Page-Configuration) | Home Page Configuration | Hyland
 [<img src="modules/nuxeo/Analytics-KPIs-Examples/kpi-users.jpg" width="120px"/>](modules/nuxeo/Analytics-KPIs-Examples) | Custom Analytics/KPIs Examples | Hyland
 [<img src="modules/nuxeo/document-viewer-with-loading-message/01-Viewer-with-loading-message.png" width="120px"/>](modules/nuxeo/document-viewer-with-loading-message) | Document Viewer with "Loading..." Message | Hyland
@@ -50,8 +51,6 @@ Module | Description | Contributor
 [<img src="modules/nuxeo/virtual-tree/README-Images/overview.png" width="120px"/>](modules/nuxeo/virtual-tree) | Virtual Navigation | Hyland
 [<img src="modules/nuxeo/nev-with-custom-blob-field/nev-with-custom-blob-field.png" width="120px"/>](modules/nuxeo/nev-with-custom-blob-field) | Nuxeo Enhanced Viewer with Custom Field | Hyland
 [<img src="modules/nuxeo/replace-rendition/replace-rendition-1.png" width="120px"/>](modules/nuxeo/replace-rendition) | Replace Renditions | Hyland
-[<img src="modules/nuxeo/select-all-bulk-action/export-bulk.png" width="120px"/>](modules/nuxeo/select-all-bulk-action) | Select All Documents and Send to Bulk Action from Search | Hyland
-[<img src="modules/partners/genus/nev-viewer/screenshot.png" width="120px"/>](modules/partners/genus/nev-viewer) | Nuxeo Enhanced Viewer Document Preview | Genus
 
 
 ## Tips and Tricks
@@ -107,6 +106,12 @@ Module | Description | Contributor
 [<img src="modules/nuxeo/color-search/color.png" width="120px"/>](modules/nuxeo/color-search) | Similar Color Search | Hyland
 [<img src="modules/nuxeo/video-thumbnail/video-thumbnail2.png" width="100px"/>](modules/nuxeo/video-thumbnail) | Sets the video poster and search thumbnail | Hyland
 [<img src="modules/nuxeo/video-conversions/movie.png" width="100px"/>](modules/nuxeo/video-conversions) | Additional video conversions | Hyland
+
+## Polymer Elements
+
+Module | Description | Contributor
+--- | --- | ---
+[<img src="modules/nuxeo/nuxeo-user-preferences/README-Images/person-setting-2.png" width="96px"/>](modules/nuxeo/nuxeo-user-preferences) | User Preferences | Hyland
 
 ## AI
 

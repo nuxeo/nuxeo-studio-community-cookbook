@@ -1,0 +1,75 @@
+<!--
+Adding a new widget.
+
+Summary:
+  1. Add the widget definition to the javascript.HomePageConfig_GetAvailableWidgets chain
+  2. Copy-paste this file, and update the parts tagged CHANGE_ME
+  3. Add the corresponding <link ...> to nuxeo-home-host.html
+     If you don't see your widget while there is no error in the console, you likely forgot this step.
+
+--
+First release on 2023-03-25
+@author Thibaud Arguillere
+-->
+<!-- Always import these 2 elements -->
+<link rel="import" href="../nuxeo-home-config/nuxeo-home-config-behavior.html">
+<link rel="import" href="nuxeo-home-style.html">
+
+<dom-module id="CHANGE_ME"> <!-- ID of your element -->
+  <template>
+    <!-- Always include these styles -->
+    <style include="nuxeo-styles nuxeo-home-style">
+      /* If needed, add the styles specific to your widget */
+    </style>
+
+    <!-- Add the element(s)s to display -->
+    <!-- See if it makes sense to reuse nuxeo-home-search or nuxeo-home-search-state -->
+    <!-- If you don't reuse an element, it is recommended, for the UI, to start with
+         a nuxeo-card:-->
+    <nuxeo-card icon="CHANGE_ME" heading="[[i18n(title)]]">
+      <!-- . . . your UI/DOM/Text/... elements . . . -->
+    </nuxeo-card>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'CHANGE_ME', // ID of your element
+      // Always import at least NuxeoHomeConfigBehavior
+      behaviors: [Nuxeo.NuxeoHomeConfigBehavior],
+      // These properties are required:
+      properties: {
+        title: String,
+        visible: {
+          type: Boolean,
+          observer: "_visibleChanged"
+        }
+      },
+
+      // Keep this method
+      ready: function() {
+        this.refresh();
+      },
+
+      // Keep this method
+      _visibleChanged: function(visible) {
+        if(visible) {
+          this.refresh();
+        }
+      },
+
+      // Keep this method, that centralizes the refreshing
+      refresh: function() {
+        // See NuxeoHomeConfigBehavior, and don't refresh if not needed
+        if(!this.isDisplayed(this.is)) {
+          return;
+        }
+
+        // . . . here whatever needs to be searched/refreshed
+        // . . .
+      },
+
+      // CHANGE_ME => custom coded
+      
+    });
+  </script>
+</dom-module>

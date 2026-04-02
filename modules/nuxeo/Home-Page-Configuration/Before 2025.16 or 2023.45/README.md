@@ -6,18 +6,9 @@ This module allows the user for configuring the widgets they want to display in 
 
 It can easily be tuned: modify the behavior of widgets, add new widgets, remove, etc.
 
-> [!NOTE]
->The chosen configuration is saved for each user, so they get it back even if they change browser or clear their cache, remove their local storage, etc.
-
 ## Prerequisites
 
-* Nuxeo Web UI
-* The [`nuxeo-user-preferences`](https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/nuxeo-user-preferences) element must has been imported in you Designer
-* Nuxeo LTS 2025.16 or greater / Nuxeo LTS 2023.45 or greater, as required by `nuxeo-user-preferences`.
-
-> [!NOTE]
-> For previous versions, use the content of the "Before 2025.16 or 2023.45" folder.
-> But we sure recommand you use the latest versions. Especilaly here: This saves you time and effort of using a custom document type that you have to setup (permissions, etc.)
+Nuxeo Web UI
 
 ## Description
 
@@ -30,6 +21,21 @@ By default, the module provides several widgets. They are made available dependi
 Once imported in your Studio project, you can of course (and you likely will) change some of them. For example, tune the search for the "Recently Approved", or the search for the "Expired", etc.
 
 ## How Does it Work?
+
+> [!IMPORTANT]
+> Since first release of this module, on March 2026, Nuxeo LTS 2025.16 (and soon, backported to LTS 2023) brings a new cool feature. A new REST API endpoint to handle user preferences (see [New Nuxeo User Preferences Modules](https://doc.nuxeo.com/nxdoc/nuxeo-server-release-notes/#introduce-new-nuxeo-user-preferences-modules).
+> So, it is very likely that we will rewrite the storage part of the preferences, since it will be way easier: No need for a dedicated document type, no need to fetch or create this document, to handle permissions, etc.
+
+1. **Saving the Configuration**
+
+When a user saves a configuration, the `HomePageConfiguration_SaveUserConfig` Automation Script is run, and it saves the user configuration in a `UserHomeConfig` document (see below). Such a document is created only if a user explicitly saves a new configuration. As long a s user does not save a new configuration, the default configuration applies. This is done to avoid creating thousands of documents, one every time a user just logs in and has no (not yet) configuration available.
+
+You will see in `HomePageConfiguration_SaveUserConfig`, the `UserHomeConfig` are stored at Root level, in a `Folder` named "User Home Configurations".
+
+> [!TIP]
+> The "User Home Configurations" Folder is created the first time the script is called and there is no existing `UserHomeConfig`.
+> 
+> To avoid multi-thread/concurrent users creating the folder at the same time, with the risk of creating duplicates, we strongly recommend to first create the folder, manually, as an administrator, as Root level. Once created, just block the permission inheritance, so only administrators can access it.
 
 1. **Displaying the Widgets**
 
@@ -72,25 +78,24 @@ The module is localized and uses translation keys. It provides the json localiza
 * If you don't already have a translation file, just import these.
 * If you have one, _merge_ the content of the files from the module (This means do not just select all > copy > paste, or you'll have extra `{` and `}` that will cause serious deployment issues. Instead, just copy the content inside the curly brackets, and paste it in your messages-....json file(s)
 
-#### Import the `nuxeo-user-preferences` element
-
-You can find it in the community cookbook, [here](https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/nuxeo-user-preferences)
-
-Typically, add it to the "elements" folder. If this folder is not in your Designer, just create it.
-
 ### Studio Modeler
 
-#### Automation Scripts
+#### Data Model
+
+Create a new document type, `UserHomeConfig` with 2 fields:
+
+* `configJson`, string
+* `user`, type User/Group
+* You can find some suggestion for icons in modeler > UserHomeConfig Icons (but of course, feel free to use any other you prefer)
+
+
+#### Automation Script
 
 * Create all the AutomationScript you can find in the [modeler](modeler) folder.
 * Again, if you rename a chain, rename it everywhere
 
 
 ## Tuning the module once installed (or before installation/import)
-
-### Check `nuxeo-user-preferences` is correctly imported
-
-Open the pages that use it: `nuxeo-home-page-user-config.html` and `nuxeo-home-page-layout.html`. By default, they assume it is in the `elements`folder. Change their `<link ...` declaration as needed.
 
 ### Tune the list of widgets available
 
