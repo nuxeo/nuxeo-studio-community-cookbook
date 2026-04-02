@@ -30,6 +30,7 @@ These items are for copy/paste into Nuxeo Studio.
 * [Tips and Tricks](#tips-and-tricks)
 * [Layouts](#layouts)
 * [DAM](#dam)
+* [Polymer Elements](#polymer-elements)
 * [AI](#ai)
 * [Security / Authentication / User and Group Management](#security--authentication--user-and-group-management)
 * [Reporting](#reporting)
