@@ -101,6 +101,34 @@ First release on 2023-03-25
         margin-bottom: 0;
       }
 
+      .item-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
+
+      .item-content {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .remove-btn {
+        flex-shrink: 0;
+        padding: 2px;
+        margin: -4px -4px -4px 4px;
+        width: 24px;
+        height: 24px;
+        color: var(--nuxeo-secondary-text, #666);
+        cursor: pointer;
+        opacity: 0.5;
+        transition: opacity 0.15s ease;
+      }
+
+      .remove-btn:hover {
+        opacity: 1;
+        color: var(--nuxeo-warn-text, #d32f2f);
+      }
+
       .title {
         font-weight: 500;
       }
@@ -147,8 +175,13 @@ First release on 2023-03-25
           <div class="list" data-list="column" data-column="0" on-dragover="_onDragOver" on-dragleave="_onDragLeave" on-drop="_onDrop">
             <template is="dom-repeat" items="[[column1Widgets]]" as="widget" index-as="index">
               <div class="item" draggable="true" on-dragstart="_onDragStart" on-dragend="_onDragEnd" data-widget-id$="[[widget.id]]" data-list="column" data-column="0" data-index$="[[index]]">
-                <div class="title">[[i18n(widget.title)]]</div>
-                <div class="desc">[[i18n(widget.description)]]</div>
+                <div class="item-header">
+                  <div class="item-content">
+                    <div class="title">[[i18n(widget.title)]]</div>
+                    <div class="desc">[[i18n(widget.description)]]</div>
+                  </div>
+                  <iron-icon class="remove-btn" icon="nuxeo:delete" on-click="_removeWidget" data-widget-id$="[[widget.id]]" data-list="column" data-column="0" data-index$="[[index]]"></iron-icon>
+                </div>
               </div>
             </template>
           </div>
@@ -159,8 +192,13 @@ First release on 2023-03-25
           <div class="list" data-list="column" data-column="1" on-dragover="_onDragOver" on-dragleave="_onDragLeave" on-drop="_onDrop">
             <template is="dom-repeat" items="[[column2Widgets]]" as="widget" index-as="index">
               <div class="item" draggable="true" on-dragstart="_onDragStart" on-dragend="_onDragEnd" data-widget-id$="[[widget.id]]" data-list="column" data-column="1" data-index$="[[index]]">
-                <div class="title">[[i18n(widget.title)]]</div>
-                <div class="desc">[[i18n(widget.description)]]</div>
+                <div class="item-header">
+                  <div class="item-content">
+                    <div class="title">[[i18n(widget.title)]]</div>
+                    <div class="desc">[[i18n(widget.description)]]</div>
+                  </div>
+                  <iron-icon class="remove-btn" icon="nuxeo:delete" on-click="_removeWidget" data-widget-id$="[[widget.id]]" data-list="column" data-column="1" data-index$="[[index]]"></iron-icon>
+                </div>
               </div>
             </template>
           </div>
@@ -490,6 +528,23 @@ First release on 2023-03-25
         this.set('column1Widgets', []);
         this.set('column2Widgets', []);
         this.set('availableWidgets', (this.getAvailableWidgets() || []).slice().sort(this._compareWidgetLabels.bind(this)));
+      },
+
+      _removeWidget: function(event) {
+        event.stopPropagation();
+        var target = event.currentTarget;
+        var source = {
+          widgetId: target.dataset.widgetId,
+          sourceList: target.dataset.list,
+          sourceColumn: target.dataset.column,
+          sourceIndex: target.dataset.index,
+        };
+        var destination = {
+          list: 'available',
+          column: undefined,
+          index: (this.availableWidgets || []).length,
+        };
+        this._moveWidget(source, destination);
       },
 
       _save: function() {
