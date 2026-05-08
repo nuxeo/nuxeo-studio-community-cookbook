@@ -21,6 +21,11 @@
       nuxeo-document-suggestion {
         width: 100%;
       }
+      .assignee-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+      }
     </style>
 
     <nuxeo-page-provider id="tasksProvider" provider="workflow-status" page-size="20" enrichers="permissions" schemas="dublincore,common,uid,task" headers='{"X-NXfetch.document": "properties", "X-NXtranslate.directoryEntry": "label"}'></nuxeo-page-provider>
@@ -53,7 +58,11 @@
 
           <nuxeo-data-table-column name="Assignee(s)" flex="75">
             <template>
-              <nuxeo-user-tag user="[[_getTaskAssignee(item)]]"></nuxeo-user-tag>
+              <div class="assignee-list">
+                <template is="dom-repeat" items="[[item.properties.nt:actors]]" as="actor">
+                  <nuxeo-user-tag user="[[actor]]"></nuxeo-user-tag>
+                </template>
+              </div>
             </template>
           </nuxeo-data-table-column>
 
@@ -108,11 +117,7 @@
           return item.properties["nt:targetDocumentsIds"][0];
         }
       },
-      _getTaskAssignee: function (item) {
-        if (item && item.properties && item.properties["nt:actors"] && item.properties["nt:actors"].length > 0) {
-          return item.properties["nt:actors"][0];
-        }
-      }
+
     });
   </script>
 </dom-module>
