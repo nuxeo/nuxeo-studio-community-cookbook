@@ -12,6 +12,8 @@ Module to monitor workflow instances status displayed in the "Analytics" area of
 
 As a Nuxeo Administrator, navigate to Admin -> Analytics -> Workflow Status.
 
+Note that you can change the due date of any tasks, which allows you tweak the data to see how the dashboard reacts.
+
 ## Installation
 
 ### Studio Modeler

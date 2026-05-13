@@ -30,6 +30,8 @@
 
     <nuxeo-page-provider id="tasksProvider" provider="workflow-status" page-size="20" enrichers="permissions" schemas="dublincore,common,uid,task" headers='{"X-NXfetch.document": "properties", "X-NXtranslate.directoryEntry": "label"}'></nuxeo-page-provider>
 
+    <nuxeo-resource id="taskResource"></nuxeo-resource>
+
     <paper-card class="layout flex status-list">
       <div class="card-content">
         <workflow-status-bar></workflow-status-bar>
@@ -66,9 +68,9 @@
             </template>
           </nuxeo-data-table-column>
 
-          <nuxeo-data-table-column name="Due" field="nt:dueDate" sort-by="nt:dueDate" flex="8">
+          <nuxeo-data-table-column name="Due" field="nt:dueDate" sort-by="nt:dueDate" flex="20">
             <template>
-              [[formatDate(item.properties.nt:dueDate)]]
+              <nuxeo-date-picker value="{{item.properties.nt:dueDate}}" on-value-changed="_onDueDateChanged" data-task-id$="[[item.uid]]"></nuxeo-date-picker>
             </template>
           </nuxeo-data-table-column>
 
@@ -116,6 +118,25 @@
         if (item && item.properties && item.properties["nt:targetDocumentsIds"] && item.properties["nt:targetDocumentsIds"].length > 0) {
           return item.properties["nt:targetDocumentsIds"][0];
         }
+      },
+      _onDueDateChanged: function (e) {
+        var taskId = e.currentTarget.getAttribute('data-task-id');
+        var newDate = e.detail.value;
+        if (!taskId || !newDate) return;
+        var resource = this.$.taskResource;
+        resource.path = '/id/' + taskId;
+        resource.data = {
+          'entity-type': 'document',
+          'properties': {
+            'nt:dueDate': newDate
+          }
+        };
+        resource.put().then(function () {
+          this.fire('notify', { message: 'Due date updated.' });
+        }.bind(this)).catch(function (err) {
+          console.error('Failed to update due date:', err);
+          this.fire('notify', { message: 'Failed to update due date.' });
+        }.bind(this));
       },
 
     });
