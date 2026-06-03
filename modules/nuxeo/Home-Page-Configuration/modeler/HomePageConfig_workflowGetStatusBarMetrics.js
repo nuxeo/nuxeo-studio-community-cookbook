@@ -1,7 +1,7 @@
 /* Original source; NUxeo Studio Community Cookbook
    https://github.com/nuxeo/nuxeo-studio-community-cookbook/tree/master/modules/nuxeo/workflow-status
    
-   The HomePageConfiguration_WorkflowStatus provider also comes from this cookbook
+   You can let input/output as void
 */
 // // Turn log messages on or off globally.
 var loggingEnabled = true;

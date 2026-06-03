@@ -3,6 +3,9 @@
    
    That is what we do in the default implementation. But don't forget to
    add your keys/values in Designer > Translations, of course
+
+   Input: void
+   Output: blob
 */
 function run(input, params) {
   
