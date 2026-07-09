@@ -89,6 +89,7 @@ limitations under the License.
       </nuxeo-date-picker>
 
       <nuxeo-custom-time-picker disabled$="[[_isDisabledTime(disabled, _date)]]"
+                                hour24="[[hour24]]"
                                 id="[[id]]-time"
                                 name="time"
                                 show-millis="{{showMillis}}"
@@ -120,6 +121,10 @@ limitations under the License.
       },
       errorMessage: {
         type: String
+      },
+      hour24: {
+        type: Boolean,
+        value: false
       },
       id: {
         type: String
