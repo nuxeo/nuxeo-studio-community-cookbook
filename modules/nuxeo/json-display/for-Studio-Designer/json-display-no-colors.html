@@ -1,0 +1,62 @@
+<!--
+`json-display-no-colors`
+@group Nuxeo UI
+@element json-display-no-colors
+
+<json-display-no-colors title= "A JSON Restult" json-str="[[document.properties.someschema:aJsonString]]"></json-display-no-colors>
+-->
+<dom-module id="json-display-no-colors">
+  <template>
+    <style include="nuxeo-styles">
+      .json-display {
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 15px;
+        margin-top: 20px;
+        overflow-x: auto;
+      }
+
+      .json-display pre {
+        margin: 0;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 13px;
+        line-height: 1.5;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+    </style>
+    
+    <nuxeo-card heading="[[title]]">
+
+      <div class="json-display">
+        <pre>[[_formatJson(jsonStr)]]</pre>
+      </div>
+      
+    </nuxeo-card>
+    
+  </template>
+
+  <script>
+    Polymer({
+      is: 'json-display-no-colors',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+        title: String,
+        jsonStr: String
+      },
+
+      _formatJson: function(jsonString) {
+        if (!jsonString) {
+          return "";
+        }
+        try {
+          const parsed = JSON.parse(jsonString);
+          return JSON.stringify(parsed, null, 2);
+        } catch (e) {
+          return jsonString;
+        }
+      }
+    });
+  </script>
+</dom-module>

@@ -99,6 +99,7 @@ Module | Description | Contributor
 [<img src="modules/nuxeo/geodistance-search-and-google-map/geodistance.png" width="150px"/>](modules/nuxeo/geodistance-search-and-google-map) | Geodistance Search + Google Map | Hyland
 [<img src="modules/nuxeo/eml-previewer/eml-previewer.png" width="150px"/>](modules/nuxeo/document-load-and-preview) | Preview related documents | Hyland
 [<img src="modules/nuxeo/replace-rendition/replace-rendition-1.png" width="150px"/>](modules/nuxeo/replace-rendition) | Replace Picture and Video Renditions | Hyland
+[<img src="modules/nuxeo/json-display/json-display.png" width="150px"/>](modules/nuxeo/json-display) | Dispay JSON with syntax coloring | Hyland
 
 ## DAM
 

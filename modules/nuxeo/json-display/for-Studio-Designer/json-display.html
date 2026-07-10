@@ -1,0 +1,171 @@
+<!--
+`json-display`
+@group Nuxeo UI
+@element json-display
+
+<json-display title= "A JSON Restult" json-str="[[document.properties.someschema:aJsonString]]"></json-display>
+-->
+
+<!-- Using Prismjs to highlight the JSON. Load it first.
+  Tell Prism not to auto-highlight the whole page.
+  We will explicitly highlight only this component's code block.
+-->
+<script>
+  window.Prism = window.Prism || {};
+  window.Prism.manual = true;
+</script>
+
+<!-- Prism JS, local file in the same folder as this element -->
+<script src="prism.js"></script>
+
+
+<dom-module id="json-display">
+  <template>
+    <!-- Prism CSS, local file in the same folder as this element -->
+    <link rel="stylesheet" href="json-display/prism.css">
+
+    <style include="nuxeo-styles">
+      :host {
+        display: block;
+      }
+
+      .json-container {
+        margin: 0;
+        padding: 12px;
+        max-height: 500px;
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        border: 1px solid var(--nuxeo-border, #dcdcdc);
+        border-radius: 4px;
+        background: #f8f8f8;
+      }
+
+      /*
+      * Override Prism default:
+      * Prism often applies white-space: pre on pre/code.
+      */
+      .json-container,
+      .json-container code,
+      .json-container code[class*="language-"],
+      .json-container pre[class*="language-"] {
+        white-space: pre-wrap !important;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      .json-container code {
+        font-family: Consolas, Monaco, "Courier New", monospace;
+        font-size: 13px;
+        line-height: 1.45;
+        tab-size: 2;
+      }
+
+      /*
+      * Prism color overrides
+      */
+      .json-container .token.property {
+        color: #005a9e; /* blue */
+      }
+
+      .json-container .token.string {
+        color: #a31515; /* red */
+      }
+
+
+      .json-container .token.number {
+        color: #098658;
+      }
+
+      .json-container .token.boolean,
+      .json-container .token.null {
+        color: #0000ff;
+      }
+
+      .json-container .token.punctuation {
+        color: #555;
+      }
+
+      .empty {
+        color: var(--nuxeo-secondary-text, #777);
+        font-style: italic;
+      }
+    </style>
+    
+    <nuxeo-card heading="[[title]]">
+        <pre class="json-container"><code id="jsonCode" class="language-json"></code></pre>
+    </nuxeo-card>
+    
+  </template>
+
+  <script>
+    Polymer({
+      is: 'json-display',
+      behaviors: [Nuxeo.LayoutBehavior],
+      properties: {
+        title: String,
+        jsonStr: {
+          type: String,
+          observer: '_jsonStrChanged'
+        }
+      },
+      
+      attached: function() {
+        this._renderJson();
+      },
+
+      _jsonStrChanged: function() {
+        this._renderJsonAsync();
+      },
+
+      _renderJsonAsync: function() {
+        this.async(function() {
+          this._renderJson();
+        });
+      },
+
+      _renderJson: function() {
+        var codeEl = this.$ && this.$.jsonCode;
+
+        if (!codeEl) {
+          return;
+        }
+
+        var formatted = this._formatJson(this.jsonStr);
+
+        /*
+         * Important:
+         * Use textContent, not innerHTML.
+         * Prism will then tokenize and safely generate the highlighting markup.
+         */
+        codeEl.textContent = formatted;
+
+        if (window.Prism && Prism.highlightElement) {
+          Prism.highlightElement(codeEl);
+        }
+      },
+
+      _formatJson: function(jsonString) {
+        if (!jsonString) {
+          return '';
+        }
+
+        try {
+          var parsed = JSON.parse(jsonString);
+          return JSON.stringify(parsed, null, 2);
+        } catch (e) {
+          /*
+           * If the field does not contain valid JSON, display the raw value.
+           * It will still be shown in the monospace block.
+           */
+          return jsonString;
+        }
+      },
+
+      _hasValue: function(value) {
+        return value !== null && value !== undefined && value !== '';
+      }
+
+    });
+  </script>
+</dom-module>
