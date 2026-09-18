@@ -1,3 +1,12 @@
+> [!NOTE]
+> This is not needed anymore, use the native HTML `details` and `summary` elements e.g.:
+> ```
+> <details>
+>   <summary>My_Heading</summary>
+>   <!-- content -->
+> </details>
+> ```
+
 # Collapsible Element
 
 ![nuxeo-se-collapse](nuxeo-se-collapse.png)
