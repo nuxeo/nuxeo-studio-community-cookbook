@@ -1,7 +1,7 @@
-# >>> Paste this block in the "Make your changes BELOW this line" section of the Nuxeo Dockerfile <<<
-# (that section runs as root, USER 0, which is required here).
+# >>> Paste this block in a section of your Nuxeo Dockerfile that runs as root (USER 0) <<<
+# With the Nuxeo Presales Docker Dockerfile: the "Things you want to run as root go here" section.
 #
-# Installs pdf2htmlEX (PDF -> HTML), plus the Nuxeo XML contribution that declares the command and the converters.
+# Installs pdf2htmlEX (PDF -> HTML).
 # There is no dnf package for pdf2htmlEX on Oracle Linux 9, so this block compiles it (works on x86_64 and aarch64).
 # Word documents use the LibreOffice already present in the image (Nuxeo's standard any2pdf converter).
 #
@@ -68,7 +68,5 @@ RUN set -eux; \
     # Sanity check: fails the build if a runtime library is missing
     pdf2htmlEX --version
 
-# Optional: deploy the XML with the image (or paste its <extension> elements in Studio instead).
-# COPY paths are relative to the BUILD CONTEXT: with the presales docker-compose (context: ".",
-# dockerfile: build_nuxeo/Dockerfile), put pdf2htmlex-config.xml in build_nuxeo/, next to the Dockerfile.
-COPY --chown=900:0 build_nuxeo/pdf2htmlex-config.xml /opt/nuxeo/server/nxserver/config/pdf2htmlex-config.xml
+# To use pdf2htmlEX in Nuxeo, copy-paste the content of modeler/pdf2htmlex-config.xml in an XML extension of your
+# Studio project.

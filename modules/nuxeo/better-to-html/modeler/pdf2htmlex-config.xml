@@ -4,7 +4,7 @@
   Use:  Blob.RunConverter  converter = pdf2htmlEX    (PDF)
         Blob.RunConverter  converter = word2htmlEX   (doc, docx, odt, rtf: LibreOffice -> PDF -> pdf2htmlEX)
 
-  Deploy in nxserver/config/ (file name ending with -config.xml), or copy the <extension> elements in Studio.
+  Copy-paste this content in an XML extension of your Studio project.
 -->
 <extension target="org.nuxeo.ecm.platform.commandline.executor.service.CommandLineExecutorComponent"
   point="command">

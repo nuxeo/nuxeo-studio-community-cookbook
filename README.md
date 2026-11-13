@@ -44,6 +44,7 @@ These items are for copy/paste into Nuxeo Studio.
 
 Module | Description | Contributor
 --- | --- | ---
+[<img src="modules/nuxeo/better-to-html/better-to-html.png" width="120px"/>](modules/nuxeo/better-to-html) | Convert PDF and Word to a single HTML file using pdf2htmlEX | Hyland
 [<img src="modules/nuxeo/nuxeo-user-preferences/README-Images/person-setting-2.png" width="120px"/>](modules/nuxeo/nuxeo-user-preferences) | User Preferences | Hyland
 [<img src="modules/nuxeo/Home-Page-Configuration/README-Images/02-Config.jpg" width="120px"/>](modules/nuxeo/Home-Page-Configuration) | Home Page Configuration | Hyland
 [<img src="modules/nuxeo/Analytics-KPIs-Examples/kpi-users.jpg" width="120px"/>](modules/nuxeo/Analytics-KPIs-Examples) | Custom Analytics/KPIs Examples | Hyland
@@ -154,6 +155,7 @@ Module | Description | Contributor
 [<img src="modules/nuxeo/related-documents/nuxeo-related-documents.png" width="150px"/>](modules/nuxeo/related-documents) | Display Document Relations | Hyland
 [<img src="modules/nuxeo/delete-all-trashed-documents/trash.png" width="80px"/>](modules/nuxeo/delete-all-trashed-documents) | Permanently delete all trashed documents | Hyland
 [<img src="modules/nuxeo/automation-script-utils/script-utils-2.png" width="80px"/>](modules/nuxeo/automation-script-utils) | Automation Script Utilities | Hyland
+[<img src="modules/nuxeo/better-to-html/better-to-html.png" width="120px"/>](modules/nuxeo/better-to-html) | Convert PDF and Word to a single HTML file using pdf2htmlEX | Hyland
 
 ## Templates
 
