@@ -1,0 +1,50 @@
+<!--
+  PDF / Word -> HTML with pdf2htmlEX. The result is ONE self-contained HTML file (images, fonts, CSS embedded).
+
+  Use:  Blob.RunConverter  converter = pdf2htmlEX    (PDF)
+        Blob.RunConverter  converter = word2htmlEX   (doc, docx, odt, rtf: LibreOffice -> PDF -> pdf2htmlEX)
+
+  Deploy in nxserver/config/ (file name ending with -config.xml), or copy the <extension> elements in Studio.
+-->
+<extension target="org.nuxeo.ecm.platform.commandline.executor.service.CommandLineExecutorComponent"
+  point="command">
+  <!--
+    - tounicode 1 + decompose-ligature 1: REQUIRED, otherwise the text of PDFs made by Word/LibreOffice is garbled
+      (the page looks fine but search/copy-paste don't work).
+    - zoom 1.3333: real size on screen. bg-format svg: drawings stay sharp, photos keep their original quality;
+      svg-node-count-limit: a page with very complex drawings (maps, CAD) falls back to an image, to stay light.
+    - The "nxblob-" output name makes Nuxeo rename the result after the source file (MyFile.pdf -> MyFile.html).
+  -->
+  <command name="pdf2htmlEX" enabled="true">
+    <commandLine>pdf2htmlEX</commandLine>
+    <parameterString>--zoom 1.3333 --bg-format svg --svg-node-count-limit 30000 --tounicode 1 --decompose-ligature 1 --no-drm 1 --quiet 1 --dest-dir #{outDirPath} #{sourceFilePath} nxblob-pdf2htmlex.html</parameterString>
+    <testParameterString>--version</testParameterString>
+    <installationDirective>You need to install pdf2htmlEX.</installationDirective>
+  </command>
+</extension>
+
+<extension target="org.nuxeo.ecm.core.convert.service.ConversionServiceImpl" point="converter">
+
+  <converter name="pdf2htmlEX" class="org.nuxeo.ecm.platform.convert.plugins.CommandLineConverter">
+    <sourceMimeType>application/pdf</sourceMimeType>
+    <destinationMimeType>text/html</destinationMimeType>
+    <parameters>
+      <parameter name="CommandLineName">pdf2htmlEX</parameter>
+    </parameters>
+  </converter>
+
+  <!-- Word: the standard Nuxeo "any2pdf" (LibreOffice), then pdf2htmlEX -->
+  <converter name="word2htmlEX">
+    <sourceMimeType>application/msword</sourceMimeType>
+    <sourceMimeType>application/vnd.openxmlformats-officedocument.wordprocessingml.document</sourceMimeType>
+    <sourceMimeType>application/vnd.oasis.opendocument.text</sourceMimeType>
+    <sourceMimeType>application/rtf</sourceMimeType>
+    <sourceMimeType>text/rtf</sourceMimeType>
+    <destinationMimeType>text/html</destinationMimeType>
+    <conversionSteps>
+      <subconverter>any2pdf</subconverter>
+      <subconverter>pdf2htmlEX</subconverter>
+    </conversionSteps>
+  </converter>
+
+</extension>

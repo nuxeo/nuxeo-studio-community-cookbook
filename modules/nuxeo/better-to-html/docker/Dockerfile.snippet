@@ -1,0 +1,74 @@
+# >>> Paste this block in the "Make your changes BELOW this line" section of the Nuxeo Dockerfile <<<
+# (that section runs as root, USER 0, which is required here).
+#
+# Installs pdf2htmlEX (PDF -> HTML), plus the Nuxeo XML contribution that declares the command and the converters.
+# There is no dnf package for pdf2htmlEX on Oracle Linux 9, so this block compiles it (works on x86_64 and aarch64).
+# Word documents use the LibreOffice already present in the image (Nuxeo's standard any2pdf converter).
+#
+# Build-only packages (compilers, -devel) are removed at the end of the RUN: /opt/pdf2htmlEX is ~21 MB, the layer
+# ~120 MB (mostly the rewritten RPM database, as for any dnf install). The build compiles poppler + fontforge:
+# ~2 minutes on a recent 8-core machine (much longer under amd64 emulation on a Mac), then it is cached.
+
+ARG PDF2HTMLEX_REF=cb7806aecbbee435e086be248fa068fbe3dc24c9
+ARG PDF2HTMLEX_VERSION=0.18.8.rc2
+# 24.04.0 = most recent poppler that builds with the EL9 libraries (24.06+ requires FreeType 2.11 and GLib 2.72)
+ARG POPPLER_VERSION=24.04.0
+ARG POPPLER_DATA_VERSION=0.4.12
+ARG FONTFORGE_VERSION=20230101
+
+RUN set -eux; \
+    # Runtime libraries needed by pdf2htmlEX (kept in the image)
+    dnf -y install cairo freetype fontconfig glib2 libpng libjpeg-turbo openjpeg2 libxml2 zlib \
+        liberation-fonts google-carlito-fonts dejavu-sans-fonts; \
+    rpm -qa --qf '%{NAME}\n' | sort -u > /tmp/rpms-before; \
+    # Build-only packages (removed below)
+    dnf -y --enablerepo=ol9_codeready_builder --setopt=install_weak_deps=False install \
+        gcc gcc-c++ make cmake pkgconf-pkg-config xz gettext \
+        cairo-devel freetype-devel fontconfig-devel glib2-devel libpng-devel \
+        libjpeg-turbo-devel openjpeg2-devel libxml2-devel zlib-devel; \
+    rpm -qa --qf '%{NAME}\n' | sort -u > /tmp/rpms-after; \
+    mkdir -p /tmp/p2h; cd /tmp/p2h; \
+    curl -fsSL "https://github.com/pdf2htmlEX/pdf2htmlEX/archive/${PDF2HTMLEX_REF}.tar.gz" | tar xz --strip-components=1; \
+    mkdir -p poppler poppler-data fontforge; \
+    curl -fsSL "https://poppler.freedesktop.org/poppler-${POPPLER_VERSION}.tar.xz" | tar xJ --strip-components=1 -C poppler; \
+    curl -fsSL "https://poppler.freedesktop.org/poppler-data-${POPPLER_DATA_VERSION}.tar.gz" | tar xz --strip-components=1 -C poppler-data; \
+    curl -fsSL "https://github.com/fontforge/fontforge/archive/${FONTFORGE_VERSION}.tar.gz" | tar xz --strip-components=1 -C fontforge; \
+    # Poppler: static libs only, the minimum pdf2htmlEX needs (same options as pdf2htmlEX's own build scripts)
+    cmake -S poppler -B poppler/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/pdf2htmlEX \
+        -DBUILD_SHARED_LIBS=OFF -DENABLE_UNSTABLE_API_ABI_HEADERS=OFF -DENABLE_UTILS=OFF -DENABLE_CPP=OFF \
+        -DENABLE_GLIB=ON -DENABLE_GOBJECT_INTROSPECTION=OFF -DENABLE_GTK_DOC=OFF -DENABLE_QT5=OFF -DENABLE_QT6=OFF \
+        -DENABLE_BOOST=OFF -DENABLE_SPLASH=ON -DENABLE_LIBOPENJPEG=openjpeg2 -DENABLE_DCTDECODER=libjpeg \
+        -DENABLE_LCMS=OFF -DENABLE_LIBCURL=OFF -DENABLE_LIBTIFF=OFF -DENABLE_NSS3=OFF -DENABLE_GPGME=OFF \
+        -DENABLE_ZLIB=ON -DENABLE_ZLIB_UNCOMPRESS=OFF -DBUILD_GTK_TESTS=OFF -DBUILD_QT5_TESTS=OFF \
+        -DBUILD_QT6_TESTS=OFF -DBUILD_CPP_TESTS=OFF -DBUILD_MANUAL_TESTS=OFF -DRUN_GPERF_IF_PRESENT=OFF \
+        -DEXTRA_WARN=OFF -DWITH_JPEG=ON -DWITH_PNG=ON -DWITH_Cairo=ON; \
+    make -C poppler/build -j"$(nproc)"; \
+    # FontForge: static lib, no GUI, no python
+    cmake -S fontforge -B fontforge/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/pdf2htmlEX \
+        -DBUILD_SHARED_LIBS=OFF -DENABLE_GUI=OFF -DENABLE_X11=OFF -DENABLE_NATIVE_SCRIPTING=ON \
+        -DENABLE_PYTHON_SCRIPTING=OFF -DENABLE_PYTHON_EXTENSION=OFF -DENABLE_LIBSPIRO=OFF \
+        -DENABLE_LIBUNINAMESLIST=OFF -DENABLE_LIBGIF=OFF -DENABLE_LIBJPEG=ON -DENABLE_LIBPNG=ON \
+        -DENABLE_LIBREADLINE=OFF -DENABLE_LIBTIFF=OFF -DENABLE_WOFF2=OFF -DENABLE_DOCS=OFF \
+        -DENABLE_CODE_COVERAGE=OFF -DENABLE_DEBUG_RAW_POINTS=OFF -DENABLE_FONTFORGE_EXTRAS=OFF \
+        -DENABLE_MAINTAINER_TOOLS=OFF -DENABLE_TILE_PATH=OFF -DENABLE_WRITE_PFM=OFF \
+        -DENABLE_SANITIZER=none -DREAL_TYPE=double -DTHEME=tango; \
+    make -C fontforge/build -j"$(nproc)"; \
+    # pdf2htmlEX itself (statically linked with the poppler + fontforge built above)
+    PDF2HTMLEX_VERSION="${PDF2HTMLEX_VERSION}" cmake -S pdf2htmlEX -B pdf2htmlEX/build \
+        -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/pdf2htmlEX; \
+    make -C pdf2htmlEX/build -j"$(nproc)"; \
+    make -C pdf2htmlEX/build install; \
+    make -C poppler-data install prefix=/opt/pdf2htmlEX datadir=/opt/pdf2htmlEX/share/pdf2htmlEX; \
+    ln -sf /opt/pdf2htmlEX/bin/pdf2htmlEX /usr/local/bin/pdf2htmlEX; \
+    # Cleanup: remove only the packages added for the build, then the sources
+    cd /; \
+    comm -13 /tmp/rpms-before /tmp/rpms-after | xargs -r dnf -y remove; \
+    dnf clean all; \
+    rm -rf /tmp/p2h /tmp/pdf2htmlEX /tmp/rpms-before /tmp/rpms-after /var/cache/dnf; \
+    # Sanity check: fails the build if a runtime library is missing
+    pdf2htmlEX --version
+
+# Optional: deploy the XML with the image (or paste its <extension> elements in Studio instead).
+# COPY paths are relative to the BUILD CONTEXT: with the presales docker-compose (context: ".",
+# dockerfile: build_nuxeo/Dockerfile), put pdf2htmlex-config.xml in build_nuxeo/, next to the Dockerfile.
+COPY --chown=900:0 build_nuxeo/pdf2htmlex-config.xml /opt/nuxeo/server/nxserver/config/pdf2htmlex-config.xml
