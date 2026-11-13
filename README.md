@@ -44,6 +44,7 @@ These items are for copy/paste into Nuxeo Studio.
 
 Module | Description | Contributor
 --- | --- | ---
+[<img src="modules/nuxeo/template-rendering-with-images/template-rendering-with-images.png" width="120px"/>](modules/nuxeo/template-rendering-with-images) | Template Rendering: a variable number of images in a Word template | Hyland
 [<img src="modules/nuxeo/better-to-html/better-to-html.png" width="120px"/>](modules/nuxeo/better-to-html) | Convert PDF and Word to a single HTML file using pdf2htmlEX | Hyland
 [<img src="modules/nuxeo/nuxeo-user-preferences/README-Images/person-setting-2.png" width="120px"/>](modules/nuxeo/nuxeo-user-preferences) | User Preferences | Hyland
 [<img src="modules/nuxeo/Home-Page-Configuration/README-Images/02-Config.jpg" width="120px"/>](modules/nuxeo/Home-Page-Configuration) | Home Page Configuration | Hyland
@@ -164,6 +165,7 @@ Module | Description | Contributor
 [<img src="modules/nuxeo/send-email-from-webui/mail2.png" width="100px"/>](modules/nuxeo/send-email-from-webui) | Send emails from Nuxeo Web UI | Hyland
 [<img src="modules/nuxeo/email-templates-nuxeo/dark.png" width="100px"/>](modules/nuxeo/email-templates-nuxeo) | Email templates | Hyland
 [<img src="modules/nuxeo/create-from-template/CreateFromTemplate.png" width="100px"/>](modules/nuxeo/create-from-template) | Document templates | Hyland
+[<img src="modules/nuxeo/template-rendering-with-images/template-rendering-with-images.png" width="100px"/>](modules/nuxeo/template-rendering-with-images) | Template Rendering: a variable number of images in a Word template | Hyland
 
 ## Integrations
 

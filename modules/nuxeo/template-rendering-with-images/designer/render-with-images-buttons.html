@@ -1,0 +1,61 @@
+<!--
+  Module template-rendering-with-images (Nuxeo Studio Community Cookbook) - Web UI buttons, Nuxeo LTS 2025
+
+  Two DOCUMENT_ACTIONS buttons that render the current document and download the result.
+  Copy the one(s) you need into your custom bundle (nuxeo-<projectId>-custom-bundle.html), or recreate them in
+  Studio Designer (UI > Buttons > Create, slot DOCUMENT_ACTIONS, element nuxeo-operation-button).
+
+  Adapt:
+  - "templateName": the template name (Template name field) of your Template document,
+  - "convertToPdf": true for a PDF, false for the .docx (or what the Output format of the template produces),
+  - label, icon, order.
+
+  Notes:
+  - permission="Write": the rendering saves the document, users without Write would get an error.
+  - event="document-updated": refreshes the document page after the rendering (the document was saved).
+-->
+
+<!-- Attached images (files:files): shown when the document has attachments -->
+<nuxeo-slot-content name="renderTemplateWithAttachedImagesAction" slot="DOCUMENT_ACTIONS" order="85">
+  <template>
+    <nuxeo-filter document="[[document]]" permission="Write"
+                  expression="document.properties['files:files'] && document.properties['files:files'].length > 0">
+      <template>
+        <nuxeo-operation-button operation="javascript.AS_RenderTemplateWithAttachedImages"
+                                input="[[document]]"
+                                params='{"templateName": "images-with-captions", "convertToPdf": true}'
+                                label="Images report"
+                                icon="image:photo-library"
+                                download
+                                event="document-updated">
+        </nuxeo-operation-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+
+<!-- Picture views (picture:views): shown on documents with the Picture facet -->
+<nuxeo-slot-content name="renderTemplateWithPictureViewsAction" slot="DOCUMENT_ACTIONS" order="86">
+  <template>
+    <nuxeo-filter document="[[document]]" facet="Picture" permission="Write">
+      <template>
+        <nuxeo-operation-button operation="javascript.AS_RenderTemplateWithPictureViews"
+                                input="[[document]]"
+                                params='{"templateName": "images-with-captions", "viewTitles": "Small,Medium", "convertToPdf": true}'
+                                label="Picture views report"
+                                icon="image:photo-library"
+                                download
+                                event="document-updated">
+        </nuxeo-operation-button>
+      </template>
+    </nuxeo-filter>
+  </template>
+</nuxeo-slot-content>
+
+<!--
+  Optional: hide the generic "Render with Template" button of the Template Rendering add-on. It also lists this
+  template, but renders it without the list of images (an error, or the list of the previous rendering). Hide it only
+  if you don't use it for other templates.
+
+<nuxeo-slot-content name="templateRenderAction" slot="DOCUMENT_ACTIONS" disabled></nuxeo-slot-content>
+-->
